@@ -1,0 +1,6 @@
+{
+  "name": "ECMAScript",
+  "tree": {
+    "$path": "src"
+  }
+}

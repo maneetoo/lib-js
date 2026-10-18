@@ -1,0 +1,16 @@
+[package]
+name = "maneetoo/error"
+description = "Error constructor and native subclasses with static access, such as Error.TypeError."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+ES17-Types = "maneetoo/es17types@1.0.3"
+Number = "maneetoo/number@1.0.3"
+Object = "maneetoo/object@1.0.3"
+String = "maneetoo/string@1.0.3"
+Symbol = "maneetoo/symbol@1.0.3"

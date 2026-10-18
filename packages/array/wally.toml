@@ -1,0 +1,18 @@
+[package]
+name = "maneetoo/array"
+description = "JavaScript-compatible array methods and constructor with ES semantics for Luau tables."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+ECMAScript = "maneetoo/ecmascript@1.0.3"
+ES17-Types = "maneetoo/es17types@1.0.3"
+Error = "maneetoo/error@1.0.3"
+Number = "maneetoo/number@1.0.3"
+Promise = "maneetoo/promise@1.0.3"
+String = "maneetoo/string@1.0.3"
+Symbol = "maneetoo/symbol@1.0.3"

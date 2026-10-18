@@ -1,0 +1,12 @@
+[package]
+name = "maneetoo/ecmascript"
+description = "Shared ECMAScript abstract operations, used across all lib-js."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+Number = "maneetoo/number@1.0.3"

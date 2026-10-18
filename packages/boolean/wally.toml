@@ -1,0 +1,13 @@
+[package]
+name = "maneetoo/boolean"
+description = "Boolean constructor, coercion helper, and prototype methods toString and valueOf."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+Error = "maneetoo/error@1.0.3"
+Number = "maneetoo/number@1.0.3"

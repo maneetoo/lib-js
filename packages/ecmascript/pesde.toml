@@ -1,0 +1,23 @@
+name = "maneetoo/ecmascript"
+description = "Shared ECMAScript abstract operations, used across all lib-js."
+version = "1.0.0"
+license = "MIT"
+authors = ["maneetoo"]
+repository = "https://github.com/maneetoo/lib-js"
+
+includes = [
+  "pesde.toml",
+  "LICENSE",
+  "README.md",
+  "src/**/*.luau",
+]
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
+
+[target]
+environment = "luau"
+lib = "src/init.luau"
+
+[dependencies]
+Number = { workspace = "maneetoo/number", version = "^"  }
