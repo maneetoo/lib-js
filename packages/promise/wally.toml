@@ -1,0 +1,14 @@
+[package]
+name = "maneetoo/promise"
+description = "Promise implementation with then, catch, finally, and static combinators."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+ES17-Types = "maneetoo/es17types@1.0.3"
+Error = "maneetoo/error@1.0.3"
+Symbol = "maneetoo/symbol@1.0.3"
