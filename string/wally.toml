@@ -1,0 +1,16 @@
+[package]
+name = "maneetoo/string"
+description = "String constructor and prototype methods following JavaScript string semantics."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+ECMAScript = "maneetoo/ecmascript@1.0.3"
+ES17-Types = "maneetoo/es17types@1.0.3"
+Number = "maneetoo/number@1.0.3"
+Object = "maneetoo/object@1.0.3"
+Symbol = "maneetoo/symbol@1.0.3"

@@ -1,0 +1,24 @@
+name = "maneetoo/object"
+description = "Object constructor and static utilities for property inspection and manipulation."
+version = "1.0.1"
+license = "MIT"
+authors = ["maneetoo"]
+repository = "https://github.com/maneetoo/lib-js"
+
+includes = [
+  "pesde.toml",
+  "LICENSE",
+  "README.md",
+  "src/**/*.luau",
+]
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
+
+[target]
+environment = "luau"
+lib = "src/init.luau"
+
+[dependencies]
+ES17-Types = { workspace = "maneetoo/es17types", version = "^"  }
+Number = { workspace = "maneetoo/number", version = "^"  }
