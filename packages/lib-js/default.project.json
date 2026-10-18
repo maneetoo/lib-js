@@ -1,0 +1,6 @@
+{
+  "name": "LibJS",
+  "tree": {
+    "$path": "src"
+  }
+}

@@ -1,0 +1,9 @@
+[package]
+name = "maneetoo/es17types"
+description = "Types-only module of JavaScript-style structural aliases such as Array, Table, Thenable, and Iterator."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"

@@ -1,0 +1,21 @@
+--!strict
+
+--[=[
+	@class __staticProps
+	@private
+
+	The numeric constants behind `Math`'s static properties (`E`, `PI`, ...),
+	kept in their own module so `init` exposes them, as `Number/__staticProps`
+	does for `Number`.
+]=]
+
+return table.freeze {
+	E = 2.718281828459045,
+	LN2 = 0.6931471805599453,
+	LN10 = 2.302585092994046,
+	LOG2E = 1.4426950408889634,
+	LOG10E = 0.4342944819032518,
+	PI = math.pi,
+	SQRT1_2 = 0.7071067811865476,
+	SQRT2 = 1.4142135623730951,
+}

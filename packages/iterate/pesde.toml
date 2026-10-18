@@ -1,0 +1,26 @@
+name = "maneetoo/iterate"
+description = "LibJS helper that walks iterables for collection constructors"
+version = "1.0.0"
+license = "MIT"
+authors = ["maneetoo"]
+repository = "https://github.com/maneetoo/lib-js"
+
+includes = [
+  "pesde.toml",
+  "LICENSE",
+  "README.md",
+  "src/**/*.luau",
+]
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
+
+[target]
+environment = "luau"
+lib = "src/init.luau"
+
+[dependencies]
+ECMAScript = { workspace = "maneetoo/ecmascript", version = "^"  }
+Error = { workspace = "maneetoo/error", version = "^"  }
+String = { workspace = "maneetoo/string", version = "^"  }
+Symbol = { workspace = "maneetoo/symbol", version = "^"  }

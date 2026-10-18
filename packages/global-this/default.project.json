@@ -1,0 +1,6 @@
+{
+  "name": "globalThis",
+  "tree": {
+    "$path": "src"
+  }
+}

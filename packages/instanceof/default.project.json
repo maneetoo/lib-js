@@ -1,0 +1,6 @@
+{
+  "name": "instanceof",
+  "tree": {
+    "$path": "src"
+  }
+}
