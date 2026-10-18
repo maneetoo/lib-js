@@ -1,0 +1,11 @@
+{
+  "name": "lib-js",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+        "lib-js": {
+            "$path": "packages"
+        }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+name = "maneetoo/libjs"
+version = "0.1.0"
+description = "Everything what you need to write code in Luau with JS built-in objects"
+authors = ["maneetoo"]
+repository = "https://github.com/maneetoo/lib-js"
+license = "MIT"
+
+workspace_members = ["packages/*"]
+
+[target]
+environment = "luau"
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
