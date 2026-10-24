@@ -1,25 +1,25 @@
 --!strict
 
-const Array = require './Array'
-const Boolean = require './Boolean'
-const Error = require './Error'
-const JSON = require './JSON'
-const Map = require './Map'
-const Math = require './Math'
-const Number = require './Number'
-const Object = require './Object'
-const Promise = require './Promise'
-const Set = require './Set'
-const String = require './String'
-const Symbol = require './Symbol'
-const Timers = require './Timers'
-const WeakMap = require './WeakMap'
-const WeakRef = require './WeakRef'
-const WeakSet = require './WeakSet'
-const esTypes = require './ES17-Types'
-const globalThis = require './globalThis'
-const instanceof = require './instanceof'
-const iterate = require './iterate'
+const Array = require "./Array"
+const Boolean = require "./Boolean"
+const Error = require "./Error"
+const JSON = require "./JSON"
+const Map = require "./Map"
+const Math = require "./Math"
+const Number = require "./Number"
+const Object = require "./Object"
+const Promise = require "./Promise"
+const Set = require "./Set"
+const String = require "./String"
+const Symbol = require "./Symbol"
+const Timers = require "./Timers"
+const WeakMap = require "./WeakMap"
+const WeakRef = require "./WeakRef"
+const WeakSet = require "./WeakSet"
+const esTypes = require "./ES17-Types"
+const globalThis = require "./globalThis"
+const instanceof = require "./instanceof"
+const iterate = require "./iterate"
 
 export type Array<T> = esTypes.Array<T>
 export type Table<K, V> = esTypes.Table<K, V>
@@ -89,8 +89,12 @@ const lib = table.freeze {
 	WeakRef = WeakRef,
 	WeakSet = WeakSet,
 	globalThis = globalThis,
+	isNaN = Number.isNaN,
+	isFinite = Number.isFinite,
 	instanceof = instanceof,
 	iterate = iterate,
+	parseInt = Number.parseInt,
+	parseFloat = Number.parseFloat,
 }
 
 return lib
