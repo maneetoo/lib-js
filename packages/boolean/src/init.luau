@@ -46,11 +46,11 @@
 	:::
 ]=]
 
-const __toBoolean = require "@self/__toBoolean"
+const ECMAScript = require "./ECMAScript"
 const prototype = require "@self/prototype"
 
 const Boolean = {
-	__toBoolean = __toBoolean,
+	__toBoolean = ECMAScript.ToBoolean,
 	prototype = prototype,
 }
 
@@ -66,7 +66,7 @@ const Boolean = {
 ]=]
 setmetatable(Boolean, {
 	__call = function(_, value: any): boolean
-		return __toBoolean(value)
+		return ECMAScript.ToBoolean(value)
 	end,
 })
 
