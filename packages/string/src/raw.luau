@@ -8,7 +8,7 @@
 	Joins a template's raw strings with substitution values.
 ]=]
 
-const __toString = require "./__toString"
+const ECMAScript = require "../ECMAScript"
 
 --[=[
 	@within raw
@@ -38,10 +38,10 @@ const function raw(template: { raw: { string } }, ...: unknown): string
 	local length = 0
 	for index = 1, count do
 		length += 1
-		parts[length] = __toString(pieces[index])
+		parts[length] = ECMAScript.ToString(pieces[index])
 		if index < count and index <= select("#", ...) then
 			length += 1
-			parts[length] = __toString((select(index, ...)))
+			parts[length] = ECMAScript.ToString((select(index, ...)))
 		end
 	end
 	return table.concat(parts)
