@@ -46,16 +46,16 @@
 	:::
 ]=]
 
+const ECMAScript = require "./ECMAScript"
 const Symbol = require "./Symbol"
 const prototype = require "@self/prototype"
-const __toString = require "@self/__toString"
 
 const String = {
 	fromCharCode = require "@self/fromCharCode",
 	fromCodePoint = require "@self/fromCodePoint",
 	raw = require "@self/raw",
 
-	__toString = __toString,
+	__toString = ECMAScript.ToString,
 	prototype = prototype,
 }
 
@@ -79,7 +79,7 @@ setmetatable(String, {
 		if Symbol.isSymbol(value) then
 			return Symbol.prototype.toString(value :: any)
 		end
-		return __toString(value)
+		return ECMAScript.ToString(value)
 	end,
 })
 
