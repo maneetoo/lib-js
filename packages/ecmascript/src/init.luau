@@ -11,6 +11,7 @@
 const ECMAScriptAbstractMethods = {
     IsCallable = require "@self/IsCallable",
     RequireObjectCoercible = require "@self/RequireObjectCoercible",
+    ToBoolean = require "@self/ToBoolean",
     ToClampedIndex = require "@self/ToClampedIndex",
     ToClampedIndexOrDefault = require "@self/ToClampedIndexOrDefault",
     ToFixedSizeInteger = "@self/ToFixedSizeInteger",
