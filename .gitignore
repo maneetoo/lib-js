@@ -1,0 +1,7 @@
+sourcemap.json
+/.lest
+server-packages/
+dev-packages/
+luau-packages/
+dist/
+*.lock
