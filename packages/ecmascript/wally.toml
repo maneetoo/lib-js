@@ -9,4 +9,7 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
+ES17-Types = "maneetoo/es17types@1.0.3"
 Number = "maneetoo/number@1.0.3"
+Object = "maneetoo/object@1.0.3"
+Symbol = "maneetoo/symbol@1.0.3"

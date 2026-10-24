@@ -11,6 +11,7 @@
 const ECMAScriptAbstractMethods = {
     IsCallable = require "@self/IsCallable",
     RequireObjectCoercible = require "@self/RequireObjectCoercible",
+    ToBoolean = require "@self/ToBoolean",
     ToClampedIndex = require "@self/ToClampedIndex",
     ToClampedIndexOrDefault = require "@self/ToClampedIndexOrDefault",
     ToFixedSizeInteger = "@self/ToFixedSizeInteger",
@@ -19,6 +20,7 @@ const ECMAScriptAbstractMethods = {
     ToInt32 = require "@self/ToInt32",
     ToIntegerOrInfinity = require "@self/ToIntegerOrInfinity",
     ToLength = require "@self/ToLength",
+    ToString = require "@self/ToString",
     ToUint8 = require "@self/ToUint8",
     ToUint16 = require "@self/ToInt16",
     ToUint32 = require "@self/ToUint32",

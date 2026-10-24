@@ -8,8 +8,8 @@
 	Joins the string with the string forms of its arguments.
 ]=]
 
+const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 
 --[=[
 	@within concat
@@ -23,7 +23,7 @@ const __toString = require "../__toString"
 const function concat(self: unknown, ...: unknown): string
 	const parts: { string } = { __shared.thisString(self, "concat") }
 	for index = 1, select("#", ...) do
-		parts[index + 1] = __toString((select(index, ...)))
+		parts[index + 1] = ECMAScript.ToString((select(index, ...)))
 	end
 	return table.concat(parts)
 end

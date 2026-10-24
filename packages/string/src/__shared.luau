@@ -8,7 +8,7 @@
 	API. Conversions to numbers go through `Number`.
 ]=]
 
-const __toString = require "./__toString"
+const ECMAScript = require "../ECMAScript"
 
 --[=[
 	The largest string length that is allowed to be built, in bytes. This
@@ -40,7 +40,7 @@ const function thisString(self: unknown, method: string): string
 	if self == nil then
 		error(`String.prototype.{method} called on null or undefined`)
 	end
-	return __toString(self)
+	return ECMAScript.ToString(self)
 end
 
 --[=[

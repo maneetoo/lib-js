@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -34,7 +33,7 @@ const __utf8 = require "../__utf8"
 ]=]
 const function replace(self: unknown, search: unknown, replaceValue: unknown): string
 	const s = __shared.thisString(self, "replace")
-	const pattern = __toString(search)
+	const pattern = ECMAScript.ToString(search)
 	const position = __utf8.find(s, pattern, 0)
 	if position == -1 then
 		return s
@@ -47,9 +46,9 @@ const function replace(self: unknown, search: unknown, replaceValue: unknown): s
 
 	local replacement: string
 	if ECMAScript.IsCallable(replaceValue) then
-		replacement = __toString((replaceValue :: any)(pattern, position, s))
+		replacement = ECMAScript.ToString((replaceValue :: any)(pattern, position, s))
 	else
-		replacement = __shared.expandReplacement(__toString(replaceValue), pattern, before, after)
+		replacement = __shared.expandReplacement(ECMAScript.ToString(replaceValue), pattern, before, after)
 	end
 
 	return before .. replacement .. after

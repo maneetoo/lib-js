@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -27,7 +26,7 @@ const __utf8 = require "../__utf8"
 ]=]
 const function startsWith(self: unknown, search: unknown, position: unknown): boolean
 	const s = __shared.thisString(self, "startsWith")
-	const pattern = __toString(search)
+	const pattern = ECMAScript.ToString(search)
 	const length = __utf8.length(s)
 	const start = __shared.clamp(ECMAScript.ToIntegerOrInfinity(position), 0, length)
 	return __utf8.sub(s, start, start + __utf8.length(pattern)) == pattern

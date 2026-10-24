@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -34,7 +33,7 @@ const function padEnd(self: unknown, maxLength: unknown, fillString: unknown): s
 		return s
 	end
 
-	const fill = if fillString == nil then " " else __toString(fillString)
+	const fill = if fillString == nil then " " else ECMAScript.ToString(fillString)
 	const fillLength = __utf8.length(fill)
 	if fillLength == 0 then
 		return s

@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -28,7 +27,7 @@ const __utf8 = require "../__utf8"
 ]=]
 const function indexOf(self: unknown, search: unknown, position: unknown): number
 	const s = __shared.thisString(self, "indexOf")
-	const pattern = __toString(search)
+	const pattern = ECMAScript.ToString(search)
 	const start = __shared.clamp(ECMAScript.ToIntegerOrInfinity(position), 0, __utf8.length(s))
 	return __utf8.find(s, pattern, start)
 end

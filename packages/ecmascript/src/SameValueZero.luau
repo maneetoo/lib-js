@@ -17,7 +17,7 @@
 	@param y any
 	@return boolean
 ]=]
-const function sameValueZero(x: any, y: any): boolean
+const function SameValueZero(x: any, y: any): boolean
 	if type(x) == "number" and type(y) == "number" then
 		if x ~= x then
 			return y ~= y
@@ -27,4 +27,4 @@ const function sameValueZero(x: any, y: any): boolean
 	return rawequal(x, y)
 end
 
-return sameValueZero
+return SameValueZero

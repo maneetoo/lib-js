@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -32,11 +31,11 @@ const __utf8 = require "../__utf8"
 ]=]
 const function replaceAll(self: unknown, search: unknown, replaceValue: unknown): string
 	const s = __shared.thisString(self, "replaceAll")
-	const pattern = __toString(search)
+	const pattern = ECMAScript.ToString(search)
 	const patternLength = __utf8.length(pattern)
 	const length = __utf8.length(s)
 	const isFunction = ECMAScript.IsCallable(replaceValue)
-	const template = if isFunction then "" else __toString(replaceValue)
+	const template = if isFunction then "" else ECMAScript.ToString(replaceValue)
 
 	-- Collect the matches first, then build the result from the pieces between them.
 	const positions: { number } = {}
@@ -73,7 +72,7 @@ const function replaceAll(self: unknown, search: unknown, replaceValue: unknown)
 
 		local replacement: string
 		if isFunction then
-			replacement = __toString((replaceValue :: any)(pattern, position, s))
+			replacement = ECMAScript.ToString((replaceValue :: any)(pattern, position, s))
 		else
 			replacement = __shared.expandReplacement(template, pattern, __utf8.sub(s, 0, position), after)
 		end
