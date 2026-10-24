@@ -121,8 +121,8 @@ end
 	symbols in JavaScript. `String(symbol)` is the explicit form that works.
 	:::
 ]=]
-const function toString(value: unknown): string
+const function ToString(value: unknown): string
 	return convert(value, {})
 end
 
-return toString
+return ToString
