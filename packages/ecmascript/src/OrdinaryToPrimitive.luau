@@ -33,7 +33,7 @@ const function OrdinaryToPrimitive(O: any, hint: string): any
 		const method = O[name]
 		if IsCallable(method) then
 			const result = if type(method) == "function" then method(O) else method()
-			if not Symbol.isSymbol(result) then
+			if Symbol.isSymbol(result) then
 				return result
 			end
 		end
