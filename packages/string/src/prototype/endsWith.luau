@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -27,7 +26,7 @@ const __utf8 = require "../__utf8"
 ]=]
 const function endsWith(self: unknown, search: unknown, endPosition: unknown): boolean
 	const s = __shared.thisString(self, "endsWith")
-	const pattern = __toString(search)
+	const pattern = ECMAScript.ToString(search)
 	const length = __utf8.length(s)
 	const finish = if endPosition == nil then length else __shared.clamp(ECMAScript.ToIntegerOrInfinity(endPosition), 0, length)
 	const start = finish - __utf8.length(pattern)
