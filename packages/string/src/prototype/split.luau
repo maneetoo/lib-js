@@ -10,7 +10,6 @@
 
 const ECMAScript = require "../../ECMAScript"
 const __shared = require "../__shared"
-const __toString = require "../__toString"
 const __utf8 = require "../__utf8"
 
 --[=[
@@ -46,7 +45,7 @@ const function split(self: unknown, separator: unknown, limit: unknown): { strin
 		return parts
 	end
 
-	const pattern = __toString(separator)
+	const pattern = ECMAScript.ToString(separator)
 	const length = __utf8.length(s)
 
 	if pattern == "" then
