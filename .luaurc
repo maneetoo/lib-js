@@ -1,0 +1,9 @@
+{
+  "aliases": {
+    "pkgs": "./packages"
+  },
+  "languageMode": "nonstrict",
+  "lint": {
+    "*": true
+  }
+}
