@@ -9,5 +9,6 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
+ECMAScript = "maneetoo/ecmascript@1.0.3"
 Error = "maneetoo/error@1.0.3"
 Number = "maneetoo/number@1.0.3"
