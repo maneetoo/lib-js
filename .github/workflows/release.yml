@@ -1,0 +1,304 @@
+name: Release
+ 
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, e.g. 1.0.0 or 1.0.0-rc.1 (with -rc.N the release becomes a Pre-Release)"
+        required: true
+        type: string
+ 
+permissions:
+  contents: write
+ 
+concurrency:
+  group: release
+  cancel-in-progress: false
+ 
+jobs:
+  prepare:
+    name: Bump versions
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.validate.outputs.version }}
+      tag: ${{ steps.validate.outputs.tag }}
+      prerelease: ${{ steps.validate.outputs.prerelease }}
+      sha: ${{ steps.commit.outputs.sha }}
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Validate version
+        id: validate
+        run: |
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$ ]]; then
+            echo "::error::Invalid version format '$VERSION'. Expected X.Y.Z or X.Y.Z-rc.N"
+            exit 1
+          fi
+          if [[ "$VERSION" == *-rc.* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+ 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+ 
+      - name: Ensure tag does not exist
+        env:
+          TAG: ${{ steps.validate.outputs.tag }}
+        run: |
+          if git rev-parse -q --verify "refs/tags/$TAG" >/dev/null; then
+            echo "::error::Tag $TAG already exists"
+            exit 1
+          fi
+ 
+      - name: Update wally.toml files
+        shell: python
+        run: |
+          import os
+          import re
+          from pathlib import Path
+ 
+          version = os.environ["VERSION"]
+ 
+          SKIP_DIRS = {".git", "node_modules", "Packages", "DevPackages", "ServerPackages"}
+          DEP_SECTIONS = {"dependencies", "server-dependencies", "dev-dependencies"}
+ 
+          SECTION_RE = re.compile(r"^\s*\[([^\]]+)\]\s*(#.*)?$")
+          NAME_RE = re.compile(r'^\s*name\s*=\s*"([^"]+)"')
+          VERSION_RE = re.compile(r'^(\s*version\s*=\s*")[^"]*(".*)$')
+          # Alias = "scope/name@version"  (any alias name)
+          DEP_RE = re.compile(r'^(\s*[^=\s#][^=]*?=\s*")([^"@\s]+)@[^"]*(".*)$')
+ 
+ 
+          def split_eol(line):
+              body = line.rstrip("\r\n")
+              return body, line[len(body):]
+ 
+ 
+          def package_scope(lines):
+              section = None
+              for line in lines:
+                  body, _ = split_eol(line)
+                  m = SECTION_RE.match(body)
+                  if m:
+                      section = m.group(1).strip()
+                      continue
+                  if section == "package":
+                      m = NAME_RE.match(body)
+                      if m and "/" in m.group(1):
+                          return m.group(1).split("/", 1)[0]
+              return None
+ 
+ 
+          files = sorted(
+              p for p in Path(".").rglob("wally.toml")
+              if not any(part in SKIP_DIRS for part in p.parts)
+          )
+ 
+          if not files:
+              print("::warning::No wally.toml files found")
+ 
+          for path in files:
+              lines = path.read_bytes().decode("utf-8").splitlines(keepends=True)
+              scope = package_scope(lines)
+              section = None
+              out = []
+              changed = 0
+ 
+              for line in lines:
+                  body, eol = split_eol(line)
+                  m = SECTION_RE.match(body)
+                  if m:
+                      section = m.group(1).strip()
+                      out.append(line)
+                      continue
+ 
+                  if section == "package":
+                      m = VERSION_RE.match(body)
+                      if m:
+                          body = f"{m.group(1)}{version}{m.group(2)}"
+                          changed += 1
+                  elif section in DEP_SECTIONS:
+                      m = DEP_RE.match(body)
+                      # Only update dependencies from the same scope as the package
+                      # (third-party ones like evaera/promise are left untouched)
+                      if m and (scope is None or m.group(2).split("/", 1)[0] == scope):
+                          body = f"{m.group(1)}{m.group(2)}@{version}{m.group(3)}"
+                          changed += 1
+ 
+                  out.append(body + eol)
+ 
+              path.write_bytes("".join(out).encode("utf-8"))
+              print(f"{path}: lines updated: {changed}")
+ 
+      - name: Commit version bump
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore: bump version to $VERSION"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          else
+            echo "Versions are already up to date, no commit needed."
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+ 
+  build:
+    name: Build
+    needs: prepare
+    uses: ./.github/workflows/build.yml
+    with:
+      ref: ${{ needs.prepare.outputs.sha }}
+      version: ${{ needs.prepare.outputs.version }}
+ 
+  wally:
+    name: Publish to Wally
+    needs: [prepare, build]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WALLY_AUTH_TOKEN: ${{ secrets.WALLY_AUTH_TOKEN }}
+    steps:
+      - name: Checkout release commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+ 
+      - name: Install Wally
+        run: |
+          dest="$RUNNER_TEMP/wally"
+          mkdir -p "$dest"
+          gh release download --repo UpliftGames/wally \
+            --pattern "*linux*.zip" --dir "$dest"
+          unzip -o "$dest"/*.zip -d "$dest"
+          chmod +x "$dest/wally"
+          echo "$dest" >> "$GITHUB_PATH"
+ 
+      - name: Login to Wally
+        run: |
+          wally --version
+          wally login --token "$WALLY_AUTH_TOKEN"
+ 
+      - name: Resolve publish order
+        shell: python
+        run: |
+          import os
+          import sys
+          import tomllib
+          from pathlib import Path
+ 
+          DEP_SECTIONS = ("dependencies", "server-dependencies", "dev-dependencies")
+ 
+          pkgs = {}
+          for manifest in sorted(Path("packages").glob("*/wally.toml")):
+              data = tomllib.loads(manifest.read_text(encoding="utf-8"))
+              pkgs[data["package"]["name"]] = (manifest.parent, data)
+ 
+          if not pkgs:
+              sys.exit("::error::No wally.toml found in packages/")
+ 
+          order, state = [], {}
+ 
+ 
+          def visit(name):
+              if state.get(name) == "done":
+                  return
+              if state.get(name) == "visiting":
+                  sys.exit(f"::error::Circular dependency around {name}")
+              state[name] = "visiting"
+              _, data = pkgs[name]
+              for section in DEP_SECTIONS:
+                  for spec in data.get(section, {}).values():
+                      dep = spec.split("@", 1)[0]
+                      if dep in pkgs:
+                          visit(dep)
+              state[name] = "done"
+              order.append(pkgs[name][0])
+ 
+ 
+          for name in pkgs:
+              visit(name)
+ 
+          out = Path(os.environ["RUNNER_TEMP"]) / "publish-order.txt"
+          out.write_text("\n".join(str(p) for p in order) + "\n", encoding="utf-8")
+          print("Publish order (dependencies before dependents):")
+          for p in order:
+              print(f"  {p}")
+ 
+      - name: Publish packages
+        run: |
+          max_attempts=20
+          failed=()
+ 
+          while IFS= read -r dir; do
+            [ -z "$dir" ] && continue
+            echo "::group::wally publish ($dir)"
+            attempt=1
+            while true; do
+              set +e
+              output=$(cd "$dir" && wally publish 2>&1)
+              code=$?
+              set -e
+              echo "$output"
+ 
+              if [ $code -eq 0 ]; then
+                echo "OK: $dir"
+                break
+              fi
+ 
+              if echo "$output" | grep -qiE "429|too many requests|rate.?limit"; then
+                if [ $attempt -ge $max_attempts ]; then
+                  echo "::error::$dir: attempt limit exceeded ($max_attempts)"
+                  failed+=("$dir")
+                  break
+                fi
+                echo "Too many requests, waiting 30s (attempt $attempt/$max_attempts)..."
+                sleep 30
+                attempt=$((attempt + 1))
+                continue
+              fi
+ 
+              echo "::error::$dir: wally publish failed"
+              failed+=("$dir")
+              break
+            done
+            echo "::endgroup::"
+          done < "$RUNNER_TEMP/publish-order.txt"
+ 
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "::error::Not published: ${failed[*]}"
+            exit 1
+          fi
+ 
+  publish:
+    name: Publish release
+    needs: [prepare, build, wally]
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ needs.prepare.outputs.tag }}
+      SHA: ${{ needs.prepare.outputs.sha }}
+      PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.artifact-name }}
+          path: ${{ runner.temp }}/release-assets
+ 
+      - name: Create tag and GitHub release
+        run: |
+          args=(--target "$SHA" --title "$TAG" --generate-notes)
+          if [ "$PRERELEASE" = "true" ]; then
+            args+=(--prerelease)
+          fi
+          # The tag is created together with the release, on the commit with bumped versions
+          gh release create "$TAG" "${args[@]}" "$RUNNER_TEMP"/release-assets/*
