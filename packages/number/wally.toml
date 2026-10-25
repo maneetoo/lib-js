@@ -1,0 +1,9 @@
+[package]
+name = "maneetoo/number"
+description = "Number constructor, constants, and static methods following ECMAScript numeric rules."
+version = "1.0.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
