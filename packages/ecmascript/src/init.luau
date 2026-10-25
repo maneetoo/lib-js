@@ -8,7 +8,7 @@
     https://tc39.es/ecma262/#sec-abstract-operations
 ]=]
 
-const ECMAScriptAbstractMethods = {
+const ECMAScript = {
     CanonicalNumericIndexString = require "@self/CanonicalNumericIndexString",
     IsCallable = require "@self/IsCallable",
     OrdinaryToPrimitive = require "@self/OrdinaryToPrimitive",
@@ -34,5 +34,5 @@ const ECMAScriptAbstractMethods = {
     ToUint32 = require "@self/ToUint32",
 }
 
-table.freeze(ECMAScriptAbstractMethods)
-return ECMAScriptAbstractMethods
+table.freeze(ECMAScript)
+return ECMAScript
