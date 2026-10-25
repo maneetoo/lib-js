@@ -184,61 +184,23 @@ jobs:
       - name: Login to Wally
         run: |
           wally --version
-          wally login --token "$WALLY_AUTH_TOKEN"
- 
-      - name: Resolve publish order
-        shell: python
-        run: |
-          import os
-          import sys
-          import tomllib
-          from pathlib import Path
- 
-          DEP_SECTIONS = ("dependencies", "server-dependencies", "dev-dependencies")
- 
-          pkgs = {}
-          for manifest in sorted(Path("packages").glob("*/wally.toml")):
-              data = tomllib.loads(manifest.read_text(encoding="utf-8"))
-              pkgs[data["package"]["name"]] = (manifest.parent, data)
- 
-          if not pkgs:
-              sys.exit("::error::No wally.toml found in packages/")
- 
-          order, state = [], {}
- 
- 
-          def visit(name):
-              if state.get(name) == "done":
-                  return
-              if state.get(name) == "visiting":
-                  sys.exit(f"::error::Circular dependency around {name}")
-              state[name] = "visiting"
-              _, data = pkgs[name]
-              for section in DEP_SECTIONS:
-                  for spec in data.get(section, {}).values():
-                      dep = spec.split("@", 1)[0]
-                      if dep in pkgs:
-                          visit(dep)
-              state[name] = "done"
-              order.append(pkgs[name][0])
- 
- 
-          for name in pkgs:
-              visit(name)
- 
-          out = Path(os.environ["RUNNER_TEMP"]) / "publish-order.txt"
-          out.write_text("\n".join(str(p) for p in order) + "\n", encoding="utf-8")
-          print("Publish order (dependencies before dependents):")
-          for p in order:
-              print(f"  {p}")
+          # `wally login` reads a wally.toml from the current directory (to find the
+          # registry), and the repository root has none, so run it from a package dir
+          first=$(ls -d packages/*/ | head -n 1)
+          if [ -z "$first" ]; then
+            echo "::error::No package directories found in packages/"
+            exit 1
+          fi
+          (cd "$first" && wally login --token "$WALLY_AUTH_TOKEN")
  
       - name: Publish packages
         run: |
           max_attempts=20
           failed=()
  
-          while IFS= read -r dir; do
-            [ -z "$dir" ] && continue
+          for dir in packages/*/; do
+            dir="${dir%/}"
+            [ -f "$dir/wally.toml" ] || continue
             echo "::group::wally publish ($dir)"
             attempt=1
             while true; do
@@ -270,7 +232,7 @@ jobs:
               break
             done
             echo "::endgroup::"
-          done < "$RUNNER_TEMP/publish-order.txt"
+          done
  
           if [ ${#failed[@]} -gt 0 ]; then
             echo "::error::Not published: ${failed[*]}"
@@ -302,3 +264,4 @@ jobs:
           fi
           # The tag is created together with the release, on the commit with bumped versions
           gh release create "$TAG" "${args[@]}" "$RUNNER_TEMP"/release-assets/*
+ 
