@@ -19,7 +19,7 @@
 	:::
 ]=]
 
-const IsCallable = require "./IsCallable
+const IsCallable = require "./IsCallable"
 const OrdinaryToPrimitive = "./OrdinaryToPrimitive"
 const TypeError = require "../Error" .TypeError
 const Symbol = require "../Symbol"
