@@ -40,7 +40,6 @@ or
 ```toml
 LibJS = { wally = "maneetoo/libjs", version = "^1.0.0" }
 ```
-**DO NOT INSTALL [LibJS](https://github.com/maneetoo/lib-ja) DIRECTLY FROM PESDE - DEPENDENCIES IS BROKEN NOW, WILL BE FIXED IN v1.1.0**
 
 ## Example of Use
 
