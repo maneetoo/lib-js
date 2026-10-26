@@ -380,7 +380,7 @@ const function changeCase(s: string, upper: boolean): string
 	return encode(codePoints, 1, #codePoints)
 end
 
-return table.freeze {
+return table.freeze({
 	isAscii = isAscii,
 	decode = decode,
 	encode = encode,
@@ -390,4 +390,4 @@ return table.freeze {
 	find = find,
 	rfind = rfind,
 	changeCase = changeCase,
-}
+})

@@ -8,8 +8,8 @@
 	Builds a string from UTF-16 code units.
 ]=]
 
-const ECMAScript = require "../ECMAScript"
-const __utf8 = require "./__utf8"
+const ECMAScript = require("../ECMAScript")
+const __utf8 = require("./__utf8")
 
 --[=[
 	@within fromCharCode

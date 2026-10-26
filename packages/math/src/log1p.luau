@@ -10,7 +10,7 @@
 	stays accurate for `x` near `0`, where `log(1 + x)` would lose the digits of `x`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within log1p

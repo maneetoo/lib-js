@@ -14,4 +14,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .SyntaxError
+return require("./__hierarchy").SyntaxError

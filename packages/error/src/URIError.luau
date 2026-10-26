@@ -14,4 +14,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .URIError
+return require("./__hierarchy").URIError

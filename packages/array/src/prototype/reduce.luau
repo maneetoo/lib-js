@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.reduce()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within reduce
@@ -26,10 +26,14 @@ const esTypes = require "../../ES17-Types"
 	is what decides whether an initial value was given.
 	:::
 ]=]
-const function reduce<T, U>(array: esTypes.Array<T>, callback: (accumulator: U, value: T, index: number, array: esTypes.Array<T>) -> U, ...: U?): U
+const function reduce<T, U>(
+	array: esTypes.Array<T>,
+	callback: (accumulator: U, value: T, index: number, array: esTypes.Array<T>) -> U,
+	...: U?
+): U
 	if not ECMAScript.IsCallable(callback) then
-        error(TypeError.new("Array.prototype.reduce: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.reduce: callback is not a function"))
+	end
 	const length = #array
 	const hasInitial = select("#", ...) > 0
 

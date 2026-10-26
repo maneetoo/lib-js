@@ -8,9 +8,9 @@
 	https://tc39.es/ecma262/#sec-topropertykey
 ]=]
 
-const ToPrimitive = require "./ToPrimitive"
-const ToString = require "./ToString"
-const Symbol = require "../Symbol"
+const ToPrimitive = require("./ToPrimitive")
+const ToString = require("./ToString")
+const Symbol = require("../Symbol")
 
 --[=[
 	@within ToPropertyKey

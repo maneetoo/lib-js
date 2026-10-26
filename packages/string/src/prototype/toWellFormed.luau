@@ -8,8 +8,8 @@
 	Replaces invalid UTF-8 with the replacement character.
 ]=]
 
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within toWellFormed

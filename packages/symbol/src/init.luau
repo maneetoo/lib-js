@@ -137,8 +137,8 @@
 	:::
 ]=]
 
-const constructor = require "@self/constructor"
-const __registry = require "@self/__registry"
+const constructor = require("@self/constructor")
+const __registry = require("@self/__registry")
 
 export type Symbol = constructor.Symbol
 
@@ -163,7 +163,7 @@ type SymbolStatic = {
 	[string]: any,
 }
 
-const prototype = require "@self/prototype"
+const prototype = require("@self/prototype")
 constructor.setPrototype(prototype)
 
 const Symbol = {} :: SymbolStatic
@@ -307,4 +307,4 @@ setmetatable(Symbol, {
 table.freeze(prototype)
 table.freeze(Symbol)
 
-return (Symbol :: ((description: string?) -> Symbol) & SymbolStatic)
+return Symbol :: ((description: string?) -> Symbol) & SymbolStatic

@@ -9,8 +9,8 @@
 	Converts a number to a string, optionally in a radix other than 10.
 ]=]
 
-const __shared = require "./__shared"
-const toExponential = require "./toExponential"
+const __shared = require("./__shared")
+const toExponential = require("./toExponential")
 
 const DIGITS: string = "0123456789abcdefghijklmnopqrstuvwxyz"
 

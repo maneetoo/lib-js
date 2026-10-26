@@ -14,4 +14,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .ReferenceError
+return require("./__hierarchy").ReferenceError

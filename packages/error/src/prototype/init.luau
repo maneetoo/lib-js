@@ -8,4 +8,4 @@
 	`name` (`"Error"`), `message` (`""`), and `toString`.
 ]=]
 
-return require "./__hierarchy" .prototype
+return require("./__hierarchy").prototype

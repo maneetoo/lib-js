@@ -39,7 +39,7 @@ const function isPrototypeOf(self: any, value: any): boolean
 	if kind ~= "table" and kind ~= "userdata" then
 		return false
 	end
-    
+
 	-- Floyd's cycle detection: `fast` advances two links per round and
 	-- is the only pointer compared against `self` (every node `slow`
 	-- visits was already visited by `fast`).

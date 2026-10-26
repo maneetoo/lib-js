@@ -43,10 +43,10 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
-const esTypes = require "./ES17-Types"
-const iterate = require "./iterate"
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
+const esTypes = require("./ES17-Types")
+const iterate = require("./iterate")
 
 --[=[
 	@within Map
@@ -367,8 +367,8 @@ const prototype: MapPrototype = {
 	values = values,
 	entries = entries,
 } :: any
-;(prototype :: any)[Symbol.iterator] = entries
-;(prototype :: any)[Symbol.toStringTag] = "Map"
+(prototype :: any)[Symbol.iterator] = entries;
+(prototype :: any)[Symbol.toStringTag] = "Map"
 
 const metatable = {
 	__index = function(self: any, key: any): any
@@ -410,7 +410,7 @@ const Map = {
 	new = new_,
 	prototype = prototype,
 } :: MapStatic
-;(prototype :: any).constructor = Map
+(prototype :: any).constructor = Map
 
 table.freeze(prototype)
 table.freeze(Map)

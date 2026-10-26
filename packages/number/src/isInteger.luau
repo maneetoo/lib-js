@@ -9,7 +9,7 @@
 	Checks whether a value is a number with no fractional part.
 ]=]
 
-const __staticProps = require "./__staticProps"
+const __staticProps = require("./__staticProps")
 
 --[=[
 	@within isInteger

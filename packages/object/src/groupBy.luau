@@ -9,7 +9,7 @@
 	returns for each of them.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within groupBy
@@ -38,7 +38,10 @@ const esTypes = require "../ES17-Types"
 	instead of failing with the opaque "table index is nil".
 	:::
 ]=]
-const function groupBy<V, K>(items: esTypes.Array<V>, callback: (value: V, index: number) -> K): esTypes.Table<K, esTypes.Array<V>>
+const function groupBy<V, K>(
+	items: esTypes.Array<V>,
+	callback: (value: V, index: number) -> K
+): esTypes.Table<K, esTypes.Array<V>>
 	const result: esTypes.Table<K, esTypes.Array<V>> = {}
 	for index, value in items do
 		const key = callback(value, index)
@@ -48,7 +51,10 @@ const function groupBy<V, K>(items: esTypes.Array<V>, callback: (value: V, index
 			-- key can never have a bucket, so this is the one place the
 			-- key check is needed — zero cost for every later item.
 			if key == nil or key ~= key then
-				error(`groupBy: callback returned a {if key == nil then "nil" else "NaN"} key for item #{index}, which cannot be used as a table key`, 2)
+				error(
+					`groupBy: callback returned a {if key == nil then "nil" else "NaN"} key for item #{index}, which cannot be used as a table key`,
+					2
+				)
 			end
 			result[key] = { value }
 		else

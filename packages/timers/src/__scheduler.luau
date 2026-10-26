@@ -14,7 +14,7 @@
 	no wall clock with millisecond resolution and no sleep.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 export type Entry = {
 	id: number,
@@ -245,7 +245,7 @@ const function run()
 	end
 end
 
-return table.freeze {
+return table.freeze({
 	schedule = schedule,
 	cancel = cancel,
 	immediate = immediate,
@@ -256,4 +256,4 @@ return table.freeze {
 	run = run,
 	setClock = setClock,
 	setSleep = setSleep,
-}
+})

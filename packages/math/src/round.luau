@@ -11,7 +11,7 @@
 	`Math.round(-2.5)` is `-2`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within round

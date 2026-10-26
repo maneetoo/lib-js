@@ -12,8 +12,8 @@
 	`ToClampedIndex` for that.
 ]=]
 
-const Number = require "../Number"
-const ToIntegerOrInfinity = require "./ToIntegerOrInfinity"
+const Number = require("../Number")
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 
 --[=[
 	@within ToAbsoluteIndex

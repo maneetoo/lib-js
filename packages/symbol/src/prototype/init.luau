@@ -8,11 +8,11 @@
 ]=]
 
 const prototype = {
-    constructor = {},
-	toString = require "@self/toString",
-	valueOf = require "@self/valueOf",
-	description = require "@self/description",
-    toPrimitive = require "@self/toPrimitive",
+	constructor = {},
+	toString = require("@self/toString"),
+	valueOf = require("@self/valueOf"),
+	description = require("@self/description"),
+	toPrimitive = require("@self/toPrimitive"),
 }
 
 return prototype

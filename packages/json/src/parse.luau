@@ -30,10 +30,12 @@
 	:::
 ]=]
 
-const Array = require "../Array"
-const ECMAScript = require "../ECMAScript"
-const String = require "../String"
-const SyntaxError = require "../Error" .SyntaxError
+const Array = require("../Array")
+const ECMAScript = require("../ECMAScript")
+const String = require("../String")
+const Symbol = require("../Symbol")
+const SyntaxError = require("../Error").SyntaxError
+const TypeError = require("../Error").TypeError
 
 type Cursor = {
 	text: string,
@@ -65,8 +67,7 @@ const function isDigit(byte: number?): boolean
 end
 
 const function isHexDigit(byte: number?): boolean
-	return byte ~= nil
-		and ((byte >= 48 and byte <= 57) or (byte >= 65 and byte <= 70) or (byte >= 97 and byte <= 102))
+	return byte ~= nil and ((byte >= 48 and byte <= 57) or (byte >= 65 and byte <= 70) or (byte >= 97 and byte <= 102))
 end
 
 -- Reads the four hex digits after `\u`, at `cursor.pos`, and advances past them.
@@ -87,11 +88,7 @@ end
 -- `utf8.char` does not accept.
 const function encodeCodePoint(code: number): string
 	if code >= 0xD800 and code <= 0xDFFF then
-		return string.char(
-			0xE0 + math.floor(code / 4096),
-			0x80 + (math.floor(code / 64) % 64),
-			0x80 + (code % 64)
-		)
+		return string.char(0xE0 + math.floor(code / 4096), 0x80 + (math.floor(code / 64) % 64), 0x80 + (code % 64))
 	end
 	return utf8.char(code)
 end
@@ -337,6 +334,9 @@ end
 	:::
 ]=]
 const function parse(text: unknown?, reviver: unknown?): any
+	if Symbol.isSymbol(text) then
+		error(TypeError.new("Cannot convert a Symbol value to a string"), 2)
+	end
 	const cursor: Cursor = { text = String(text), pos = 1 }
 	const value = parseValue(cursor)
 	skipWhitespace(cursor)

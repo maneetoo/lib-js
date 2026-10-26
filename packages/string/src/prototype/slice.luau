@@ -8,9 +8,9 @@
 	Extracts a part of a string. Negative indices count from the end.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within slice

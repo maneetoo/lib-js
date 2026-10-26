@@ -23,6 +23,27 @@ for i = 0, 25 do
 end
 
 --[=[
+	@private
+	ECMA-262 §7.1.7 `ToInt32(value)`.
+]=]
+const function toInt32(value: number): number
+	if value ~= value or value == math.huge or value == -math.huge then
+		return 0
+	end
+
+	const integer = if value < 0 then math.ceil(value) else math.floor(value)
+	const modulus = 2 ^ 32
+	local result = math.fmod(integer, modulus)
+	if result < 0 then
+		result += modulus
+	end
+	if result >= 2 ^ 31 then
+		result -= modulus
+	end
+	return result
+end
+
+--[=[
 	@within parseInt
 	@param input string -- the string to parse
 	@param radix number? -- the base to parse in, from `2` to `36` (default `10`, or `16` if a `"0x"`/`"0X"` prefix is present)
@@ -35,8 +56,11 @@ end
 	read greedily, stopping at the first character that doesn't belong,
 	exactly like JS's `parseInt`: `parseInt("10px")` is `10`, not `NaN`.
 
-	Returns `NaN` if `radix` is out of the `2`-`36` range, or if no
-	valid digit for the resulting radix could be read at all.
+	`radix` is converted with `ToInt32`, as in JavaScript: fractions
+	truncate toward zero, and `NaN`/`±Infinity` become `0` (which means
+	the default). Returns `NaN` if the resulting radix is out of the
+	`2`-`36` range, or if no valid digit for the resulting radix could be
+	read at all.
 
 	:::caution
 	The `"0x"`/`"0X"` prefix is only recognized (and consumed) when
@@ -68,8 +92,8 @@ const function parseInt(input: string, radix: number?): number
 		i += 1
 	end
 
-	local base = radix or 0
-	if base ~= 0 and (base ~= math.floor(base) or base < 2 or base > 36) then
+	local base = if radix == nil then 0 else toInt32(radix)
+	if base ~= 0 and (base < 2 or base > 36) then
 		return 0 / 0
 	end
 

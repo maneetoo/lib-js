@@ -10,7 +10,7 @@
 	`buffer` to round-trip the value.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 const scratch: buffer = buffer.create(4)
 

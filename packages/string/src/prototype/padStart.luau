@@ -8,9 +8,9 @@
 	Pads the start of a string to a target length.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within padStart

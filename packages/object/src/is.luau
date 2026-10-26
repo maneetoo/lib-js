@@ -16,10 +16,10 @@
       
 	In every other case — primitives, strings, booleans, `nil`, and
 	table/`userdata`/`function` references compared by identity — the
-	result matches `==`.
+	result uses `rawequal`, so a table's `__eq` metamethod is never called.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within is
@@ -33,11 +33,11 @@ const Number = require "../Number"
 
 	:::caution
 	Reference types (tables, `userdata`, functions, `thread`) are compared
-	by identity, not structurally — the same semantics as Luau's `==`.
-	There is no deep-equality mode here; if you need structural
-	comparison, walk the tables yourself (and decide how you want to
-	handle cycles, metatables with `__eq`, and reference-vs-value fields
-	inside).
+	by identity, not structurally. `rawequal` is used, so a metatable's
+	`__eq` is not consulted; JavaScript's `Object.is` likewise compares
+	object references. There is no deep-equality mode here; if you need
+	structural comparison, walk the tables yourself (and decide how you
+	want to handle cycles and reference-vs-value fields inside).
 	:::
 ]=]
 const function is<T, V>(value1: T, value2: V): boolean
@@ -51,7 +51,7 @@ const function is<T, V>(value1: T, value2: V): boolean
 		end
 	end
 
-	return value1 == value2
+	return rawequal(value1, value2)
 end
 
 return is

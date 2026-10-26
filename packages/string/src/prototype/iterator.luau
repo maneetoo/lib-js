@@ -8,9 +8,9 @@
 	Iterates over the code points of a string.
 ]=]
 
-const Symbol = require "../../Symbol"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const Symbol = require("../../Symbol")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within iterator

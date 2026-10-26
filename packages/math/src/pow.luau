@@ -10,7 +10,7 @@
 	`(-1) ^ Infinity` is `1`. JavaScript gives `NaN` for both.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within pow

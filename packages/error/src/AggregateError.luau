@@ -15,4 +15,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .AggregateError
+return require("./__hierarchy").AggregateError

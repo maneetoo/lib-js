@@ -6,7 +6,7 @@
 	A Luau implementation of JavaScript's [`Array.prototype.unshift()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift).
 ]=]
 
-const esTypes = require "../../ES17-Types"
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within unshift

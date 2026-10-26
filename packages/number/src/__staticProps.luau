@@ -13,7 +13,7 @@
 
 const math_huge = math.huge
 
-return table.freeze {
+return table.freeze({
 	EPSILON = 2 ^ -52,
 	MAX_SAFE_INTEGER = 2 ^ 53 - 1,
 	MIN_SAFE_INTEGER = -(2 ^ 53 - 1),
@@ -22,4 +22,4 @@ return table.freeze {
 	NAN = 0 / 0,
 	POSITIVE_INFINITY = math_huge,
 	NEGATIVE_INFINITY = -math_huge,
-}
+})

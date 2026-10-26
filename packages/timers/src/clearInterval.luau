@@ -10,7 +10,7 @@
 	inside the interval's own callback.
 ]=]
 
-const __scheduler = require "./__scheduler"
+const __scheduler = require("./__scheduler")
 
 --[=[
 	@within clearInterval

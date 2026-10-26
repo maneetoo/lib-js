@@ -15,4 +15,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .EvalError
+return require("./__hierarchy").EvalError

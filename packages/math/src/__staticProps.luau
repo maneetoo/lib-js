@@ -9,7 +9,7 @@
 	does for `Number`.
 ]=]
 
-return table.freeze {
+return table.freeze({
 	E = 2.718281828459045,
 	LN2 = 0.6931471805599453,
 	LN10 = 2.302585092994046,
@@ -18,4 +18,4 @@ return table.freeze {
 	PI = math.pi,
 	SQRT1_2 = 0.7071067811865476,
 	SQRT2 = 1.4142135623730951,
-}
+})

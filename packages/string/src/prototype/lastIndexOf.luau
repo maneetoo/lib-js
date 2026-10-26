@@ -8,10 +8,10 @@
 	Finds the last occurrence of a substring.
 ]=]
 
-const Number = require "../../Number"
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const Number = require("../../Number")
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within lastIndexOf

@@ -10,7 +10,7 @@
 	returns `NaN`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within sign

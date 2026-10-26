@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.find()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within find
@@ -20,10 +20,13 @@ const esTypes = require "../../ES17-Types"
 	start. Returns `nil` if there is none, which is also what `undefined` looks like.
 	Use `findIndex` if you need to tell those cases apart.
 ]=]
-const function find<T>(array: esTypes.Array<T>, predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean): T?
+const function find<T>(
+	array: esTypes.Array<T>,
+	predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean
+): T?
 	if not ECMAScript.IsCallable(predicate) then
-        error(TypeError.new("Array.prototype.find: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.find: callback is not a function"))
+	end
 	const length = #array
 	for index = 1, length do
 		const value = array[index]

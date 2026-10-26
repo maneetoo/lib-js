@@ -8,7 +8,7 @@
 	API. Conversions to numbers go through `Number`.
 ]=]
 
-const ECMAScript = require "../ECMAScript"
+const ECMAScript = require("../ECMAScript")
 
 --[=[
 	The largest string length that is allowed to be built, in bytes. This
@@ -38,7 +38,7 @@ end
 ]=]
 const function thisString(self: unknown, method: string): string
 	if self == nil then
-		error(`String.prototype.{method} called on null or undefined`)
+		error(`String.prototype.{method} called on null or undefined`, 2)
 	end
 	return ECMAScript.ToString(self)
 end
@@ -110,14 +110,14 @@ end
 ]=]
 const function checkStringLength(bytes: number)
 	if bytes > MAX_STRING_BYTES then
-		error("Invalid string length")
+		error("Invalid string length", 2)
 	end
 end
 
-return table.freeze {
+return table.freeze({
 	clamp = clamp,
 	thisString = thisString,
 	isWhitespace = isWhitespace,
 	expandReplacement = expandReplacement,
 	checkStringLength = checkStringLength,
-}
+})

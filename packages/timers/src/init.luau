@@ -38,17 +38,17 @@
 	:::
 ]=]
 
-const __scheduler = require "@self/__scheduler"
+const __scheduler = require("@self/__scheduler")
 
-return table.freeze {
-	setTimeout = require "@self/setTimeout",
-	clearTimeout = require "@self/clearTimeout",
-	setInterval = require "@self/setInterval",
-	clearInterval = require "@self/clearInterval",
-	setImmediate = require "@self/setImmediate",
-    clearImmediate = require "@self/clearImmediate",
+return table.freeze({
+	setTimeout = require("@self/setTimeout"),
+	clearTimeout = require("@self/clearTimeout"),
+	setInterval = require("@self/setInterval"),
+	clearInterval = require("@self/clearInterval"),
+	setImmediate = require("@self/setImmediate"),
+	clearImmediate = require("@self/clearImmediate"),
 	step = __scheduler.step,
 	run = __scheduler.run,
-    setClock = __scheduler.setClock,
+	setClock = __scheduler.setClock,
 	setSleep = __scheduler.setSleep,
-}
+})

@@ -7,9 +7,9 @@
 	A Luau implementation of JavaScript's [`new Array()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Array).
 ]=]
 
-const RangeError = require "../Error" .RangeError
-const esTypes = require "../ES17-Types"
-const of = require "./of"
+const RangeError = require("../Error").RangeError
+const esTypes = require("../ES17-Types")
+const of = require("./of")
 
 --[=[
 	@within __toArray

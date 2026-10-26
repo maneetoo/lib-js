@@ -8,7 +8,7 @@
 	Returns an array of a table's own keys.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within getOwnPropertyNames
@@ -32,6 +32,6 @@ const esTypes = require "../ES17-Types"
 	upon.
 	:::
 ]=]
-const getOwnPropertyNames: <K, V>(object: esTypes.Table<K, V>) -> esTypes.Array<K> = require "./keys"
+const getOwnPropertyNames: <K, V>(object: esTypes.Table<K, V>) -> esTypes.Array<K> = require("./keys")
 
 return getOwnPropertyNames

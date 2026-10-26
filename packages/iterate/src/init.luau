@@ -16,10 +16,10 @@
 	`TypeError`.
 ]=]
 
-const ECMAScript = require "./ECMAScript"
-const TypeError = require "./Error" .TypeError
-const String = require "./String"
-const Symbol = require "./Symbol"
+const ECMAScript = require("./ECMAScript")
+const TypeError = require("./Error").TypeError
+const String = require("./String")
+const Symbol = require("./Symbol")
 
 --[=[
 	@within iterate

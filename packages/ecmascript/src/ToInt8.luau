@@ -12,8 +12,8 @@
 	into `[-2^7, 2^7)`.
 ]=]
 
-const ToIntegerOrInfinity = require "./ToIntegerOrInfinity"
-const ToFixedSizeInteger = require "./ToFixedSizeInteger"
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
+const ToFixedSizeInteger = require("./ToFixedSizeInteger")
 
 --[=[
 	@within ToInt8

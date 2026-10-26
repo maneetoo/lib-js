@@ -8,8 +8,8 @@
 	Joins the string with the string forms of its arguments.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
 
 --[=[
 	@within concat

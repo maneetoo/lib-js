@@ -46,14 +46,14 @@
 	:::
 ]=]
 
-const ECMAScript = require "./ECMAScript"
-const Symbol = require "./Symbol"
-const prototype = require "@self/prototype"
+const ECMAScript = require("./ECMAScript")
+const Symbol = require("./Symbol")
+const prototype = require("@self/prototype")
 
 const String = {
-	fromCharCode = require "@self/fromCharCode",
-	fromCodePoint = require "@self/fromCodePoint",
-	raw = require "@self/raw",
+	fromCharCode = require("@self/fromCharCode"),
+	fromCodePoint = require("@self/fromCodePoint"),
+	raw = require("@self/raw"),
 
 	__toString = ECMAScript.ToString,
 	prototype = prototype,

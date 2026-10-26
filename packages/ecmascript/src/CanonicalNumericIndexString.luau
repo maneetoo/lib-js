@@ -13,8 +13,8 @@
 	string key is a numeric index.
 ]=]
 
-const Number = require "../Number"
-const ToString = require "./ToString"
+const Number = require("../Number")
+const ToString = require("./ToString")
 
 --[=[
 	@within CanonicalNumericIndexString

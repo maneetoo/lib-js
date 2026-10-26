@@ -12,8 +12,8 @@
 	into `[-2^31, 2^31)`.
 ]=]
 
-const ToIntegerOrInfinity = require "./ToIntegerOrInfinity"
-const ToFixedSizeInteger = require "./ToFixedSizeInteger"
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
+const ToFixedSizeInteger = require("./ToFixedSizeInteger")
 
 --[=[
 	@within ToInt32

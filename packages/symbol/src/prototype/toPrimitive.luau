@@ -10,7 +10,7 @@
 	symbol already *is* the primitive.
 ]=]
 
-const constructor = require "../constructor"
+const constructor = require("../constructor")
 
 --[=[
 	@within toPrimitive
