@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.toReversed()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toReversed).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const toSlice = require "./slice"
-const reverse = require "./reverse"
+const esTypes = require("../../ES17-Types")
+const toSlice = require("./slice")
+const reverse = require("./reverse")
 
 --[=[
 	@within toReversed

@@ -8,8 +8,8 @@
 	Returns the number of characters in a string.
 ]=]
 
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within length

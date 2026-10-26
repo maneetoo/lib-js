@@ -8,9 +8,9 @@
 ]=]
 
 const prototype = {
-	hasOwnProperty = require "@self/hasOwnProperty" ,
-	isPrototypeOf = require "@self/isPrototypeOf" ,
-	toString = require "@self/toString" ,
+	hasOwnProperty = require("@self/hasOwnProperty"),
+	isPrototypeOf = require("@self/isPrototypeOf"),
+	toString = require("@self/toString"),
 }
 
 table.freeze(prototype)

@@ -17,12 +17,28 @@
 	The `default` hint is treated as `"number"`, as JavaScript does for every
 	built-in object except `Date`.
 	:::
+
+	:::caution
+	If `Symbol.toPrimitive` returns an object, or a conversion method cannot
+	produce a primitive, this raises an error. The library raises a plain Luau
+	error rather than constructing a `TypeError`, so this abstract operation does
+	not depend on the `Error` package.
+	:::
 ]=]
 
-const IsCallable = require "./IsCallable"
-const OrdinaryToPrimitive = "./OrdinaryToPrimitive"
-const TypeError = require "../Error" .TypeError
-const Symbol = require "../Symbol"
+const IsCallable = require("./IsCallable")
+const OrdinaryToPrimitive = require("./OrdinaryToPrimitive")
+const Symbol = require("../Symbol")
+
+--[=[
+	@within ToPrimitive
+	@private
+	Whether `value` is a JavaScript primitive, as far as Luau can represent one.
+]=]
+const function isPrimitive(value: any): boolean
+	const kind = type(value)
+	return kind == "nil" or kind == "boolean" or kind == "number" or kind == "string" or Symbol.isSymbol(value)
+end
 
 --[=[
 	@within ToPrimitive
@@ -34,18 +50,26 @@ const function ToPrimitive(input: any, preferredType: ("string" | "number")?): a
 	if Symbol.isSymbol(input) then
 		return input
 	end
+
+	-- Functions and userdata are not objects here, so they come back unchanged.
+	if type(input) ~= "table" then
+		return input
+	end
+
 	const hint = preferredType or "number"
 	const exoticToPrim = input[Symbol.toPrimitive]
 	if exoticToPrim ~= nil then
 		if not IsCallable(exoticToPrim) then
-			error(TypeError.new("Symbol.toPrimitive is not callable"), 2)
+			error("Symbol.toPrimitive is not callable", 2)
 		end
-		const result = if type(exoticToPrim) == "function" then exoticToPrim(input, hint) else exoticToPrim()
-		if not Symbol.isSymbol(result) then
-			error(TypeError.new("Cannot convert object to primitive value"), 2)
+		-- Calling the value directly works for both functions and callable tables.
+		const result = exoticToPrim(input, hint)
+		if not isPrimitive(result) then
+			error("Cannot convert object to primitive value", 2)
 		end
 		return result
 	end
+
 	return OrdinaryToPrimitive(input, hint)
 end
 

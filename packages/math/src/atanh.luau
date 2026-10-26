@@ -10,8 +10,8 @@
 	are the ones JavaScript engines use.
 ]=]
 
-const Number = require "../Number"
-const log1p = require "./log1p"
+const Number = require("../Number")
+const log1p = require("./log1p")
 
 --[=[
 	@within atanh

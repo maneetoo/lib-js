@@ -310,4 +310,4 @@ export type Iterator<T> = {
 	next: (self: Iterator<T>) -> IteratorResult<T>,
 }
 
-return table.freeze {}
+return table.freeze({})

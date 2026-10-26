@@ -10,7 +10,7 @@
 	stays accurate for `x` near `0`, where `exp(x) - 1` would cancel to zero.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within expm1

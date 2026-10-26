@@ -10,7 +10,7 @@
 	(mutated) target.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within assign

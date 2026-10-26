@@ -9,7 +9,7 @@
 	Luau's `math` library has no `log2`. This uses `math.log` with base `2`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within log2

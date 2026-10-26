@@ -9,7 +9,7 @@
 	bypassing `__index` so inherited/prototype keys don't count.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within hasOwn

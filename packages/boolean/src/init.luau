@@ -46,8 +46,8 @@
 	:::
 ]=]
 
-const ECMAScript = require "./ECMAScript"
-const prototype = require "@self/prototype"
+const ECMAScript = require("./ECMAScript")
+const prototype = require("@self/prototype")
 
 const Boolean = {
 	__toBoolean = ECMAScript.ToBoolean,

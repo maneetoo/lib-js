@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.isArray()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray).
 ]=]
 
-const Symbol = require "../Symbol"
-const esTypes = require "../ES17-Types"
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within isArray
@@ -25,9 +25,9 @@ const esTypes = require "../ES17-Types"
 ]=]
 const function isArray(value: unknown): boolean
 	if type(value) ~= "table" or Symbol.isSymbol(value) then
-        return false
-    end
-    for key in pairs(value :: esTypes.Table<unknown, unknown>) do
+		return false
+	end
+	for key in pairs(value :: esTypes.Table<unknown, unknown>) do
 		if type(key) ~= "number" then
 			return false
 		end
@@ -35,7 +35,7 @@ const function isArray(value: unknown): boolean
 			return false
 		end
 	end
-    return true
+	return true
 end
 
 return isArray

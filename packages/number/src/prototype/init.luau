@@ -25,11 +25,11 @@
 ]=]
 
 const prototype = {
-	toExponential = require "@self/toExponential",
-	toFixed = require "@self/toFixed",
-	toPrecision = require "@self/toPrecision",
-	toString = require "@self/toString",
-	valueOf = require "@self/valueOf",
+	toExponential = require("@self/toExponential"),
+	toFixed = require("@self/toFixed"),
+	toPrecision = require("@self/toPrecision"),
+	toString = require("@self/toString"),
+	valueOf = require("@self/valueOf"),
 }
 
 table.freeze(prototype)

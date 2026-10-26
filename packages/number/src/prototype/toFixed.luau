@@ -10,8 +10,8 @@
 	digits after the decimal point.
 ]=]
 
-const __shared = require "./__shared"
-const toString = require "./toString"
+const __shared = require("./__shared")
+const toString = require("./toString")
 
 --[=[
 	@within toFixed

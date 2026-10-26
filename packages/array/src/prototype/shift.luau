@@ -6,7 +6,7 @@
 	A Luau implementation of JavaScript's [`Array.prototype.shift()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift).
 ]=]
 
-const esTypes = require "../../ES17-Types"
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within shift

@@ -16,7 +16,7 @@
 	does that replacement in one place, and then calls `ToClampedIndex`.
 ]=]
 
-const ToClampedIndex = require "./ToClampedIndex"
+const ToClampedIndex = require("./ToClampedIndex")
 
 --[=[
 	@within ToClampedIndexOrDefault

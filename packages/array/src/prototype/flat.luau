@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.flat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const esTypes = require "../../ES17-Types"
-const __shared = require "../__shared"
+const ECMAScript = require("../../ECMAScript")
+const esTypes = require("../../ES17-Types")
+const __shared = require("../__shared")
 
 --[=[
 	@within flat

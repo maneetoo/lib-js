@@ -9,7 +9,7 @@
 	https://tc39.es/ecma262/#sec-toclampedindex
 ]=]
 
-const ToIntegerOrInfinity = require "./ToIntegerOrInfinity"
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 
 --[=[
 	@within ToClampedIndex

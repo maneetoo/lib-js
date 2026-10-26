@@ -11,9 +11,9 @@
 	number's magnitude.
 ]=]
 
-const __shared = require "./__shared"
-const toExponential = require "./toExponential"
-const toString = require "./toString"
+const __shared = require("./__shared")
+const toExponential = require("./toExponential")
+const toString = require("./toString")
 
 --[=[
 	@within toPrecision

@@ -12,12 +12,11 @@
 	come back unchanged as well.
 
 	:::caution
-	`nil` raises a `TypeError`, as JavaScript does for `undefined` and `null`. Luau's
-	single `nil` stands for both, so the two are not told apart.
+	`nil` raises an error, as JavaScript does for `undefined` and `null`. Luau's
+	single `nil` stands for both, so the two are not told apart. The error is a
+	plain Luau error, so this abstract operation does not depend on `Error`.
 	:::
 ]=]
-
-const TypeError = require "../Error" .TypeError
 
 --[=[
 	@within ToObject
@@ -26,9 +25,9 @@ const TypeError = require "../Error" .TypeError
 ]=]
 const function toObject(value: any): any
 	if value == nil then
-		error(TypeError.new("Cannot convert undefined or null to object"), 2)
+		error("Cannot convert undefined or null to object", 2)
 	end
 	return value
 end
 
-return ToObject
+return toObject

@@ -11,7 +11,7 @@
 	Halfway values round to the nearest even integer.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within ToUint8Clamp

@@ -9,7 +9,7 @@
 	Luau's `math` library has no `hypot`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within hypot
@@ -25,8 +25,8 @@ const Number = require "../Number"
 ]=]
 const function hypot(...: any): number
 	const count: number = select("#", ...)
-	local hasInfinity: boolean, hasNaN: boolean, largest: number, values: { number } = 
-        false, false, 0, table.create(count)
+	local hasInfinity: boolean, hasNaN: boolean, largest: number, values: { number } =
+		false, false, 0, table.create(count)
 	for index = 1, count do
 		const value = math.abs(Number((select(index, ...))))
 		values[index] = value

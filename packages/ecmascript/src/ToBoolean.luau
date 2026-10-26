@@ -18,7 +18,7 @@
 	:::
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within ToBoolean

@@ -49,9 +49,9 @@
 	:::
 ]=]
 
-const __staticProps = require "@self/__staticProps"
-const __toNumber = require "@self/__toNumber"
-const prototype = require "@self/prototype"
+const __staticProps = require("@self/__staticProps")
+const __toNumber = require("@self/__toNumber")
+const prototype = require("@self/prototype")
 
 const Number = {
 	EPSILON = __staticProps.EPSILON,
@@ -64,12 +64,12 @@ const Number = {
 	NEGATIVE_INFINITY = __staticProps.NEGATIVE_INFINITY,
 
 	__toNumber = __toNumber,
-	isInteger = require "@self/isInteger",
-	isFinite = require "@self/isFinite",
-	isNaN = require "@self/isNaN",
-	isSafeInteger = require "@self/isSafeInteger",
-	parseFloat = require "@self/parseFloat",
-	parseInt = require "@self/parseInt",
+	isInteger = require("@self/isInteger"),
+	isFinite = require("@self/isFinite"),
+	isNaN = require("@self/isNaN"),
+	isSafeInteger = require("@self/isSafeInteger"),
+	parseFloat = require("@self/parseFloat"),
+	parseInt = require("@self/parseInt"),
 
 	prototype = prototype,
 }

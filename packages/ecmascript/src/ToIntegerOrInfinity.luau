@@ -11,7 +11,7 @@
 	as they are. Anything else is truncated toward zero.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within ToIntegerOrInfinity

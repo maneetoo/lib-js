@@ -10,7 +10,7 @@
 	does not treat `-0` as smaller than `+0`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within min

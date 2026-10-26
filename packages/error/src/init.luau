@@ -29,8 +29,9 @@
 	:::
 
 	:::note
-	`message` is converted with JavaScript's `ToString`. A table passed as the
-	message becomes `[object Object]`, or the result of its `toString` method.
+	`message` is converted with JavaScript's `ToString`. An array joins its
+	elements with commas, a plain object becomes `[object Object]`, and a table
+	with a callable `toString`/`valueOf` uses that method.
 	:::
 
 	:::caution
@@ -44,7 +45,7 @@
 	- `cause: undefined` cannot be told apart from an absent `cause`.
 	- `message` is always an own field, set to `""` when no message is given.
 	  JavaScript inherits it from `Error.prototype` in that case. The value is the same.
-	- `Error.prototype.toString` throws for a userdata receiver. JavaScript accepts any object.
+	- `Error.prototype.toString` accepts a `userdata` receiver, as JavaScript accepts any object.
 	- `class MyError extends Error` has no equivalent. The class machinery is
 	  internal, so user subclasses are not supported.
 	- Native stack columns, and `Error.captureStackTrace` / `Error.stackTraceLimit`.
@@ -58,8 +59,8 @@
 	:::
 ]=]
 
-const __class = require "@self/__class"
-const __hierarchy = require "@self/__hierarchy"
+const __class = require("@self/__class")
+const __hierarchy = require("@self/__hierarchy")
 
 -- `hierarchy.Error` has the subclasses as static fields at runtime. The cast gives
 -- them their types, which Luau cannot infer from `__hierarchy`.

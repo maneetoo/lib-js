@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.prototype.indexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within indexOf

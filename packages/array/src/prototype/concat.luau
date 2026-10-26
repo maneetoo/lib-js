@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.prototype.concat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const isArray = require "../isArray"
+const esTypes = require("../../ES17-Types")
+const isArray = require("../isArray")
 
 --[=[
 	@within concat

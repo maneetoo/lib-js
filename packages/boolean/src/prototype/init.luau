@@ -24,8 +24,8 @@
 ]=]
 
 const prototype = {
-	toString = require "@self/toString",
-	valueOf = require "@self/valueOf",
+	toString = require("@self/toString"),
+	valueOf = require("@self/valueOf"),
 }
 
 table.freeze(prototype)

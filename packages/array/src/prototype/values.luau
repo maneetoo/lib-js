@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.prototype.values()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/values).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const __shared = require "../__shared"
+const esTypes = require("../../ES17-Types")
+const __shared = require("../__shared")
 
 --[=[
 	@within values

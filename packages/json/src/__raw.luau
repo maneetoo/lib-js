@@ -11,7 +11,7 @@
 	module made. A caller that copies the table's fields does not get the marker.
 ]=]
 
-const WeakSet = require "../WeakSet"
+const WeakSet = require("../WeakSet")
 
 export type RawJSON = {
 	read rawJSON: string,
@@ -41,7 +41,7 @@ const function isRaw(value: unknown): boolean
 	return registry:has(value)
 end
 
-return table.freeze {
+return table.freeze({
 	create = create,
 	isRaw = isRaw,
-}
+})

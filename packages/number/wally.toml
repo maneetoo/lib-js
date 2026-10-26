@@ -7,3 +7,6 @@ authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
 repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
+
+[dependencies]
+Symbol = "maneetoo/symbol@2.0.0-rc.1"

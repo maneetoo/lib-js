@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.toSpliced()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSpliced).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const toSlice = require "./slice"
-const splice = require "./splice"
+const esTypes = require("../../ES17-Types")
+const toSlice = require("./slice")
+const splice = require("./splice")
 
 --[=[
 	@within toSpliced

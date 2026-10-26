@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.toSorted()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toSorted).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const toSlice = require "./slice"
-const sort = require "./sort"
+const esTypes = require("../../ES17-Types")
+const toSlice = require("./slice")
+const sort = require("./sort")
 
 --[=[
 	@within toSorted

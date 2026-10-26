@@ -38,9 +38,9 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
-const iterate = require "./iterate"
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
+const iterate = require("./iterate")
 
 --[=[
 	@within WeakSet
@@ -127,8 +127,7 @@ prototype.delete = function<T>(self: WeakSetState<T>, value: T): boolean
 	members[value :: any] = nil
 	return true
 end :: <T>(self: WeakSet<T>, value: T) -> boolean
-
-;(prototype :: any)[Symbol.toStringTag] = "WeakSet"
+(prototype :: any)[Symbol.toStringTag] = "WeakSet"
 
 const metatable = {
 	__index = prototype,
@@ -156,7 +155,7 @@ const WeakSet = {
 	new = new_,
 	prototype = prototype,
 } :: WeakSetStatic
-;(prototype :: any).constructor = WeakSet
+(prototype :: any).constructor = WeakSet
 
 table.freeze(prototype)
 table.freeze(WeakSet)

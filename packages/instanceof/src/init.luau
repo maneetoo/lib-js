@@ -30,7 +30,7 @@
 	:::
 ]=]
 
-const esTypes = require "./ES17-Types"
+const esTypes = require("./ES17-Types")
 
 --[=[
 	Returns the next link in `current`'s `__index`-based prototype chain

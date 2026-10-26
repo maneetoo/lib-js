@@ -9,7 +9,7 @@
 	Tests whether a value is an object made by `JSON.rawJSON`.
 ]=]
 
-const __raw = require "./__raw"
+const __raw = require("./__raw")
 
 --[=[
 	@within isRawJSON

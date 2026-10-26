@@ -12,10 +12,12 @@
 	large for a double, such as `12345678901234567890`.
 ]=]
 
-const String = require "../String"
-const SyntaxError = require "../Error" .SyntaxError
-const parse = require "./parse"
-const __raw = require "./__raw"
+const String = require("../String")
+const Symbol = require("../Symbol")
+const SyntaxError = require("../Error").SyntaxError
+const TypeError = require("../Error").TypeError
+const parse = require("./parse")
+const __raw = require("./__raw")
 
 --[=[
 	@within rawJSON
@@ -42,6 +44,9 @@ end
 	:::
 ]=]
 const function rawJSON(text: unknown?): __raw.RawJSON
+	if Symbol.isSymbol(text) then
+		error(TypeError.new("Cannot convert a Symbol value to a string"), 2)
+	end
 	const source: string = String(text)
 	if source == "" or isWhitespace(source:byte(1)) or isWhitespace(source:byte(#source)) then
 		error(SyntaxError.new("JSON.rawJSON: text must be a JSON primitive with no surrounding whitespace"), 2)

@@ -23,43 +23,43 @@
 	:::
 ]=]
 
-const Symbol = require "../Symbol"
+const Symbol = require("../Symbol")
 
 const prototype = {
-	at = require "@self/at",
-	charAt = require "@self/charAt",
-	charCodeAt = require "@self/charCodeAt",
-	codePointAt = require "@self/codePointAt",
-	concat = require "@self/concat",
-	endsWith = require "@self/endsWith",
-	includes = require "@self/includes",
-	indexOf = require "@self/indexOf",
-	isWellFormed = require "@self/isWellFormed",
-	lastIndexOf = require "@self/lastIndexOf",
-	length = require "@self/length",
-	padEnd = require "@self/padEnd",
-	padStart = require "@self/padStart",
-	["repeat"] = require "@self/repeat",
-	replace = require "@self/replace",
-	replaceAll = require "@self/replaceAll",
-	slice = require "@self/slice",
-	split = require "@self/split",
-	startsWith = require "@self/startsWith",
-	substr = require "@self/substr",
-	substring = require "@self/substring",
-	toLowerCase = require "@self/toLowerCase",
-	toString = require "@self/toString",
-	toUpperCase = require "@self/toUpperCase",
-	toWellFormed = require "@self/toWellFormed",
-	trim = require "@self/trim",
-	trimEnd = require "@self/trimEnd",
-	trimStart = require "@self/trimStart",
-	valueOf = require "@self/valueOf",
+	at = require("@self/at"),
+	charAt = require("@self/charAt"),
+	charCodeAt = require("@self/charCodeAt"),
+	codePointAt = require("@self/codePointAt"),
+	concat = require("@self/concat"),
+	endsWith = require("@self/endsWith"),
+	includes = require("@self/includes"),
+	indexOf = require("@self/indexOf"),
+	isWellFormed = require("@self/isWellFormed"),
+	lastIndexOf = require("@self/lastIndexOf"),
+	length = require("@self/length"),
+	padEnd = require("@self/padEnd"),
+	padStart = require("@self/padStart"),
+	["repeat"] = require("@self/repeat"),
+	replace = require("@self/replace"),
+	replaceAll = require("@self/replaceAll"),
+	slice = require("@self/slice"),
+	split = require("@self/split"),
+	startsWith = require("@self/startsWith"),
+	substr = require("@self/substr"),
+	substring = require("@self/substring"),
+	toLowerCase = require("@self/toLowerCase"),
+	toString = require("@self/toString"),
+	toUpperCase = require("@self/toUpperCase"),
+	toWellFormed = require("@self/toWellFormed"),
+	trim = require("@self/trim"),
+	trimEnd = require("@self/trimEnd"),
+	trimStart = require("@self/trimStart"),
+	valueOf = require("@self/valueOf"),
 }
 
 prototype.trimLeft = prototype.trimStart
 prototype.trimRight = prototype.trimEnd
-prototype[Symbol.iterator] = require "@self/iterator"
+prototype[Symbol.iterator] = require("@self/iterator")
 
 table.freeze(prototype)
 return prototype

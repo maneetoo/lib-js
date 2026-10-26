@@ -8,9 +8,9 @@
 	Checks whether the string ends with a given substring.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within endsWith
@@ -28,7 +28,9 @@ const function endsWith(self: unknown, search: unknown, endPosition: unknown): b
 	const s = __shared.thisString(self, "endsWith")
 	const pattern = ECMAScript.ToString(search)
 	const length = __utf8.length(s)
-	const finish = if endPosition == nil then length else __shared.clamp(ECMAScript.ToIntegerOrInfinity(endPosition), 0, length)
+	const finish = if endPosition == nil
+		then length
+		else __shared.clamp(ECMAScript.ToIntegerOrInfinity(endPosition), 0, length)
 	const start = finish - __utf8.length(pattern)
 	if start < 0 then
 		return false

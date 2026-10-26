@@ -18,22 +18,22 @@
 	:::
 ]=]
 
-const prototype = require "@self/prototype"
+const prototype = require("@self/prototype")
 
 const Object = {
-	assign = require "@self/assign",
-	entries = require "@self/entries",
-	freeze = require "@self/freeze",
-	fromEntries = require "@self/fromEntries",
-	getOwnPropertyNames = require "@self/getOwnPropertyNames",
-	getPrototypeOf = require "@self/getPrototypeOf",
-	groupBy = require "@self/groupBy",
-	hasOwn = require "@self/hasOwn",
-	is = require "@self/is",
-	isFrozen = require "@self/isFrozen",
-	keys = require "@self/keys",
-	setPrototypeOf = require "@self/setPrototypeOf",
-	values = require "@self/values",
+	assign = require("@self/assign"),
+	entries = require("@self/entries"),
+	freeze = require("@self/freeze"),
+	fromEntries = require("@self/fromEntries"),
+	getOwnPropertyNames = require("@self/getOwnPropertyNames"),
+	getPrototypeOf = require("@self/getPrototypeOf"),
+	groupBy = require("@self/groupBy"),
+	hasOwn = require("@self/hasOwn"),
+	is = require("@self/is"),
+	isFrozen = require("@self/isFrozen"),
+	keys = require("@self/keys"),
+	setPrototypeOf = require("@self/setPrototypeOf"),
+	values = require("@self/values"),
 
 	prototype = prototype,
 }

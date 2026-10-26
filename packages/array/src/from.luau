@@ -6,11 +6,11 @@
 	A Luau implementation of JavaScript's [`Array.from()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
 ]=]
 
-const ECMAScript = require "../ECMAScript"
-const Symbol = require "../Symbol"
-const TypeError = require "../Error" .TypeError
-const esTypes = require "../ES17-Types"
-const isArray = require "./isArray"
+const ECMAScript = require("../ECMAScript")
+const Symbol = require("../Symbol")
+const TypeError = require("../Error").TypeError
+const esTypes = require("../ES17-Types")
+const isArray = require("./isArray")
 
 --[=[
 	@within from
@@ -34,7 +34,11 @@ const isArray = require "./isArray"
 ]=]
 const function from(items: unknown, mapFn: ((value: unknown, index: number) -> unknown)?): esTypes.Array<unknown>
 	if items == nil then
-		error(TypeError.new("Array.from: undefined is not iterable"))
+		error(TypeError.new("Array.from: undefined is not iterable"), 2)
+	end
+
+	if mapFn ~= nil and not ECMAScript.IsCallable(mapFn) then
+		error(TypeError.new("Array.from: mapFn is not callable"), 2)
 	end
 
 	const result: esTypes.Array<unknown> = {}
@@ -60,14 +64,25 @@ const function from(items: unknown, mapFn: ((value: unknown, index: number) -> u
 	const object = items :: esTypes.Table<unknown, unknown>
 	const iteratorFn = object[Symbol.iterator]
 	if ECMAScript.IsCallable(iteratorFn) then
-		const iterator = (iteratorFn :: (unknown) -> unknown)(items) :: esTypes.Table<unknown, unknown>
-		const nextFn = iterator["next"] :: (unknown) -> unknown
+		const iterator = (iteratorFn :: (unknown) -> unknown)(items)
+		if type(iterator) ~= "table" then
+			error(TypeError.new("Array.from: iterator is not an object"), 2)
+		end
+
+		const nextFn = (iterator :: esTypes.Table<unknown, unknown>)["next"]
+		if not ECMAScript.IsCallable(nextFn) then
+			error(TypeError.new("Array.from: iterator.next is not callable"), 2)
+		end
+
 		while true do
-			const record = nextFn(iterator) :: esTypes.Table<unknown, unknown>
-			if record["done"] then
+			const record = (nextFn :: (unknown) -> unknown)(iterator)
+			if type(record) ~= "table" then
+				error(TypeError.new("Array.from: iterator result is not an object"), 2)
+			end
+			if (record :: esTypes.Table<unknown, unknown>)["done"] then
 				break
 			end
-			add(record["value"])
+			add((record :: esTypes.Table<unknown, unknown>)["value"])
 		end
 		return result
 	end

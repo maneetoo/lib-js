@@ -14,4 +14,4 @@
 	:::
 ]=]
 
-return require "./__hierarchy" .RangeError
+return require("./__hierarchy").RangeError

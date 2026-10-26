@@ -9,7 +9,7 @@
 	Converts a boolean to the string `"true"` or `"false"`.
 ]=]
 
-const TypeError = require "../../Error" .TypeError
+const TypeError = require("../../Error").TypeError
 
 --[=[
 	@within toString

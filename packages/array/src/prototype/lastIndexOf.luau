@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.prototype.lastIndexOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within lastIndexOf

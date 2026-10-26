@@ -10,7 +10,7 @@
 	JavaScript's prototype chain.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 -- Luau itself gives up on an `__index` chain after 100 hops, so there is
 -- no point walking further when looking for a cycle.

@@ -37,8 +37,8 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
 
 --[=[
 	@within WeakRef
@@ -86,8 +86,7 @@ const prototype: WeakRefPrototype = {} :: any
 prototype.deref = function<T>(self: WeakRefState<T>): T?
 	return self._cell[1]
 end :: <T>(self: WeakRef<T>) -> T?
-
-;(prototype :: any)[Symbol.toStringTag] = "WeakRef"
+(prototype :: any)[Symbol.toStringTag] = "WeakRef"
 
 const metatable = {
 	__index = prototype,
@@ -116,7 +115,7 @@ const WeakRef = {
 	new = new_,
 	prototype = prototype,
 } :: WeakRefStatic
-;(prototype :: any).constructor = WeakRef
+(prototype :: any).constructor = WeakRef
 
 table.freeze(prototype)
 table.freeze(WeakRef)

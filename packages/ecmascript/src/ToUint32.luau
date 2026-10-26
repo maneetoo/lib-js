@@ -11,8 +11,8 @@
 	`±0` give `0`.
 ]=]
 
-const ToIntegerOrInfinity = require "./ToIntegerOrInfinity"
-const ToFixedSizeInteger = require "./ToFixedSizeInteger"
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
+const ToFixedSizeInteger = require("./ToFixedSizeInteger")
 
 --[=[
 	@within ToUint32

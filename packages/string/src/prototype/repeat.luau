@@ -9,9 +9,9 @@
 	keyword, so call it as `String.prototype["repeat"](s, n)`.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const Number = require "../../Number"
-const __shared = require "../__shared"
+const ECMAScript = require("../../ECMAScript")
+const Number = require("../../Number")
+const __shared = require("../__shared")
 
 --[=[
 	@within repeat
@@ -27,8 +27,8 @@ const __shared = require "../__shared"
 const function repeatString(self: unknown, count: unknown): string
 	const s = __shared.thisString(self, "repeat")
 	const times = ECMAScript.ToIntegerOrInfinity(count)
-	if times < 0 or times == Number.MAX_VALUE then
-		error(`Invalid count value: {tostring(count)}`)
+	if times < 0 or times == Number.POSITIVE_INFINITY then
+		error(`Invalid count value: {tostring(count)}`, 2)
 	end
 	if times == 0 or s == "" then
 		return ""

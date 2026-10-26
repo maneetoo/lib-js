@@ -9,7 +9,7 @@
 	Luau's `math` library has no `clz32`.
 ]=]
 
-const ECMAScript = require "../ECMAScript"
+const ECMAScript = require("../ECMAScript")
 
 --[=[
 	@within clz32

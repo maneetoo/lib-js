@@ -8,7 +8,7 @@
 	Returns an array of a table's own values.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within values

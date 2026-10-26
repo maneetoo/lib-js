@@ -13,4 +13,4 @@
 	Provided purely for completeness/parity with real
 	`Symbol.prototype.valueOf`.
 ]=]
-return require "../constructor" .valueOf
+return require("../constructor").valueOf
