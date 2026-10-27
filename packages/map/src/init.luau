@@ -18,6 +18,14 @@
 	print(m.size, m.get(m, "b")) -- 3  2
 	```
 
+	```lua
+	-- Map.groupBy, a static like JavaScript's
+	local byType = Map.groupBy(items, function(item, index)
+		return item.type
+	end)
+	local bucket = byType.get(byType, "fruit")
+	```
+
 	:::note
 	Methods take the map as their first argument, as in
 	`Map.prototype.set(map, key, value)`, or as `map.set(map, key, value)`.
@@ -64,6 +72,7 @@ export type Map<K, V> = {
 	read size: number,
 	set: (self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: (self: Map<K, V>, key: K) -> V?,
+	getOrInsert: (self: Map<K, V>, key: K, value: V) -> V,
 	has: (self: Map<K, V>, key: K) -> boolean,
 	delete: (self: Map<K, V>, key: K) -> boolean,
 	clear: (self: Map<K, V>) -> (),
@@ -83,6 +92,7 @@ export type Map<K, V> = {
 export type MapPrototype = {
 	set: <K, V>(self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: <K, V>(self: Map<K, V>, key: K) -> V?,
+	getOrInsert: <K, V>(self: Map<K, V>, key: K, value: V) -> V,
 	has: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	delete: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	clear: <K, V>(self: Map<K, V>) -> (),
@@ -101,6 +111,7 @@ export type MapPrototype = {
 ]=]
 export type MapStatic = {
 	new: <K, V>(iterable: unknown?) -> Map<K, V>,
+	groupBy: <K, V>(items: unknown, callback: (value: V, index: number) -> K) -> Map<K, { V }>,
 	prototype: MapPrototype,
 }
 
@@ -249,6 +260,40 @@ end
 --[=[
 	@within Map
 	@param self Map<K, V>
+	@param key K -- the key to look up
+	@param value V -- the value to insert when `key` has no entry
+	@return V -- the existing value for `key`, or the inserted one
+
+	Like the TC39 [`Map.prototype.getOrInsert`](https://tc39.es/proposal-upsert/)
+	proposal (now Stage 4): when `key` is present its value is returned
+	untouched and `value` is ignored; when absent, `key` is set to `value`
+	(at the end of the insertion order) and `value` is returned. Removes the
+	`has` → `set`/`get` double lookup.
+
+	:::note
+	`nil` is a legal stored value here, unlike with `get`: an entry holding
+	`nil` already counts as present, so `getOrInsert(m, k, v)` returns `nil`
+	and does not overwrite it.
+	:::
+]=]
+const function getOrInsert<K, V>(self: MapState<K, V>, key: K, value: V): V
+	const normalized = normalizeKey(key)
+	local position = self._index[normalized]
+	if position == nil then
+		position = self._top + 1
+		self._top = position
+		self._keys[position] = normalized
+		self._values[position] = wrapValue(value)
+		self._index[normalized] = position
+		self._size += 1
+		return value
+	end
+	return unwrapValue(self._values[position]) :: V
+end
+
+--[=[
+	@within Map
+	@param self Map<K, V>
 	@param key K -- the key to check
 	@return boolean -- `true` if `key` has an entry, even one whose value is `nil`
 ]=]
@@ -359,6 +404,7 @@ end
 const prototype: MapPrototype = {
 	set = set,
 	get = get,
+	getOrInsert = getOrInsert,
 	has = has,
 	delete = delete_,
 	clear = clear,
@@ -411,6 +457,61 @@ const Map = {
 	prototype = prototype,
 } :: MapStatic
 (prototype :: any).constructor = Map
+
+--[=[
+	@within Map
+	@static
+	@param items unknown -- any iterable (array, string, another `Map`, anything with `[Symbol.iterator]`); `nil` gives an empty map
+	@param callback (value: V, index: number) -> K -- computes the group key for each item
+	@return Map<K, { V }> -- a map from each unique returned key to an array of the items that produced it
+
+	A Luau implementation of JavaScript's
+	[`Map.groupBy()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy).
+
+	Iterates `items` in order, calling `callback(value, index)` for each
+	element, and appends the value to the array stored under the returned
+	key, creating that array lazily on first use. The result is a real `Map`
+	keyed by the callback's return values, so — unlike `Object.groupBy` —
+	keys keep their identity and type: tables are keyed by reference, and a
+	mutated key object still retrieves its bucket.
+
+	:::note
+	`index` is passed 1-based, following Luau array convention, whereas
+	JavaScript's callback receives a 0-based index. Adjust by hand
+	(`index - 1`) inside `callback` if 0-based indices are needed for parity
+	with existing JS logic being ported.
+	:::
+
+	:::note
+	Items within each bucket preserve their original relative order from
+	`items`, matching JavaScript's guarantee. Elements are shared by
+	reference, not copied.
+	:::
+
+	:::caution
+	Unlike `Object.groupBy`, no key coercion happens and none is needed:
+	any Luau value the callback returns is a valid `Map` key, including
+	`nil`, `NaN`, and `-0` (normalized to `+0`).
+	:::
+]=]
+function Map.groupBy(items: unknown, callback: any): any
+	requireCallable(callback, "groupBy")
+	const result = new_(nil) :: MapState<any, any>
+	local index = 0
+	iterate(items, function(value: any)
+		index += 1
+		const key = callback(value, index)
+		local bucket = get(result, key)
+		if bucket == nil then
+			-- Lazy bucket creation: keys that never appear in the callback's
+			-- output never enter the result map.
+			set(result, key, { value })
+		else
+			bucket[#bucket + 1] = value
+		end
+	end)
+	return result
+end
 
 table.freeze(prototype)
 table.freeze(Map)
