@@ -22,8 +22,9 @@ const esTypes = require("../ES17-Types")
 	key stored in a table is equally "enumerable" — so this is the very
 	same function as this library's `keys` (re-exported, not copied, so
 	the two can never drift apart and there is zero extra call
-	overhead). It exists purely for API parity with JavaScript's
-	`Object`.
+	overhead). It excludes symbols, matching JavaScript; use
+	`getOwnPropertySymbols` to list those. It exists purely for API parity
+	with JavaScript's `Object`.
 	:::
     
 	:::note

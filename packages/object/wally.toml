@@ -11,3 +11,4 @@ realm = "shared"
 [dependencies]
 ES17-Types = "maneetoo/es17types@2.0.0-rc.1"
 Number = "maneetoo/number@2.0.0-rc.1"
+Symbol = "maneetoo/symbol@2.0.0-rc.1"
