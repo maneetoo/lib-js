@@ -41,6 +41,8 @@ export type Awaitable<T> = esTypes.Awaitable<T>
 export type IteratorResult<T> = esTypes.IteratorResult<T>
 export type Iterator<T> = esTypes.Iterator<T>
 
+export type PropertyDescriptor = Object.PropertyDescriptor
+
 export type Map<K, V> = Map.Map<K, V>
 export type MapPrototype = Map.MapPrototype
 export type MapStatic = Map.MapStatic
