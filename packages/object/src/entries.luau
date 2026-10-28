@@ -9,8 +9,8 @@
 	properties, the structural counterpart to `keys` and `values`.
 ]=]
 
-const esTypes = require("../ES17-Types")
 const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within entries

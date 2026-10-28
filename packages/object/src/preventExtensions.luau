@@ -9,8 +9,8 @@
 	changeable and removable, then returns that same table.
 ]=]
 
-const esTypes = require("../ES17-Types")
 const denyAddition = require("./__denyAddition")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within preventExtensions

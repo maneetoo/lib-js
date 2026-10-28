@@ -1,8 +1,8 @@
 --!strict
 -- Set: membership, key semantics, iteration, set algebra.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Set")
+local loader = require("./_loader")
 
 local Set = loader.loadPackage("Set") :: any
 

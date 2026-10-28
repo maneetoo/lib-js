@@ -9,8 +9,8 @@
 const ECMAScript = require("../../ECMAScript")
 const String = require("../../String")
 const TypeError = require("../../Error").TypeError
-const esTypes = require("../../ES17-Types")
 const __shared = require("../__shared")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within sort

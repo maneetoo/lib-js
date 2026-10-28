@@ -35,10 +35,10 @@
 ]=]
 
 const Symbol = require("./Symbol")
-const parse = require("@self/parse")
-const stringify = require("@self/stringify")
-const rawJSON = require("@self/rawJSON")
 const isRawJSON = require("@self/isRawJSON")
+const parse = require("@self/parse")
+const rawJSON = require("@self/rawJSON")
+const stringify = require("@self/stringify")
 
 const JSON = table.freeze({
 	parse = parse,

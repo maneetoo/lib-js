@@ -51,8 +51,8 @@
 	:::
 ]=]
 
-const Symbol = require("./Symbol")
 const Number = require("./Number")
+const Symbol = require("./Symbol")
 const __staticProps = require("@self/__staticProps")
 
 const acosh = require("@self/acosh")

@@ -1,8 +1,8 @@
 --!strict
 -- instanceof: prototype-chain membership. globalThis: the global table.
 
-local loader = require("./_loader")
 local T = require("./_init").new("instanceof")
+local loader = require("./_loader")
 
 local instanceof = loader.loadPackage("instanceof") :: any
 local globalThis = loader.loadPackage("globalThis") :: any

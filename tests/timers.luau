@@ -1,8 +1,8 @@
 --!strict
 -- Timers: setTimeout/Interval/Immediate, clearing, ordering.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Timers")
+local loader = require("./_loader")
 
 local Timers = loader.loadPackage("Timers") :: any
 

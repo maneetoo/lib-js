@@ -1,8 +1,8 @@
 --!strict
 -- Map: construction, key semantics, iteration, groupBy, getOrInsert.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Map")
+local loader = require("./_loader")
 
 local Map = loader.loadPackage("Map") :: any
 

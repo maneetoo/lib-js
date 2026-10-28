@@ -137,8 +137,8 @@
 	:::
 ]=]
 
-const constructor = require("@self/constructor")
 const __registry = require("@self/__registry")
+const constructor = require("@self/constructor")
 
 export type Symbol = constructor.Symbol
 

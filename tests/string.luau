@@ -1,8 +1,8 @@
 --!strict
 -- String: statics, prototype methods, UTF-16-style code units.
 
-local loader = require("./_loader")
 local T = require("./_init").new("String")
+local loader = require("./_loader")
 
 local String = loader.loadPackage("String") :: any
 local prototype = String.prototype :: any

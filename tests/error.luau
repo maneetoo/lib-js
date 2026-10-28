@@ -1,8 +1,8 @@
 --!strict
 -- Error: hierarchy, message handling, stack, prototype methods.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Error")
+local loader = require("./_loader")
 
 local Error = loader.loadPackage("Error") :: any
 local Object = loader.loadPackage("Object") :: any

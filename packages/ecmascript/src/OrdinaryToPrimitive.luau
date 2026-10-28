@@ -21,8 +21,8 @@
 ]=]
 
 const IsCallable = require("./IsCallable")
-const ToString = require("./ToString")
 const Symbol = require("../Symbol")
+const ToString = require("./ToString")
 
 --[=[
 	@within OrdinaryToPrimitive

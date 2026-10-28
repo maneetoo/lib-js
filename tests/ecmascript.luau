@@ -1,8 +1,8 @@
 --!strict
 -- ECMAScript abstract operations: the shared conversion helpers.
 
-local loader = require("./_loader")
 local T = require("./_init").new("ECMAScript")
+local loader = require("./_loader")
 
 local ECMAScript = loader.loadPackage("ECMAScript") :: any
 

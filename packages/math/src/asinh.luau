@@ -11,8 +11,8 @@
 ]=]
 
 const Number = require("../Number")
-const log1p = require("./log1p")
 const __staticProps = require("./__staticProps")
+const log1p = require("./log1p")
 
 const TWO_TO_28: number = 268435456
 const TWO_TO_MINUS_28: number = 1 / 268435456

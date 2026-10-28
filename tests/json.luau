@@ -1,8 +1,8 @@
 --!strict
 -- JSON: parse, stringify, rawJSON.
 
-local loader = require("./_loader")
 local T = require("./_init").new("JSON")
+local loader = require("./_loader")
 
 local JSON = loader.loadPackage("JSON") :: any
 

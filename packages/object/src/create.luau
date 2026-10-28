@@ -9,8 +9,8 @@
 	defining keys on it in the same call.
 ]=]
 
-const esTypes = require("../ES17-Types")
 const defineProperties = require("./defineProperties")
+const esTypes = require("../ES17-Types")
 const setPrototypeOf = require("./setPrototypeOf")
 const shared = require("./__shared")
 

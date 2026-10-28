@@ -1,8 +1,8 @@
 --!strict
 -- Number: type predicates, constants, parsing, prototype.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Number")
+local loader = require("./_loader")
 
 local Number = loader.loadPackage("Number") :: any
 

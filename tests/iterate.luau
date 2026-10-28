@@ -2,8 +2,8 @@
 -- iterate: the shared iterable-draining helper.
 -- Also: instanceof and globalThis (tiny single-function packages).
 
-local loader = require("./_loader")
 local T = require("./_init").new("iterate")
+local loader = require("./_loader")
 
 local iterate = loader.loadPackage("iterate") :: any
 local Symbol = loader.loadPackage("Symbol") :: any

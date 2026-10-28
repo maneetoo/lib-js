@@ -1,8 +1,8 @@
 --!strict
 -- Math: constants and the non-trivial ported functions.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Math")
+local loader = require("./_loader")
 
 local Math = loader.loadPackage("Math") :: any
 

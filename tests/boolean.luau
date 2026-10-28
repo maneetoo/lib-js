@@ -1,8 +1,8 @@
 --!strict
 -- Boolean: ToBoolean coercion and prototype.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Boolean")
+local loader = require("./_loader")
 
 local Boolean = loader.loadPackage("Boolean") :: any
 

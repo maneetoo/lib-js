@@ -82,10 +82,10 @@
 	:::
 ]=]
 
-const esTypes = require("./ES17-Types")
 const Symbol = require("./Symbol")
-const prototype = require("@self/prototype")
 const __toArray = require("@self/__toArray")
+const esTypes = require("./ES17-Types")
+const prototype = require("@self/prototype")
 
 const Array = {
 	__toArray = __toArray,

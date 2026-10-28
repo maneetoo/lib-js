@@ -1,8 +1,8 @@
 --!strict
 -- Array: statics, mutators, accessors, iteration, searching, new methods.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Array")
+local loader = require("./_loader")
 
 local Array = loader.loadPackage("Array") :: any
 local prototype = Array.prototype :: any

@@ -15,9 +15,8 @@
 	:::
 ]=]
 
-const Symbol = require("../Symbol")
 const String = require("../String")
-const Number = require("../Number")
+const Symbol = require("../Symbol")
 const esTypes = require("../ES17-Types")
 const isArray = require("./isArray")
 

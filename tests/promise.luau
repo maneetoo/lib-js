@@ -1,8 +1,8 @@
 --!strict
 -- Promise: states, then/catch/finally, combinators, job-queue ordering.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Promise")
+local loader = require("./_loader")
 
 local Promise = loader.loadPackage("Promise") :: any
 

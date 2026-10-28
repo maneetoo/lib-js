@@ -8,8 +8,8 @@
 	Returns an array of a table's own keys that are symbols.
 ]=]
 
-const esTypes = require("../ES17-Types")
 const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within getOwnPropertySymbols

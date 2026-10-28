@@ -300,12 +300,10 @@ const function shortestDigits(magnitude: number): (string, number)
 		-- with an exactly-halfway tail resolved towards the even last digit
 		const tailDigit = source:sub(k + 1, k + 1)
 		local upFirst: boolean
-		if tailDigit == "" then
+		if tailDigit == "" or tailDigit < "5" then
 			upFirst = false
 		elseif tailDigit > "5" then
 			upFirst = true
-		elseif tailDigit < "5" then
-			upFirst = false
 		else
 			upFirst = source:find("[^0]", k + 2) ~= nil or (source:byte(k) :: number) % 2 == 1
 		end

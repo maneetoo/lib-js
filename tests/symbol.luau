@@ -1,8 +1,8 @@
 --!strict
 -- Symbol: uniqueness, descriptions, registry, prototype methods.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Symbol")
+local loader = require("./_loader")
 
 local Symbol = loader.loadPackage("Symbol") :: any
 

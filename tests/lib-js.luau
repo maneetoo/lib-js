@@ -1,8 +1,8 @@
 --!strict
 -- lib-js: the aggregate module re-exports every package coherently.
 
-local loader = require("./_loader")
 local T = require("./_init").new("lib-js")
+local loader = require("./_loader")
 
 local lib = loader.loadPackage("LibJS") :: any
 

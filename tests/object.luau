@@ -1,8 +1,8 @@
 --!strict
 -- Object: statics and prototype methods.
 
-local loader = require("./_loader")
 local T = require("./_init").new("Object")
+local loader = require("./_loader")
 
 local Object = loader.loadPackage("Object") :: any
 local Symbol = loader.loadPackage("Symbol") :: any

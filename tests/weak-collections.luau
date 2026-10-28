@@ -1,8 +1,8 @@
 --!strict
 -- WeakMap, WeakSet, WeakRef: weak-keyed collections.
 
-local loader = require("./_loader")
 local T = require("./_init").new("WeakMap/WeakSet/WeakRef")
+local loader = require("./_loader")
 
 local WeakMap = loader.loadPackage("WeakMap") :: any
 local WeakSet = loader.loadPackage("WeakSet") :: any
