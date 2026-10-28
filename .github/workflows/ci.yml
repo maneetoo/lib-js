@@ -30,6 +30,12 @@ jobs:
  
       - name: Check formatting
         run: mise run fmt-check
+
+      - name: Debug selene
+        run: |
+          mise which selene
+          ls -l "$(mise which selene)"
+          file "$(mise which selene)"
  
       - name: Lint
         run: mise run lint
