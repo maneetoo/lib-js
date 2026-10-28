@@ -7,8 +7,8 @@
 ]=]
 
 const esTypes = require("../../ES17-Types")
-const toSlice = require("./slice")
 const sort = require("./sort")
+const toSlice = require("./slice")
 
 --[=[
 	@within toSorted

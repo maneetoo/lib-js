@@ -95,9 +95,9 @@
 	:::
 ]=]
 
-const esTypes = require("./ES17-Types")
-const Symbol = require("./Symbol")
 const Error = require("./Error")
+const Symbol = require("./Symbol")
+const esTypes = require("./ES17-Types")
 const TypeError, AggregateError = Error.TypeError, Error.AggregateError
 
 --[=[
@@ -1028,7 +1028,7 @@ end
 	an element. An empty array fulfils immediately with `{}`.
 ]=]
 
-const function allSettledWorker(resolve: ResolveFn, reject: RejectFn, iterable: esTypes.Array<unknown>)
+const function allSettledWorker(resolve: ResolveFn, _reject: RejectFn, iterable: esTypes.Array<unknown>)
 	const count = #iterable
 	const results: esTypes.Array<PromiseSettledResult<unknown>> = {}
 	local remaining: number = 1

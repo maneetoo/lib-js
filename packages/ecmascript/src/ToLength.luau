@@ -10,8 +10,8 @@
 	Clamps `ToIntegerOrInfinity(value)` to `[0, 2^53 - 1]`.
 ]=]
 
-const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 const Number = require("../Number")
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 
 --[=[
 	@within ToLength

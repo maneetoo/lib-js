@@ -12,8 +12,8 @@
 	into `[-2^15, 2^15)`.
 ]=]
 
-const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 const ToFixedSizeInteger = require("./ToFixedSizeInteger")
+const ToIntegerOrInfinity = require("./ToIntegerOrInfinity")
 
 --[=[
 	@within ToInt16

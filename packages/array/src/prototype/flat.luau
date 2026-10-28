@@ -7,8 +7,8 @@
 ]=]
 
 const ECMAScript = require("../../ECMAScript")
-const esTypes = require("../../ES17-Types")
 const __shared = require("../__shared")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within flat

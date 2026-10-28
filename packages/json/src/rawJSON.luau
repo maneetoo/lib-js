@@ -16,8 +16,8 @@ const String = require("../String")
 const Symbol = require("../Symbol")
 const SyntaxError = require("../Error").SyntaxError
 const TypeError = require("../Error").TypeError
-const parse = require("./parse")
 const __raw = require("./__raw")
+const parse = require("./parse")
 
 --[=[
 	@within rawJSON

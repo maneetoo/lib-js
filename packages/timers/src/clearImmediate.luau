@@ -9,7 +9,7 @@
 	counterpart. An unknown id, or `nil`, does nothing.
 ]=]
 
-const scheduler = require "./__scheduler"
+const scheduler = require("./__scheduler")
 
 --[=[
 	@within clearImmediate

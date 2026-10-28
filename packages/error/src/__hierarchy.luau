@@ -17,8 +17,8 @@
 	:::
 ]=]
 
-const classes = require("./__class")
 const Symbol = require("../Symbol")
+const classes = require("./__class")
 const esTypes = require("../ES17-Types")
 const toString = require("./prototype/toString")
 

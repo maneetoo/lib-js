@@ -8,8 +8,8 @@
 	Finds the last occurrence of a substring.
 ]=]
 
-const Number = require("../../Number")
 const ECMAScript = require("../../ECMAScript")
+const Number = require("../../Number")
 const __shared = require("../__shared")
 const __utf8 = require("../__utf8")
 

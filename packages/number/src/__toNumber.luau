@@ -9,8 +9,8 @@
 	`Number` constructor.
 ]=]
 
-const __staticProps = require("./__staticProps")
 const Symbol = require("../Symbol")
+const __staticProps = require("./__staticProps")
 
 const function trim(input: string): string
 	local result = input:gsub("^%s+", "")
