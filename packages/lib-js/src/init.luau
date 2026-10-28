@@ -20,6 +20,9 @@ const esTypes = require("./ES17-Types")
 const globalThis = require("./globalThis")
 const instanceof = require("./instanceof")
 const iterate = require("./iterate")
+const queueMicrotask = require("./queueMicrotask")
+const structuredClone = require("./structuredClone")
+const uri = require("./uri")
 
 export type Array<T> = esTypes.Array<T>
 export type Table<K, V> = esTypes.Table<K, V>
@@ -95,6 +98,12 @@ const lib = table.freeze({
 	isFinite = Number.isFinite,
 	instanceof = instanceof,
 	iterate = iterate,
+	queueMicrotask = queueMicrotask,
+	structuredClone = structuredClone,
+	decodeURI = uri.decodeURI,
+	decodeURIComponent = uri.decodeURIComponent,
+	encodeURI = uri.encodeURI,
+	encodeURIComponent = uri.encodeURIComponent,
 	parseInt = Number.parseInt,
 	parseFloat = Number.parseFloat,
 })

@@ -46,6 +46,17 @@ return function(): (number, number)
 		T:check("parseFloat shim", lib.parseFloat == Number.parseFloat)
 	end
 
+	-- the new globals re-export the real packages
+	do
+		T:check("queueMicrotask re-export", lib.queueMicrotask == loader.loadPackage("queueMicrotask"))
+		T:check("structuredClone re-export", lib.structuredClone == loader.loadPackage("structuredClone"))
+		local uri = loader.loadPackage("uri")
+		T:check("encodeURI re-export", lib.encodeURI == uri.encodeURI)
+		T:check("encodeURIComponent re-export", lib.encodeURIComponent == uri.encodeURIComponent)
+		T:check("decodeURI re-export", lib.decodeURI == uri.decodeURI)
+		T:check("decodeURIComponent re-export", lib.decodeURIComponent == uri.decodeURIComponent)
+	end
+
 	-- the aggregate is frozen
 	do
 		T:expectError("lib-js is frozen", function()
