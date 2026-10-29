@@ -1,6 +1,6 @@
 [package]
-name = "maneetoo/atobbtoa"
-description = "atob and btoa: HTML-spec base64 string encoding and decoding."
+name = "maneetoo/util"
+description = "Utility functions from Node.js."
 version = "2.0.0-rc.2"
 license = "MIT"
 authors = ["maneetoo"]
@@ -10,3 +10,7 @@ realm = "shared"
 
 [dependencies]
 Error = "maneetoo/error@2.0.0-rc.2"
+JSON = "maneetoo/json@2.0.0-rc.2"
+Map = "maneetoo/map@2.0.0-rc.2"
+Set = "maneetoo/set@2.0.0-rc.2"
+Symbol = "maneetoo/symbol@2.0.0-rc.2"

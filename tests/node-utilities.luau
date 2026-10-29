@@ -5,7 +5,8 @@
 local T = require("./_init").new("node-utilities")
 local loader = require("./_loader")
 
-local base64 = loader.loadPackage("atob-btoa") :: any
+local atob = loader.loadPackage("atob") :: any
+local btoa = loader.loadPackage("btoa") :: any
 local abort = loader.loadPackage("abort") :: any
 local events = loader.loadPackage("events") :: any
 
@@ -24,50 +25,50 @@ return function(): (number, number)
 			{ "\255\254\253", "//79" },
 		}
 		for _, vector in vectors do
-			T:check(`btoa("{vector[1]:sub(1, 8)}")`, base64.btoa(vector[1]) == vector[2])
-			T:check(`atob("{vector[2]}")`, base64.atob(vector[2]) == vector[1])
+			T:check(`btoa("{vector[1]:sub(1, 8)}")`, btoa(vector[1]) == vector[2])
+			T:check(`atob("{vector[2]}")`, atob(vector[2]) == vector[1])
 		end
 
 		-- Latin-1 characters are code points <= 0xFF: accepted, raw bytes
-		T:check("btoa Latin-1 accented text", base64.btoa("caf\xe9") == "Y2Fm6Q==")
+		T:check("btoa Latin-1 accented text", btoa("caf\xe9") == "Y2Fm6Q==")
 
 		-- forgiving padding on decode
-		T:check("atob without padding", base64.atob("Zm9vYg") == "foob")
+		T:check("atob without padding", atob("Zm9vYg") == "foob")
 
 		-- strict failures (é and ö are Latin-1 code points and legal; chars
 		-- beyond 0xFF are what btoa rejects)
 		T:expectError("btoa rejects non-Latin1 characters", function()
-			base64.btoa("héllo wörld ✓")
+			btoa("héllo wörld ✓")
 		end)
 		T:expectError("btoa rejects an emoji", function()
-			base64.btoa("😀")
+			btoa("😀")
 		end)
 		T:expectError("btoa rejects CJK", function()
-			base64.btoa("文")
+			btoa("文")
 		end)
 		T:expectError("atob rejects invalid alphabet characters", function()
-			base64.atob("SGVsbG8-")
+			atob("SGVsbG8-")
 		end)
 		T:expectError("atob rejects whitespace", function()
-			base64.atob("SGVs bG8=")
+			atob("SGVs bG8=")
 		end)
 		T:expectError("atob rejects padding in the middle", function()
-			base64.atob("SG=VsbG8=")
+			atob("SG=VsbG8=")
 		end)
 		T:expectError("atob rejects wrong-length padding", function()
-			base64.atob("Zg=")
+			atob("Zg=")
 		end)
 		T:expectError("atob rejects triple padding", function()
-			base64.atob("Zg===")
+			atob("Zg===")
 		end)
 		T:expectError("atob rejects undecodable remainder", function()
-			base64.atob("Z")
+			atob("Z")
 		end)
 		T:expectError("btoa rejects non-string input", function()
-			base64.btoa(42)
+			btoa(42)
 		end)
 		T:expectError("atob rejects non-string input", function()
-			base64.atob(nil)
+			atob(nil)
 		end)
 	end
 
