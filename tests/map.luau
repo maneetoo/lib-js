@@ -202,6 +202,92 @@ return function(): (number, number)
 		T:check("table key identity", m.getOrInsert(m, t, {}) == stored)
 	end
 
+	-- getOrInsertComputed
+	do
+		local m = Map.new({ { "a", 1 } })
+
+		-- existing key: callback never runs
+		local calls = 0
+		T:check("getOrInsertComputed existing", m.getOrInsertComputed(m, "a", function()
+			calls += 1
+			return 99
+		end) == 1)
+		T:check("callback not invoked on hit", calls == 0)
+
+		-- absent key: computed value inserted and returned
+		T:check("getOrInsertComputed inserts", m.getOrInsertComputed(m, "b", function()
+			calls += 1
+			return "computed"
+		end) == "computed")
+		T:check("callback ran once", calls == 1)
+		T:check("computed value stored", m.get(m, "b") == "computed")
+
+		-- the callback receives the key
+		local receivedKey
+		m.getOrInsertComputed(m, "k", function(key)
+			receivedKey = key
+			return nil
+		end)
+		T:check("callback receives the key", receivedKey == "k")
+
+		-- second call does not re-run the callback
+		T:check("getOrInsertComputed hit after insert", m.getOrInsertComputed(m, "b", function()
+			calls += 1
+			return "never"
+		end) == "computed")
+		T:check("callback still ran once", calls == 1)
+
+		-- nil-valued entry counts as present
+		m.set(m, "n", nil)
+		T:check("nil-valued entry skips compute", m.getOrInsertComputed(m, "n", function()
+			error("must not run")
+		end) == nil)
+
+		-- re-scan: a callback that inserts the key itself wins, and its
+		-- return value is discarded
+		local w = Map.new()
+		local result = w.getOrInsertComputed(w, "x", function(key)
+			w.set(w, key, "callback-inserted")
+			return "computed-value"
+		end)
+		T:check("callback-inserted entry wins", result == "callback-inserted")
+		T:check("stored value is the callback's insert", w.get(w, "x") == "callback-inserted")
+		T:check("size did not double", w.size == 1)
+
+		-- an error thrown by the callback propagates, inserting nothing
+		local e = Map.new()
+		local ok = pcall(function()
+			e.getOrInsertComputed(e, "x", function()
+				error("compute failed")
+			end)
+		end)
+		T:check("callback error propagates", not ok)
+		T:check("nothing inserted on error", not e.has(e, "x") and e.size == 0)
+
+		-- non-callable throws TypeError before any lookup
+		T:expectError("getOrInsertComputed non-callable", function()
+			m.getOrInsertComputed(m, "a", "not a function")
+		end)
+
+		-- key semantics: NaN, -0, nil
+		local k = Map.new()
+		T:check("getOrInsertComputed NaN key", k.getOrInsertComputed(k, 0 / 0, function()
+			return "nan"
+		end) == "nan")
+		T:check("getOrInsertComputed NaN again", k.getOrInsertComputed(k, 0 / 0, function()
+			return "other"
+		end) == "nan")
+		k.getOrInsertComputed(k, -0, function()
+			return "zero"
+		end)
+		T:check("getOrInsertComputed -0 folds to +0", k.getOrInsertComputed(k, 0, function()
+			return "plus"
+		end) == "zero")
+		T:check("getOrInsertComputed nil key", k.getOrInsertComputed(k, nil, function()
+			return "under-nil"
+		end) == "under-nil")
+	end
+
 	T:finish()
 	return T.passed, T.failed
 end
