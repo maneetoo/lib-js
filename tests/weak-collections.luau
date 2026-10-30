@@ -59,7 +59,7 @@ return function(): (number, number)
 		T:expectError("getOrInsertComputed non-callable even when key present", function()
 			wm.getOrInsertComputed(wm, key2, "not a function")
 		end)
-		
+
 		local re = {}
 		T:check("reentrant insert is overwritten", wm.getOrInsertComputed(wm, re, function(k)
 			wm.set(wm, k, "inserted")
