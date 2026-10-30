@@ -325,8 +325,9 @@ end
 	:::
 
 	:::caution
-	`key` must be a table or userdata value — passing anything else
-	raises an error, exactly as `set` does, *without* calling `compute`.
+	`key` must be a table or userdata and `compute` must be a function.
+	Either violation raises a `TypeError`, checked in that order, before
+	any lookup and without calling `compute` — even if `key` is present.
 	:::
 
 	:::caution
@@ -341,6 +342,10 @@ const function getOrInsertComputed<K, V>(self: Internal<K, V>, key: K, compute: 
 		error(TypeError.new(`WeakMap: invalid key of type '{keyType}' (keys must be a table or userdata)`), 2)
 	end
 
+	if type(compute) ~= "function" then
+		error(TypeError.new("WeakMap.prototype.getOrInsertComputed: callback is not a function"), 2)
+	end
+
 	const entries = self._entries
 	const existing = entries[key]
 
@@ -352,6 +357,7 @@ const function getOrInsertComputed<K, V>(self: Internal<K, V>, key: K, compute: 
 	entries[key] = if value == nil then NIL_SENTINEL else value
 	return value
 end
+
 (prototype :: any).set = set;
 (prototype :: any).get = get;
 (prototype :: any).has = has;
