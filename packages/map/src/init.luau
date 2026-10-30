@@ -351,7 +351,10 @@ const function getOrInsertComputed<K, V>(self: MapState<K, V>, key: K, compute: 
 		self._size += 1
 		return computed
 	end
-	return unwrapValue(self._values[finalPosition]) :: V
+	-- The callback inserted `key` itself: keep that entry (and its position
+	-- in the insertion order) but overwrite its value, as the proposal does.
+	self._values[finalPosition] = wrapValue(computed)
+	return computed
 end
 
 --[=[
