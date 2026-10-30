@@ -16,10 +16,15 @@ const Timers = require("./Timers")
 const WeakMap = require("./WeakMap")
 const WeakRef = require("./WeakRef")
 const WeakSet = require("./WeakSet")
+const abort = require("./abort")
+const atob = require("./atob")
+const btoa = require("./btoa")
 const esTypes = require("./ES17-Types")
+const events = require("./events")
 const globalThis = require("./globalThis")
 const instanceof = require("./instanceof")
 const iterate = require("./iterate")
+const util = require("./util")
 
 export type Array<T> = esTypes.Array<T>
 export type Table<K, V> = esTypes.Table<K, V>
@@ -97,6 +102,14 @@ const lib = table.freeze({
 	iterate = iterate,
 	parseInt = Number.parseInt,
 	parseFloat = Number.parseFloat,
+	atob = atob,
+	btoa = btoa,
+	AbortController = abort.AbortController,
+	AbortSignal = abort.AbortSignal,
+	Event = events.Event,
+	EventTarget = events.EventTarget,
+	EventEmitter = events.EventEmitter,
+	util = util,
 })
 
 return lib
