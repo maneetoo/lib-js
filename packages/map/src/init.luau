@@ -73,6 +73,7 @@ export type Map<K, V> = {
 	set: (self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: (self: Map<K, V>, key: K) -> V?,
 	getOrInsert: (self: Map<K, V>, key: K, value: V) -> V,
+	getOrInsertComputed: (self: Map<K, V>, key: K, compute: (key: K) -> V) -> V,
 	has: (self: Map<K, V>, key: K) -> boolean,
 	delete: (self: Map<K, V>, key: K) -> boolean,
 	clear: (self: Map<K, V>) -> (),
@@ -93,6 +94,7 @@ export type MapPrototype = {
 	set: <K, V>(self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: <K, V>(self: Map<K, V>, key: K) -> V?,
 	getOrInsert: <K, V>(self: Map<K, V>, key: K, value: V) -> V,
+	getOrInsertComputed: <K, V>(self: Map<K, V>, key: K, compute: (key: K) -> V) -> V,
 	has: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	delete: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	clear: <K, V>(self: Map<K, V>) -> (),
@@ -294,6 +296,67 @@ end
 --[=[
 	@within Map
 	@param self Map<K, V>
+	@param key K -- the key to look up
+	@param compute (key: K) -> V -- called only when `key` has no entry, with `key` as its argument
+	@return V -- the existing value for `key`, or the computed one
+
+	Like the TC39
+	[`Map.prototype.getOrInsertComputed`](https://tc39.es/proposal-upsert/)
+	proposal (now Stage 4): when `key` is present its value is returned and
+	`compute` is never called; when absent, `compute(key)` runs, its result is
+	inserted (at the end of the insertion order) and returned. Use it when
+	the default value is expensive or context-sensitive — the callback only
+	runs on a genuine miss.
+
+	As the proposal specifies, the map is looked up **again** after `compute`
+	returns: if the callback itself inserted `key` while running, that entry
+	wins and the returned value is discarded. And exactly as in JavaScript,
+	an error thrown by `compute` propagates out of this method with nothing
+	inserted (an entry the callback added before throwing stays, but is not
+	overwritten by this call).
+
+	:::note
+	Same key rules as every Map method: `-0` canonicalizes to `+0`, `NaN`
+	matches by SameValueZero, and `nil` is a legal key. A `nil`-valued entry
+	counts as present, so `compute` does not run for it.
+	:::
+
+	:::caution
+	`compute` is validated as callable up front, throwing a `TypeError`
+	before any lookup, mirroring the proposal's `IsCallable` check.
+	:::
+]=]
+const function getOrInsertComputed<K, V>(self: MapState<K, V>, key: K, compute: (key: K) -> V): V
+	if type(compute) ~= "function" then
+		error(TypeError.new("Map.prototype.getOrInsertComputed: callback is not a function"), 2)
+	end
+
+	const normalized = normalizeKey(key)
+	local position = self._index[normalized]
+	if position ~= nil then
+		return unwrapValue(self._values[position]) :: V
+	end
+
+	const computed = compute(key)
+
+	-- Re-scan after the callback: it may have inserted `key` itself, and if
+	-- so that entry wins over the computed value (the proposal's algorithm).
+	local finalPosition = self._index[normalized]
+	if finalPosition == nil then
+		finalPosition = self._top + 1
+		self._top = finalPosition
+		self._keys[finalPosition] = normalized
+		self._values[finalPosition] = wrapValue(computed)
+		self._index[normalized] = finalPosition
+		self._size += 1
+		return computed
+	end
+	return unwrapValue(self._values[finalPosition]) :: V
+end
+
+--[=[
+	@within Map
+	@param self Map<K, V>
 	@param key K -- the key to check
 	@return boolean -- `true` if `key` has an entry, even one whose value is `nil`
 ]=]
@@ -405,6 +468,7 @@ const prototype: MapPrototype = {
 	set = set,
 	get = get,
 	getOrInsert = getOrInsert,
+	getOrInsertComputed = getOrInsertComputed,
 	has = has,
 	delete = delete_,
 	clear = clear,
