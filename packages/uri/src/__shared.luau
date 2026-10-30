@@ -3,7 +3,6 @@
 --[=[
 	@class __shared
 	@private
-	@within uri
 
 	Internal machinery shared by the `uri` modules: the unreserved and
 	reserved character sets, the percent-encoding engine, and the
@@ -21,8 +20,9 @@ const URIError = require("../Error").URIError
 const HEX = "0123456789ABCDEF"
 
 --[=[
-	@within uri
+	@within __shared
 	@private
+
 	True if `byte` (an ASCII byte value) belongs to the unreserved set every
 	encoder leaves alone: `A-Z a-z 0-9 - _ . ! ~ * ' ( )`.
 ]=]
@@ -48,8 +48,9 @@ const function isUnreserved(byte: number): boolean
 end
 
 --[=[
-	@within uri
+	@within __shared
 	@private
+
 	True if `byte` additionally belongs to the reserved set `encodeURI`
 	leaves alone: `; / ? : @ & = + $ , #`.
 ]=]
@@ -68,8 +69,9 @@ const function isReserved(byte: number): boolean
 end
 
 --[=[
-	@within uri
+	@within __shared
 	@private
+
 	Percent-encodes `text`, leaving alone the bytes `isKept` approves. Every
 	other byte becomes `%XX` with uppercase hex digits.
 ]=]
@@ -99,14 +101,14 @@ const function encodeWith(text: string, isKept: (byte: number) -> boolean): stri
 end
 
 --[=[
-	@within uri
+	@within __shared
 	@private
+
 	Parses the two hex digits after the `%` at `index` (1-based). Returns the
 	byte value, or `nil` when the digits are not valid hex.
 ]=]
 const function hexPair(text: string, index: number): number?
-	local high = string.byte(text, index)
-	local low = string.byte(text, index + 1)
+	const high, low = string.byte(text, index), string.byte(text, index + 1)
 	if high == nil or low == nil then
 		return nil
 	end
@@ -132,8 +134,9 @@ const function hexPair(text: string, index: number): number?
 end
 
 --[=[
-	@within uri
+	@within __shared
 	@private
+
 	Decodes the percent-sequences of `text`. When `keepReserved` is true,
 	sequences decoding to a reserved byte are kept as-is (`%2F` stays `%2F`),
 	which is `decodeURI`'s rule; `decodeURIComponent` passes `false`.
@@ -144,11 +147,8 @@ end
 	a `URIError` ("URI malformed").
 ]=]
 const function decodeWith(text: string, keepReserved: boolean): string
-	const parts: { string } = {}
-	local count = 0
-	local runStart = 1
-	const length = #text
-	local index = 1
+	const parts: { string }, length = {}, #text
+	local count, runStart, index = 0, 1, 1
 
 	while index <= length do
 		const byte = string.byte(text, index) :: number
@@ -159,8 +159,7 @@ const function decodeWith(text: string, keepReserved: boolean): string
 
 		-- Collect the whole (possibly multi-byte) percent-sequence run.
 		const sequence: { number } = {}
-		local seqCount = 0
-		local scan = index
+		local seqCount, scan = 0, index
 		while scan <= length do
 			if string.byte(text, scan) ~= 0x25 then
 				break

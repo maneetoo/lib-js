@@ -2,7 +2,6 @@
 
 --[=[
 	@class decodeURIComponent
-	@within uri
 
 	JavaScript's
 	[`decodeURIComponent()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURIComponent):
@@ -13,7 +12,7 @@ const TypeError = require("../Error").TypeError
 const shared = require("./__shared")
 
 --[=[
-	@within uri
+	@within decodeURIComponent
 	@param component string -- an encoded URI component
 	@return string -- the component with every sequence decoded
 

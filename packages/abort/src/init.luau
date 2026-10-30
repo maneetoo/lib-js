@@ -66,11 +66,11 @@ const AbortController = {
 	new = require("@self/AbortController").new,
 } :: AbortControllerStatic
 
-local AbortSignal = {} :: AbortSignalStatic
+const AbortSignal = {} :: AbortSignalStatic
 
 -- The statics, wired in place (a frozen literal cannot reference its own
 -- module's sibling fields, so assign before freezing).
-local statics = AbortSignal :: any
+const statics = AbortSignal
 statics.abort = require("@self/abort")
 statics.timeout = require("@self/timeout")
 statics.any = require("@self/any")

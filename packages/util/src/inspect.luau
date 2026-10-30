@@ -2,7 +2,6 @@
 
 --[=[
 	@class inspect
-	@within util
 
 	A Luau implementation of Node.js's
 	[`util.inspect()`](https://nodejs.org/api/util.html#utilinspectobject-options):
@@ -37,7 +36,7 @@ const Set = require("../Set")
 const Symbol = require("../Symbol")
 
 --[=[
-	@within util
+	@within inspect
 	@type InspectOptions = { depth: number?, breakLength: number?, compact: (boolean | number)?, maxArrayLength: number?, maxStringLength: number?, sorted: boolean? }
 
 	Options for `inspect`. All optional; the defaults are Node's: `depth`
@@ -78,15 +77,12 @@ const DEFAULTS: ResolvedOptions = {
 -- isIdentifier check for the keys this library can have).
 const IDENTIFIER_PATTERN = "^[%a_][%w_]*$"
 
--- Resolves user options over the defaults. `compact` follows Node's
--- semantics: a number >= 1 means "compact", false means always multiline;
--- here the number's magnitude is not modelled beyond on/off.
-local function resolveOptions(options: InspectOptions?): ResolvedOptions
+const function resolveOptions(options: InspectOptions?): ResolvedOptions
 	if options == nil then
 		return DEFAULTS
 	end
 	-- Compact unless explicitly disabled: Node's default is `compact: 3`.
-	local compact = options.compact ~= false
+	const compact = options.compact ~= false
 	return {
 		depth = if options.depth == nil then DEFAULTS.depth else options.depth,
 		breakLength = if options.breakLength == nil then DEFAULTS.breakLength else options.breakLength,
@@ -97,10 +93,7 @@ local function resolveOptions(options: InspectOptions?): ResolvedOptions
 	}
 end
 
--- Quotes a string the way Node does: single quotes, with escape sequences
--- for newlines, quotes, and non-printable characters, truncated to
--- maxStringLength with an ellipsis.
-local function quoteString(text: string, maxLength: number): string
+const function quoteString(text: string, maxLength: number): string
 	const escaped = (
 		text:gsub("[%c\\']", function(char: string): string
 			if char == "\\" then
@@ -123,9 +116,7 @@ local function quoteString(text: string, maxLength: number): string
 	return `'{escaped}'`
 end
 
--- Renders a table key: bare when identifier-like, quoted when a string,
--- bracketed otherwise.
-local function formatKey(key: any, options: ResolvedOptions): string
+const function formatKey(key: any, options: ResolvedOptions): string
 	if type(key) == "string" then
 		if key:match(IDENTIFIER_PATTERN) ~= nil then
 			return key
@@ -138,25 +129,19 @@ local function formatKey(key: any, options: ResolvedOptions): string
 	return `[{tostring(key)}]`
 end
 
--- Reports whether `value` looks like this library's `Map`/`Set`, by
--- prototype-method identity (their metatables dispatch through a
--- function).
-local function isLibraryInstance(value: any, classTable: any, methodName: string): boolean
+const function isLibraryInstance(value: any, classTable: any, methodName: string): boolean
 	if type(value) ~= "table" then
 		return false
 	end
-	local method = value[methodName]
+	const method = value[methodName]
 	return type(method) == "function" and method == (classTable.prototype :: any)[methodName]
 end
 
--- Collects a table's entries as (key, value) pairs in inspection order:
--- array part first (a table with any 1..#n sequence is rendered as an
--- array, Node's Array style), then the remaining keys, optionally sorted.
-local function collectEntries(tbl: any, sorted: boolean): { { any } }
+const function collectEntries(tbl: any, sorted: boolean): { { any } }
 	const entries: { { any } } = {}
 	local count = 0
 
-	local function insert(key: any, value: any)
+	const function insert(key: any, value: any)
 		count += 1
 		entries[count] = { key, value }
 	end
@@ -171,7 +156,7 @@ local function collectEntries(tbl: any, sorted: boolean): { { any } }
 			end
 		end
 	else
-		local keys: { any } = {}
+		const keys: { any } = {}
 		for key in next, tbl do
 			table.insert(keys, key)
 		end
@@ -194,14 +179,13 @@ local renderSet: (tbl: any, depth: number, options: ResolvedOptions, seen: { [an
 local renderTable: (tbl: any, depth: number, options: ResolvedOptions, seen: { [any]: number }) -> string
 
 --[=[
-	@within util
+	@within inspect
 	@private
 	Formats one value at `depth` remaining. `seen` maps visited tables to
 	their reference index for circular markers.
 ]=]
-local function render(value: any, depth: number, options: ResolvedOptions, seen: { [any]: number }): string
-	local kind = type(value)
-
+const function render(value: any, depth: number, options: ResolvedOptions, seen: { [any]: number }): string
+	const kind = type(value)
 	if kind == "string" then
 		return quoteString(value, options.maxStringLength)
 	end
@@ -244,8 +228,7 @@ local function render(value: any, depth: number, options: ResolvedOptions, seen:
 		return tostring(tbl)
 	end
 
-	-- Circular reference marker.
-	local ref = seen[tbl]
+	const ref = seen[tbl]
 	if ref ~= nil then
 		return `[Circular *{ref}]`
 	end
@@ -280,7 +263,7 @@ end
 function renderMap(tbl: any, depth: number, options: ResolvedOptions, seen: { [any]: number }): string
 	const entries: { { any } } = {}
 	local count = 0
-	local entryIterator = tbl.entries(tbl)
+	const entryIterator = tbl.entries(tbl)
 	local step = entryIterator.next(entryIterator)
 	while not step.done do
 		local pair = step.value
@@ -291,16 +274,16 @@ function renderMap(tbl: any, depth: number, options: ResolvedOptions, seen: { [a
 		entries[count] = `{render(pair[1], depth - 1, options, seen)} => {render(pair[2], depth - 1, options, seen)}`
 		step = entryIterator.next(entryIterator)
 	end
-	local suffix = if count < tbl.size then ", … " .. tostring(tbl.size - count) .. " more item(s)" else ""
+	const suffix = if count < tbl.size then ", … " .. tostring(tbl.size - count) .. " more item(s)" else ""
 	if count == 0 then
 		return "Map(0) {}"
 	end
-	local body = table.concat(entries, ", ")
-	local single = "Map(" .. tostring(tbl.size) .. ") { " .. body .. suffix .. " }"
+	const body = table.concat(entries, ", ")
+	const single = "Map(" .. tostring(tbl.size) .. ") { " .. body .. suffix .. " }"
 	if options.compact and #single <= options.breakLength then
 		return single
 	end
-	local lines: { string } = {}
+	const lines: { string } = {}
 	for index, entry in entries do
 		lines[index] = `  {entry}`
 	end
@@ -315,9 +298,9 @@ function renderMap(tbl: any, depth: number, options: ResolvedOptions, seen: { [a
 end
 
 function renderSet(tbl: any, depth: number, options: ResolvedOptions, seen: { [any]: number }): string
-	local members: { string } = {}
+	const members: { string } = {}
 	local count = 0
-	local valueIterator = tbl.values(tbl)
+	const valueIterator = tbl.values(tbl)
 	local step = valueIterator.next(valueIterator)
 	while not step.done do
 		if count >= options.maxArrayLength then
@@ -327,16 +310,16 @@ function renderSet(tbl: any, depth: number, options: ResolvedOptions, seen: { [a
 		members[count] = render(step.value, depth - 1, options, seen)
 		step = valueIterator.next(valueIterator)
 	end
-	local suffix = if count < tbl.size then ", … " .. tostring(tbl.size - count) .. " more item(s)" else ""
+	const suffix = if count < tbl.size then ", … " .. tostring(tbl.size - count) .. " more item(s)" else ""
 	if count == 0 then
 		return "Set(0) {}"
 	end
-	local body = table.concat(members, ", ")
-	local single = "Set(" .. tostring(tbl.size) .. ") { " .. body .. suffix .. " }"
+	const body = table.concat(members, ", ")
+	const single = "Set(" .. tostring(tbl.size) .. ") { " .. body .. suffix .. " }"
 	if options.compact and #single <= options.breakLength then
 		return single
 	end
-	local lines: { string } = {}
+	const lines: { string } = {}
 	for index, member in members do
 		lines[index] = `  {member}`
 	end
@@ -356,19 +339,19 @@ function renderTable(tbl: any, depth: number, options: ResolvedOptions, seen: { 
 
 	if #entries > options.maxArrayLength then
 		-- Truncate the rendering, Node's "… N more item(s)" marker.
-		local shown: { string } = {}
+		const shown: { string } = {}
 		for index = 1, options.maxArrayLength do
 			shown[index] = render(entries[index][2], depth - 1, options, seen)
 		end
-		local extra = `… {#entries - options.maxArrayLength} more item(s)`
+		const extra = `… {#entries - options.maxArrayLength} more item(s)`
 		if isArray then
 			return `[ {table.concat(shown, ", ")}, {extra} ]`
 		end
-		local joined = table.concat(shown, ", ")
+		const joined = table.concat(shown, ", ")
 		return "{" .. joined .. ", " .. extra .. "}"
 	end
 
-	local parts: { string } = {}
+	const parts: { string } = {}
 	for index, entry in entries do
 		local key, value = entry[1], entry[2]
 		if isArray and type(key) == "number" then
@@ -384,12 +367,12 @@ function renderTable(tbl: any, depth: number, options: ResolvedOptions, seen: { 
 		return if isArray then "[]" else "{}"
 	end
 
-	local opener, closer = if isArray then "[" else "{", if isArray then "]" else "}"
-	local single = `{opener} {table.concat(parts, ", ")} {closer}`
+	const opener, closer = if isArray then "[" else "{", if isArray then "]" else "}"
+	const single = `{opener} {table.concat(parts, ", ")} {closer}`
 	if options.compact and #single <= options.breakLength then
 		return single
 	end
-	local lines: { string } = {}
+	const lines: { string } = {}
 	for index, part in parts do
 		lines[index] = `  {part}`
 	end
@@ -397,7 +380,7 @@ function renderTable(tbl: any, depth: number, options: ResolvedOptions, seen: { 
 end
 
 --[=[
-	@within util
+	@within inspect
 	@param value any -- the value to describe
 	@param options InspectOptions? -- output-shaping options
 	@return string -- the inspection string
@@ -406,7 +389,7 @@ end
 	documentation for the supported subset of options and the documented
 	divergences.
 ]=]
-local function inspect(value: any, options: InspectOptions?): string
+const function inspect(value: any, options: InspectOptions?): string
 	return render(value, resolveOptions(options).depth, resolveOptions(options), {})
 end
 

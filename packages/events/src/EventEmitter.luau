@@ -2,7 +2,6 @@
 
 --[=[
 	@class EventEmitter
-	@within EventEmitter
 
 	Node.js
 	[`events`](https://nodejs.org/api/events.html) `EventEmitter`
@@ -95,7 +94,7 @@ const function newEventEmitter(): EventEmitter
 	const state: EventEmitterState = { _listeners = {} }
 	local emitter: EventEmitter
 
-	local function addImpl(
+	const function addImpl(
 		eventName: string,
 		listener: EventEmitterListener,
 		once: boolean,
@@ -115,7 +114,7 @@ const function newEventEmitter(): EventEmitter
 		return emitter
 	end
 
-	local function removeImpl(eventName: string, listener: EventEmitterListener): EventEmitter
+	const function removeImpl(eventName: string, listener: EventEmitterListener): EventEmitter
 		local list = state._listeners[eventName]
 		if list ~= nil then
 			-- Node removes the most recently added matching instance; walking
@@ -164,7 +163,7 @@ const function newEventEmitter(): EventEmitter
 				elseif key == "emit" then
 					return function(_self2: any, eventName: string, ...: any): boolean
 						requireEventName(eventName)
-						local list = state._listeners[eventName]
+						const list = state._listeners[eventName]
 						if list == nil or #list == 0 then
 							if eventName == "error" then
 								-- Node with no error listener crashes the process;
@@ -198,7 +197,7 @@ const function newEventEmitter(): EventEmitter
 					end
 				elseif key == "eventNames" then
 					return function(_self2: any): { string }
-						local names: { string } = {}
+						const names: { string } = {}
 						for eventName in state._listeners do
 							table.insert(names, eventName)
 						end
@@ -206,7 +205,7 @@ const function newEventEmitter(): EventEmitter
 					end
 				elseif key == "listenerCount" then
 					return function(_self2: any, eventName: string): number
-						local list = state._listeners[eventName]
+						const list = state._listeners[eventName]
 						return if list == nil then 0 else #list
 					end
 				end

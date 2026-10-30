@@ -102,17 +102,15 @@ const function btoa(data: string): string
 		byteIndex += width
 	end
 
-	const parts: { string } = {}
-	local count = 0
-	const length = #data
-	local index = 1
+	const parts: { string }, length: number = {}, #data
+	local count, index = 0, 1
 	while index + 2 <= length do
-		local b1, b2, b3 = string.byte(data, index, index + 2)
-		local combined = (b1 :: number) * 0x10000 + (b2 :: number) * 0x100 + (b3 :: number)
-		local c1 = combined // 0x40000
-		local c2 = (combined // 0x1000) % 64
-		local c3 = (combined // 0x40) % 64
-		local c4 = combined % 64
+		const b1, b2, b3 = string.byte(data, index, index + 2)
+		const combined = (b1 :: number) * 0x10000 + (b2 :: number) * 0x100 + (b3 :: number)
+		const c1 = combined // 0x40000
+		const c2 = (combined // 0x1000) % 64
+		const c3 = (combined // 0x40) % 64
+		const c4 = combined % 64
 		count += 1
 		parts[count] = string.char(
 			string.byte(BASE64_ALPHABET, c1 + 1),
@@ -134,7 +132,7 @@ const function btoa(data: string): string
 			0x3D -- '=='
 		)
 	elseif remaining == 2 then
-		local b1, b2 = string.byte(data, index, index + 1)
+		const b1, b2 = string.byte(data, index, index + 1)
 		const combined = (b1 :: number) * 0x100 + (b2 :: number)
 		count += 1
 		parts[count] = string.char(

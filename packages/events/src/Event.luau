@@ -2,7 +2,6 @@
 
 --[=[
 	@class Event
-	@within EventTarget
 
 	Web platform's
 	[`Event`](https://developer.mozilla.org/en-US/docs/Web/API/Event)

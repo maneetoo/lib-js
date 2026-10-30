@@ -2,7 +2,6 @@
 
 --[=[
 	@class timeout
-	@within AbortSignal
 
 	[`AbortSignal.timeout()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/timeout_static):
 	a signal that aborts after a delay.
@@ -15,7 +14,7 @@ const shared = require("./__shared")
 type AbortSignal = shared.AbortSignal
 
 --[=[
-	@within AbortSignal
+	@within timeout
 	@param ms number -- milliseconds to wait before aborting
 	@return AbortSignal -- a signal that aborts with a `TimeoutError` reason
 

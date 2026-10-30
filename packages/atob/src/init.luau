@@ -62,8 +62,7 @@ const function atob(data: string): string
 	end
 
 	-- Validate and strip trailing padding.
-	local unpadded = length
-	local padding = 0
+	local unpadded, padding = length, 0
 	if data:sub(-1) == "=" then
 		padding = 1
 		unpadded = length - 1
@@ -98,18 +97,16 @@ const function atob(data: string): string
 	end
 
 	const parts: { string } = {}
-	local count = 0
-	local index = 1
-	-- Full groups of four characters decode to three bytes.
+	local count, index = 0, 1
 	while index + 3 <= unpadded do
-		local c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
-		local c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
-		local c3 = DECODE_TABLE[string.byte(data, index + 2) :: number] :: number
-		local c4 = DECODE_TABLE[string.byte(data, index + 3) :: number] :: number
-		local combined = c1 * 0x40000 + c2 * 0x1000 + c3 * 0x40 + c4
-		local b1 = combined // 0x10000
-		local b2 = (combined // 0x100) % 0x100
-		local b3 = combined % 0x100
+		const c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
+		const c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
+		const c3 = DECODE_TABLE[string.byte(data, index + 2) :: number] :: number
+		const c4 = DECODE_TABLE[string.byte(data, index + 3) :: number] :: number
+		const combined = c1 * 0x40000 + c2 * 0x1000 + c3 * 0x40 + c4
+		const b1 = combined // 0x10000
+		const b2 = (combined // 0x100) % 0x100
+		const b3 = combined % 0x100
 		count += 1
 		parts[count] = string.char(b1, b2, b3)
 		index += 4
@@ -118,14 +115,14 @@ const function atob(data: string): string
 	-- Tail: two characters decode one byte, three decode two.
 	const remaining = unpadded - index + 1
 	if remaining == 2 then
-		local c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
-		local c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
+		const c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
+		const c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
 		count += 1
 		parts[count] = string.char(c1 * 4 + c2 // 16)
 	elseif remaining == 3 then
-		local c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
-		local c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
-		local c3 = DECODE_TABLE[string.byte(data, index + 2) :: number] :: number
+		const c1 = DECODE_TABLE[string.byte(data, index) :: number] :: number
+		const c2 = DECODE_TABLE[string.byte(data, index + 1) :: number] :: number
+		const c3 = DECODE_TABLE[string.byte(data, index + 2) :: number] :: number
 		count += 1
 		parts[count] = string.char(c1 * 4 + c2 // 16, (c2 % 16) * 16 + c3 // 4)
 	end
