@@ -1,7 +1,7 @@
 [package]
 name = "maneetoo/string"
 description = "String constructor and prototype methods following JavaScript string semantics."
-version = "2.0.0-rc.2"
+version = "2.0.0-rc.3"
 license = "MIT"
 authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
@@ -9,8 +9,8 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
-ECMAScript = "maneetoo/ecmascript@2.0.0-rc.2"
-ES17-Types = "maneetoo/es17types@2.0.0-rc.2"
-Number = "maneetoo/number@2.0.0-rc.2"
-Object = "maneetoo/object@2.0.0-rc.2"
-Symbol = "maneetoo/symbol@2.0.0-rc.2"
+ECMAScript = "maneetoo/ecmascript@2.0.0-rc.3"
+ES17-Types = "maneetoo/es17types@2.0.0-rc.3"
+Number = "maneetoo/number@2.0.0-rc.3"
+Object = "maneetoo/object@2.0.0-rc.3"
+Symbol = "maneetoo/symbol@2.0.0-rc.3"
