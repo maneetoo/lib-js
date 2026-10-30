@@ -243,15 +243,13 @@ return function(): (number, number)
 			error("must not run")
 		end) == nil)
 
-		-- re-scan: a callback that inserts the key itself wins, and its
-		-- return value is discarded
 		local w = Map.new()
 		local result = w.getOrInsertComputed(w, "x", function(key)
 			w.set(w, key, "callback-inserted")
 			return "computed-value"
 		end)
-		T:check("callback-inserted entry wins", result == "callback-inserted")
-		T:check("stored value is the callback's insert", w.get(w, "x") == "callback-inserted")
+		T:check("callback result overwrites inserted entry", result == "computed-value")
+		T:check("stored value is the callback's result", w.get(w, "x") == "computed-value")
 		T:check("size did not double", w.size == 1)
 
 		-- an error thrown by the callback propagates, inserting nothing
