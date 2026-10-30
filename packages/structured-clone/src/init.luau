@@ -145,7 +145,7 @@ end
 const function cloneError(value: any, seen: Seen): any
 	-- The class is found by name through Error's own static table.
 	const ErrorLib = require("./Error") :: any
-	const class = ErrorLib
+	local class = ErrorLib
 	for _, className in
 		{ "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "AggregateError" }
 	do
