@@ -3,7 +3,7 @@
 <img src=".github/assets/logo.svg">
 
 ## Lib-JS
-Everything what you need to write code in Luau with JS built-in objects
+Everything you need to write code in Luau with JS built-in objects
 
 [![Get On Wally](https://raw.githubusercontent.com/maneetoo/Roblox-OSS-Badges/2214a2aca82cbdd386b946d759d3348705d7555e/Badges/Community/Package/link-wally.svg)](https://wally.run/package/maneetoo/lib-js)
 [![Get On Pesde](https://raw.githubusercontent.com/maneetoo/Roblox-OSS-Badges/2214a2aca82cbdd386b946d759d3348705d7555e/Badges/Community/Package/link-pesde.svg)](https://pesde.dev/packages/maneetoo/libjs)
