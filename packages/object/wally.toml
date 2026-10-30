@@ -1,7 +1,7 @@
 [package]
 name = "maneetoo/object"
 description = "Object constructor and static utilities for property inspection and manipulation."
-version = "2.0.0-rc.3"
+version = "2.0.0"
 license = "MIT"
 authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
@@ -9,6 +9,6 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
-ES17-Types = "maneetoo/es17types@2.0.0-rc.3"
-Number = "maneetoo/number@2.0.0-rc.3"
-Symbol = "maneetoo/symbol@2.0.0-rc.3"
+ES17-Types = "maneetoo/es17types@2.0.0"
+Number = "maneetoo/number@2.0.0"
+Symbol = "maneetoo/symbol@2.0.0"

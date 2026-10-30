@@ -1,7 +1,7 @@
 [package]
 name = "maneetoo/util"
 description = "Utility functions from Node.js."
-version = "2.0.0-rc.3"
+version = "2.0.0"
 license = "MIT"
 authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
@@ -9,8 +9,8 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
-Error = "maneetoo/error@2.0.0-rc.3"
-JSON = "maneetoo/json@2.0.0-rc.3"
-Map = "maneetoo/map@2.0.0-rc.3"
-Set = "maneetoo/set@2.0.0-rc.3"
-Symbol = "maneetoo/symbol@2.0.0-rc.3"
+Error = "maneetoo/error@2.0.0"
+JSON = "maneetoo/json@2.0.0"
+Map = "maneetoo/map@2.0.0"
+Set = "maneetoo/set@2.0.0"
+Symbol = "maneetoo/symbol@2.0.0"

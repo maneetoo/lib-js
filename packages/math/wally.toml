@@ -1,7 +1,7 @@
 [package]
 name = "maneetoo/math"
 description = "Mathematical constants and functions matching the JavaScript Math object."
-version = "2.0.0-rc.3"
+version = "2.0.0"
 license = "MIT"
 authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
@@ -9,6 +9,6 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
-ECMAScript = "maneetoo/ecmascript@2.0.0-rc.3"
-Number = "maneetoo/number@2.0.0-rc.3"
-Symbol = "maneetoo/symbol@2.0.0-rc.3"
+ECMAScript = "maneetoo/ecmascript@2.0.0"
+Number = "maneetoo/number@2.0.0"
+Symbol = "maneetoo/symbol@2.0.0"
