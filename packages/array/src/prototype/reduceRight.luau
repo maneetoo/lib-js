@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.reduceRight()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduceRight).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within reduceRight
@@ -19,10 +19,14 @@ const esTypes = require "../../ES17-Types"
 
 	Like `reduce`, but folds from right to left.
 ]=]
-const function reduceRight<T, U>(array: esTypes.Array<T>, callback: (accumulator: U, value: T, index: number, array: esTypes.Array<T>) -> U, ...: U?): U
+const function reduceRight<T, U>(
+	array: esTypes.Array<T>,
+	callback: (accumulator: U, value: T, index: number, array: esTypes.Array<T>) -> U,
+	...: U?
+): U
 	if not ECMAScript.IsCallable(callback) then
-        error(TypeError.new("Array.prototype.reduceRight: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.reduceRight: callback is not a function"))
+	end
 	const length = #array
 	const hasInitial = select("#", ...) > 0
 

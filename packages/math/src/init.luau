@@ -51,27 +51,27 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const Number = require "./Number"
-const __staticProps = require "@self/__staticProps"
+const Number = require("./Number")
+const Symbol = require("./Symbol")
+const __staticProps = require("@self/__staticProps")
 
-const acosh = require "@self/acosh"
-const asinh = require "@self/asinh"
-const atanh = require "@self/atanh"
-const cbrt = require "@self/cbrt"
-const clz32 = require "@self/clz32"
-const expm1 = require "@self/expm1"
-const fround = require "@self/fround"
-const hypot = require "@self/hypot"
-const imul = require "@self/imul"
-const log1p = require "@self/log1p"
-const log2 = require "@self/log2"
-const max = require "@self/max"
-const min = require "@self/min"
-const pow = require "@self/pow"
-const round = require "@self/round"
-const sign = require "@self/sign"
-const trunc = require "@self/trunc"
+const acosh = require("@self/acosh")
+const asinh = require("@self/asinh")
+const atanh = require("@self/atanh")
+const cbrt = require("@self/cbrt")
+const clz32 = require("@self/clz32")
+const expm1 = require("@self/expm1")
+const fround = require("@self/fround")
+const hypot = require("@self/hypot")
+const imul = require("@self/imul")
+const log1p = require("@self/log1p")
+const log2 = require("@self/log2")
+const max = require("@self/max")
+const min = require("@self/min")
+const pow = require("@self/pow")
+const round = require("@self/round")
+const sign = require("@self/sign")
+const trunc = require("@self/trunc")
 
 --[=[
 	@within Math
@@ -235,7 +235,7 @@ const function tanh(x: any): number
 	return math.tanh(Number(x))
 end
 
-const Math = table.freeze {
+const Math = table.freeze({
 	E = __staticProps.E,
 	LN2 = __staticProps.LN2,
 	LN10 = __staticProps.LN10,
@@ -282,6 +282,6 @@ const Math = table.freeze {
 	trunc = trunc,
 
 	[Symbol.toStringTag] = "Math",
-}
+})
 
 return Math

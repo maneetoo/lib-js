@@ -8,7 +8,7 @@
 	accessor, exposed here as a directly-callable function.
 ]=]
 
-const constructor = require "../constructor"
+const constructor = require("../constructor")
 
 --[=[
 	@within description

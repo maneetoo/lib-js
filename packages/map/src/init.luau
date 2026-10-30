@@ -18,6 +18,14 @@
 	print(m.size, m.get(m, "b")) -- 3  2
 	```
 
+	```lua
+	-- Map.groupBy, a static like JavaScript's
+	local byType = Map.groupBy(items, function(item, index)
+		return item.type
+	end)
+	local bucket = byType.get(byType, "fruit")
+	```
+
 	:::note
 	Methods take the map as their first argument, as in
 	`Map.prototype.set(map, key, value)`, or as `map.set(map, key, value)`.
@@ -43,10 +51,10 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
-const esTypes = require "./ES17-Types"
-const iterate = require "./iterate"
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
+const esTypes = require("./ES17-Types")
+const iterate = require("./iterate")
 
 --[=[
 	@within Map
@@ -64,6 +72,8 @@ export type Map<K, V> = {
 	read size: number,
 	set: (self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: (self: Map<K, V>, key: K) -> V?,
+	getOrInsert: (self: Map<K, V>, key: K, value: V) -> V,
+	getOrInsertComputed: (self: Map<K, V>, key: K, compute: (key: K) -> V) -> V,
 	has: (self: Map<K, V>, key: K) -> boolean,
 	delete: (self: Map<K, V>, key: K) -> boolean,
 	clear: (self: Map<K, V>) -> (),
@@ -83,6 +93,8 @@ export type Map<K, V> = {
 export type MapPrototype = {
 	set: <K, V>(self: Map<K, V>, key: K, value: V) -> Map<K, V>,
 	get: <K, V>(self: Map<K, V>, key: K) -> V?,
+	getOrInsert: <K, V>(self: Map<K, V>, key: K, value: V) -> V,
+	getOrInsertComputed: <K, V>(self: Map<K, V>, key: K, compute: (key: K) -> V) -> V,
 	has: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	delete: <K, V>(self: Map<K, V>, key: K) -> boolean,
 	clear: <K, V>(self: Map<K, V>) -> (),
@@ -101,6 +113,7 @@ export type MapPrototype = {
 ]=]
 export type MapStatic = {
 	new: <K, V>(iterable: unknown?) -> Map<K, V>,
+	groupBy: <K, V>(items: unknown, callback: (value: V, index: number) -> K) -> Map<K, { V }>,
 	prototype: MapPrototype,
 }
 
@@ -249,6 +262,101 @@ end
 --[=[
 	@within Map
 	@param self Map<K, V>
+	@param key K -- the key to look up
+	@param value V -- the value to insert when `key` has no entry
+	@return V -- the existing value for `key`, or the inserted one
+
+	Like the TC39 [`Map.prototype.getOrInsert`](https://tc39.es/proposal-upsert/)
+	proposal (now Stage 4): when `key` is present its value is returned
+	untouched and `value` is ignored; when absent, `key` is set to `value`
+	(at the end of the insertion order) and `value` is returned. Removes the
+	`has` → `set`/`get` double lookup.
+
+	:::note
+	`nil` is a legal stored value here, unlike with `get`: an entry holding
+	`nil` already counts as present, so `getOrInsert(m, k, v)` returns `nil`
+	and does not overwrite it.
+	:::
+]=]
+const function getOrInsert<K, V>(self: MapState<K, V>, key: K, value: V): V
+	const normalized = normalizeKey(key)
+	local position = self._index[normalized]
+	if position == nil then
+		position = self._top + 1
+		self._top = position
+		self._keys[position] = normalized
+		self._values[position] = wrapValue(value)
+		self._index[normalized] = position
+		self._size += 1
+		return value
+	end
+	return unwrapValue(self._values[position]) :: V
+end
+
+--[=[
+	@within Map
+	@param self Map<K, V>
+	@param key K -- the key to look up
+	@param compute (key: K) -> V -- called only when `key` has no entry, with `key` as its argument
+	@return V -- the existing value for `key`, or the computed one
+
+	Like the TC39
+	[`Map.prototype.getOrInsertComputed`](https://tc39.es/proposal-upsert/)
+	proposal (now Stage 4): when `key` is present its value is returned and
+	`compute` is never called; when absent, `compute(key)` runs, its result is
+	inserted (at the end of the insertion order) and returned. Use it when
+	the default value is expensive or context-sensitive — the callback only
+	runs on a genuine miss.
+
+	As the proposal specifies, the map is looked up **again** after `compute`
+	returns: if the callback itself inserted `key` while running, that entry
+	wins and the returned value is discarded. And exactly as in JavaScript,
+	an error thrown by `compute` propagates out of this method with nothing
+	inserted (an entry the callback added before throwing stays, but is not
+	overwritten by this call).
+
+	:::note
+	Same key rules as every Map method: `-0` canonicalizes to `+0`, `NaN`
+	matches by SameValueZero, and `nil` is a legal key. A `nil`-valued entry
+	counts as present, so `compute` does not run for it.
+	:::
+
+	:::caution
+	`compute` is validated as callable up front, throwing a `TypeError`
+	before any lookup, mirroring the proposal's `IsCallable` check.
+	:::
+]=]
+const function getOrInsertComputed<K, V>(self: MapState<K, V>, key: K, compute: (key: K) -> V): V
+	if type(compute) ~= "function" then
+		error(TypeError.new("Map.prototype.getOrInsertComputed: callback is not a function"), 2)
+	end
+
+	const normalized = normalizeKey(key)
+	local position = self._index[normalized]
+	if position ~= nil then
+		return unwrapValue(self._values[position]) :: V
+	end
+
+	const computed = compute(key)
+
+	-- Re-scan after the callback: it may have inserted `key` itself, and if
+	-- so that entry wins over the computed value (the proposal's algorithm).
+	local finalPosition = self._index[normalized]
+	if finalPosition == nil then
+		finalPosition = self._top + 1
+		self._top = finalPosition
+		self._keys[finalPosition] = normalized
+		self._values[finalPosition] = wrapValue(computed)
+		self._index[normalized] = finalPosition
+		self._size += 1
+		return computed
+	end
+	return unwrapValue(self._values[finalPosition]) :: V
+end
+
+--[=[
+	@within Map
+	@param self Map<K, V>
 	@param key K -- the key to check
 	@return boolean -- `true` if `key` has an entry, even one whose value is `nil`
 ]=]
@@ -359,6 +467,8 @@ end
 const prototype: MapPrototype = {
 	set = set,
 	get = get,
+	getOrInsert = getOrInsert,
+	getOrInsertComputed = getOrInsertComputed,
 	has = has,
 	delete = delete_,
 	clear = clear,
@@ -367,8 +477,8 @@ const prototype: MapPrototype = {
 	values = values,
 	entries = entries,
 } :: any
-;(prototype :: any)[Symbol.iterator] = entries
-;(prototype :: any)[Symbol.toStringTag] = "Map"
+(prototype :: any)[Symbol.iterator] = entries;
+(prototype :: any)[Symbol.toStringTag] = "Map"
 
 const metatable = {
 	__index = function(self: any, key: any): any
@@ -410,7 +520,62 @@ const Map = {
 	new = new_,
 	prototype = prototype,
 } :: MapStatic
-;(prototype :: any).constructor = Map
+(prototype :: any).constructor = Map
+
+--[=[
+	@within Map
+	@static
+	@param items unknown -- any iterable (array, string, another `Map`, anything with `[Symbol.iterator]`); `nil` gives an empty map
+	@param callback (value: V, index: number) -> K -- computes the group key for each item
+	@return Map<K, { V }> -- a map from each unique returned key to an array of the items that produced it
+
+	A Luau implementation of JavaScript's
+	[`Map.groupBy()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy).
+
+	Iterates `items` in order, calling `callback(value, index)` for each
+	element, and appends the value to the array stored under the returned
+	key, creating that array lazily on first use. The result is a real `Map`
+	keyed by the callback's return values, so — unlike `Object.groupBy` —
+	keys keep their identity and type: tables are keyed by reference, and a
+	mutated key object still retrieves its bucket.
+
+	:::note
+	`index` is passed 1-based, following Luau array convention, whereas
+	JavaScript's callback receives a 0-based index. Adjust by hand
+	(`index - 1`) inside `callback` if 0-based indices are needed for parity
+	with existing JS logic being ported.
+	:::
+
+	:::note
+	Items within each bucket preserve their original relative order from
+	`items`, matching JavaScript's guarantee. Elements are shared by
+	reference, not copied.
+	:::
+
+	:::caution
+	Unlike `Object.groupBy`, no key coercion happens and none is needed:
+	any Luau value the callback returns is a valid `Map` key, including
+	`nil`, `NaN`, and `-0` (normalized to `+0`).
+	:::
+]=]
+function Map.groupBy(items: unknown, callback: any): any
+	requireCallable(callback, "groupBy")
+	const result = new_(nil) :: MapState<any, any>
+	local index = 0
+	iterate(items, function(value: any)
+		index += 1
+		const key = callback(value, index)
+		local bucket = get(result, key)
+		if bucket == nil then
+			-- Lazy bucket creation: keys that never appear in the callback's
+			-- output never enter the result map.
+			set(result, key, { value })
+		else
+			bucket[#bucket + 1] = value
+		end
+	end)
+	return result
+end
 
 table.freeze(prototype)
 table.freeze(Map)

@@ -8,7 +8,8 @@
 	Returns an array of a table's own values.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within values
@@ -16,7 +17,7 @@ const esTypes = require "../ES17-Types"
 	@return { V } -- an array containing every value found in `object`
 
 	Iterates with `next` directly, so a custom `__iter` metamethod is
-	ignored and only genuine own values are reported.
+	ignored. Values whose keys are symbols are skipped, as in JavaScript.
 
 	:::note
 	As with `keys`, the order of the returned values follows Luau's
@@ -29,9 +30,11 @@ const esTypes = require "../ES17-Types"
 const function values<K, V>(object: esTypes.Table<K, V>): esTypes.Array<V>
 	const result: esTypes.Array<V> = {}
 	local count = 0
-	for _, value in next, object do
-		count += 1
-		result[count] = value
+	for key, value in next, object do
+		if not Symbol.isSymbol(key) then
+			count += 1
+			result[count] = value
+		end
 	end
 	return result
 end

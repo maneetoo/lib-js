@@ -6,12 +6,12 @@
 	A Luau implementation of JavaScript's [`Array.fromAsync()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync).
 ]=]
 
-const ECMAScript = require "../ECMAScript"
-const Promise = require "../Promise"
-const Symbol = require "../Symbol"
-const TypeError = require "../Error" .TypeError
-const esTypes = require "../ES17-Types"
-const isArray = require "./isArray"
+const ECMAScript = require("../ECMAScript")
+const Promise = require("../Promise")
+const Symbol = require("../Symbol")
+const TypeError = require("../Error").TypeError
+const esTypes = require("../ES17-Types")
+const isArray = require("./isArray")
 
 type Step = { done: boolean, value: unknown }
 
@@ -57,7 +57,10 @@ end
 	Like `from`, this returns `Array<U>` and cannot check the element type.
 	:::
 ]=]
-const function fromAsync(items: unknown, mapFn: ((value: unknown, index: number) -> unknown)?): Promise.Promise<esTypes.Array<unknown>>
+const function fromAsync(
+	items: unknown,
+	mapFn: ((value: unknown, index: number) -> unknown)?
+): Promise.Promise<esTypes.Array<unknown>>
 	return Promise.new<<esTypes.Array<unknown>>>(function(resolve, reject)
 		if items == nil then
 			reject(TypeError.new("Array.fromAsync: undefined is not async iterable or iterable"))

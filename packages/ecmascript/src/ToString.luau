@@ -12,10 +12,11 @@
 	the `this` coercion of every `String.prototype` method.
 ]=]
 
-const Number = require "../Number"
-const Object = require "../Object"
-const Symbol = require "../Symbol"
-const esTypes = require "../ES17-Types"
+const IsCallable = require("./IsCallable")
+const Number = require("../Number")
+const Object = require("../Object")
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 const NATIVE_FUNCTION = "function () { [native code] }"
 
@@ -33,6 +34,14 @@ const function isArrayLike(value: esTypes.Table<unknown, unknown>): boolean
 		count += 1
 	end
 	return count > 0
+end
+
+--[=[
+	Whether `value` is a JavaScript primitive, as far as Luau can represent one.
+]=]
+const function isPrimitive(value: unknown): boolean
+	const kind = type(value)
+	return kind == "nil" or kind == "boolean" or kind == "number" or kind == "string" or Symbol.isSymbol(value)
 end
 
 --[=[
@@ -63,7 +72,7 @@ const function convert(value: unknown, seen: esTypes.Table<any, boolean>): strin
 		const tbl = value :: any
 
 		if Symbol.isSymbol(tbl) then
-			error("Cannot convert a Symbol value to a string")
+			error("Cannot convert a Symbol value to a string", 2)
 		end
 
 		-- `Array.prototype.toString` is `join(",")`. Plain tables are
@@ -84,12 +93,12 @@ const function convert(value: unknown, seen: esTypes.Table<any, boolean>): strin
 		end
 
 		-- ToPrimitive(value, "string"): try `toString`, then `valueOf`.
-		-- Only a primitive result is accepted.
+		-- Only a primitive result is accepted; callable tables work here too.
 		for _, name in { "toString", "valueOf" } do
 			const method = tbl[name]
-			if type(method) == "function" then
+			if IsCallable(method) then
 				const result = method(tbl)
-				if type(result) ~= "table" then
+				if isPrimitive(result) then
 					return convert(result, seen)
 				end
 			end
@@ -117,7 +126,7 @@ end
 	- Array-like tables are joined with `","`.
 
 	:::caution
-	A symbol is not converted. A `TypeError` is raised, as `ToString` does for
+	A symbol is not converted. An error is raised, as `ToString` does for
 	symbols in JavaScript. `String(symbol)` is the explicit form that works.
 	:::
 ]=]

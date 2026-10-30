@@ -10,7 +10,7 @@
 	same table.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within freeze

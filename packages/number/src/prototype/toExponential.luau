@@ -10,7 +10,7 @@
 	`d.dddde±dd`.
 ]=]
 
-const __shared = require "./__shared"
+const __shared = require("./__shared")
 
 --[=[
 	@within toExponential
@@ -42,7 +42,8 @@ const function toExponential(self: number, fractionDigits: number?): string
 		return specialCase
 	end
 
-	if fractionDigits ~= nil
+	if
+		fractionDigits ~= nil
 		and (fractionDigits ~= math.floor(fractionDigits) or fractionDigits < 0 or fractionDigits > 100)
 	then
 		error("toExponential: fractionDigits must be an integer between 0 and 100", 2)

@@ -19,9 +19,9 @@
 	:::
 ]=]
 
-const Number = require "../Number"
-const Object = require "../Object"
-const esTypes = require "../ES17-Types"
+const String = require("../String")
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 export type ErrorInstance = {
 	message: string,
@@ -68,7 +68,8 @@ export type ErrorStatics = {
 }
 
 -- Every class metatable, so `isError` recognises instances in O(1).
-const classMetatables: esTypes.Table<unknown, boolean> = setmetatable({} :: esTypes.Table<unknown, boolean>, { __mode = "k" })
+const classMetatables: esTypes.Table<unknown, boolean> =
+	setmetatable({} :: esTypes.Table<unknown, boolean>, { __mode = "k" })
 
 --[=[
 	Functions that belong to the library's own call path. The `stack` capture
@@ -77,7 +78,8 @@ const classMetatables: esTypes.Table<unknown, boolean> = setmetatable({} :: esTy
 	index can point past user code or inside the library, depending on how
 	the error was built.
 ]=]
-const internalFunctions: esTypes.Table<unknown, boolean> = setmetatable({} :: esTypes.Table<unknown, boolean>, { __mode = "k" })
+const internalFunctions: esTypes.Table<unknown, boolean> =
+	setmetatable({} :: esTypes.Table<unknown, boolean>, { __mode = "k" })
 
 --[=[
 	@within __class
@@ -95,43 +97,20 @@ const NATIVE_SOURCE = "[C]"
 	@param value unknown -- the value to convert
 	@return string -- the value as JavaScript's `ToString` would produce it
 
-	Numbers use `Number.prototype.toString`, so `Infinity` and `1e+21` match JavaScript.
-	Tables use their `toString` method when they have a callable one. Otherwise
-	the result is `Object.prototype.toString`, which gives `"[object Object]"` for
-	a plain object, as JavaScript does.
+	This delegates to `String`, so numbers, arrays, plain objects, callable
+	`toString`/`valueOf` methods, and the other JavaScript `ToString` cases follow
+	the same rules as the rest of the library.
 
 	:::caution
-	JavaScript throws for a Symbol here. The `Error` constructors reject
-	symbols before they reach this function, so a symbol never gets this far.
+	A `Symbol` raises an error, as JavaScript's `ToString` does. The `Error`
+	constructors reject a symbol *message* before it reaches this function.
 	:::
 ]=]
 const function toJsString(value: unknown): string
-	if value == nil then
-		return "undefined"
+	if Symbol.isSymbol(value) then
+		error("Cannot convert a Symbol value to a string", 2)
 	end
-	if type(value) == "string" then
-		return value
-	end
-	if type(value) == "number" then
-		return Number.prototype.toString(value)
-	end
-	if type(value) == "boolean" then
-		return if value then "true" else "false"
-	end
-	if type(value) == "function" then
-		return "function () { [native code] }"
-	end
-	if type(value) == "table" then
-		const object = value :: esTypes.Table<unknown, unknown>
-		const toStringFn = object["toString"]
-		if type(toStringFn) == "function" then
-			const result = (toStringFn :: (unknown) -> unknown)(value)
-			if type(result) == "string" then
-				return result
-			end
-		end
-	end
-	return Object.prototype.toString(value)
+	return String(value)
 end
 
 --[=[
@@ -143,12 +122,12 @@ end
 	Used for `Error` itself, whose prototype is built by `Error/__hierarchy.luau`.
 ]=]
 const function createBaseClass(name: string, prototype: ErrorPrototype): ErrorClass
-	const metatable: ErrorMetatable = table.freeze {
+	const metatable: ErrorMetatable = table.freeze({
 		__index = prototype,
 		__tostring = function(self: ErrorInstance): string
 			return prototype.toString(self)
 		end,
-	}
+	})
 	classMetatables[metatable] = true
 
 	return {
@@ -177,12 +156,12 @@ const function createSubclass(name: string, parent: ErrorPrototype): ErrorClass
 	}
 	setmetatable(prototype, { __index = parent })
 
-	const metatable: ErrorMetatable = table.freeze {
+	const metatable: ErrorMetatable = table.freeze({
 		__index = prototype,
 		__tostring = function(self: ErrorInstance): string
 			return prototype.toString(self)
 		end,
-	}
+	})
 	classMetatables[metatable] = true
 
 	return {
@@ -289,7 +268,11 @@ markInternal(allocate)
 	a callable table. Type-checked code should use `Class.new(...)`.
 	:::
 ]=]
-const function makeConstructor(class: ErrorClass, new: (...unknown) -> ErrorInstance, parent: ErrorConstructor?): ErrorConstructor
+const function makeConstructor(
+	class: ErrorClass,
+	new: (...unknown) -> ErrorInstance,
+	parent: ErrorConstructor?
+): ErrorConstructor
 	const constructor: ErrorConstructor = {
 		name = class.name,
 		prototype = class.prototype,
@@ -329,7 +312,7 @@ const function isError(value: unknown): boolean
 	return metatable ~= nil and classMetatables[metatable] == true
 end
 
-return table.freeze {
+return table.freeze({
 	createBaseClass = createBaseClass,
 	createSubclass = createSubclass,
 	allocate = allocate,
@@ -337,4 +320,4 @@ return table.freeze {
 	isError = isError,
 	toJsString = toJsString,
 	markInternal = markInternal,
-}
+})

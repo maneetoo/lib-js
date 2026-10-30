@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.findLastIndex()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within findLastIndex
@@ -18,10 +18,13 @@ const esTypes = require "../../ES17-Types"
 
 	Like `findIndex`, but searches from the end.
 ]=]
-const function findLastIndex<T>(array: esTypes.Array<T>, predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean): number
+const function findLastIndex<T>(
+	array: esTypes.Array<T>,
+	predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean
+): number
 	if not ECMAScript.IsCallable(predicate) then
-        error(TypeError.new("Array.prototype.findLastIndex: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.findLastIndex: callback is not a function"))
+	end
 	for index = #array, 1, -1 do
 		if predicate(array[index], index - 1, array) then
 			return index - 1

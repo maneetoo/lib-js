@@ -61,7 +61,7 @@ const descriptionStore: { [any]: any } = setmetatable({}, { __mode = "k" })
 -- The `descriptions` API used below and exported. Same method names as the
 -- `WeakMap` it replaces, so callers and `Symbol/prototype/description` are
 -- unaffected.
-const descriptions = table.freeze {
+const descriptions = table.freeze({
 	has = function(_self: any, key: any): boolean
 		return descriptionStore[key] ~= nil
 	end,
@@ -75,7 +75,7 @@ const descriptions = table.freeze {
 	set = function(_self: any, key: any, description: string?)
 		descriptionStore[key] = if description == nil then NIL_DESCRIPTION else description
 	end,
-}
+})
 
 local sharedMetatable: { __index: any, __tostring: any }? = nil
 
@@ -168,11 +168,11 @@ const function create(description: string?): Symbol
 	return symbol
 end
 
-return table.freeze {
+return table.freeze({
 	create = create,
 	setPrototype = setPrototype,
 	isSymbol = isSymbol,
 	descriptions = descriptions,
 	toString = toStringImpl,
 	valueOf = valueOfImpl,
-}
+})

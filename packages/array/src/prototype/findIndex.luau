@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.findIndex()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within findIndex
@@ -18,10 +18,13 @@ const esTypes = require "../../ES17-Types"
 
 	Returns the index of the first element for which `predicate` is truthy, or `-1`.
 ]=]
-const function findIndex<T>(array: esTypes.Array<T>, predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean): number
+const function findIndex<T>(
+	array: esTypes.Array<T>,
+	predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean
+): number
 	if not ECMAScript.IsCallable(predicate) then
-        error(TypeError.new("Array.prototype.findIndex: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.findIndex: callback is not a function"))
+	end
 	const length = #array
 	for index = 1, length do
 		if predicate(array[index], index - 1, array) then

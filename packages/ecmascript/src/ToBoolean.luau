@@ -18,7 +18,7 @@
 	:::
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within ToBoolean
@@ -55,7 +55,7 @@ const function ToBoolean(value: any): boolean
 		-- `value ~= value` catches NaN (the only value unequal to
 		-- itself); `value == 0` catches both +0 and -0, since IEEE-754
 		-- defines them as numerically equal.
-		if Number.isNaN(value) then
+		if Number.isNaN(value) or value == 0 then
 			return false
 		end
 		return true

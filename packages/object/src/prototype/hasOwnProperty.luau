@@ -28,4 +28,4 @@
 	key that was never set.
 	:::
 ]=]
-return require "../hasOwn"
+return require("../hasOwn")

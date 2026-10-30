@@ -12,4 +12,4 @@
 	since every symbol's shared metatable wires `__tostring` to this
 	same implementation.
 ]=]
-return require "../constructor" .toString
+return require("../constructor").toString

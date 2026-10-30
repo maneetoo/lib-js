@@ -8,7 +8,7 @@
 	Joins a template's raw strings with substitution values.
 ]=]
 
-const ECMAScript = require "../ECMAScript"
+const ECMAScript = require("../ECMAScript")
 
 --[=[
 	@within raw

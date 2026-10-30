@@ -11,8 +11,8 @@
 	to the same floating-point value.
 ]=]
 
-const isInteger = require "./isInteger"
-const __staticProps = require "./__staticProps"
+const __staticProps = require("./__staticProps")
+const isInteger = require("./isInteger")
 
 --[=[
 	@within isSafeInteger

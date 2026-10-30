@@ -9,9 +9,9 @@
 	counterpart. Returns a positive integer id for `clearTimeout`.
 ]=]
 
-const Number = require "../Number"
-const TypeError = require "../Error" .TypeError
-const __scheduler = require "./__scheduler"
+const Number = require("../Number")
+const TypeError = require("../Error").TypeError
+const __scheduler = require("./__scheduler")
 
 --[=[
 	@within setTimeout
@@ -23,7 +23,7 @@ const __scheduler = require "./__scheduler"
 ]=]
 const function setTimeout(callback: (...any) -> (), delay: number?, ...: any): number
 	if type(callback) ~= "function" then
-		error(TypeError.new("The \"callback\" argument must be of type function"), 2)
+		error(TypeError.new('The "callback" argument must be of type function'), 2)
 	end
 	const ms: number = __scheduler.normalizeDelay(Number(delay))
 	return __scheduler.schedule(callback, ms, table.pack(...), false)

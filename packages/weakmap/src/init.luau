@@ -78,8 +78,8 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
 
 --[=[
 	@within WeakMap
@@ -129,7 +129,7 @@ type Internal<K, V> = WeakMap<K, V> & {
 const NIL_SENTINEL = newproxy(false)
 
 const prototype = {}
-;(prototype :: any).__index = prototype
+(prototype :: any).__index = prototype
 
 --[=[
 	@within WeakMap
@@ -352,14 +352,12 @@ const function getOrInsertComputed<K, V>(self: Internal<K, V>, key: K, compute: 
 	entries[key] = if value == nil then NIL_SENTINEL else value
 	return value
 end
-
-;(prototype :: any).set = set
-;(prototype :: any).get = get
-;(prototype :: any).has = has
-;(prototype :: any).delete = delete_
-;(prototype :: any).getOrInsert = getOrInsert
-;(prototype :: any).getOrInsertComputed = getOrInsertComputed
-
+(prototype :: any).set = set;
+(prototype :: any).get = get;
+(prototype :: any).has = has;
+(prototype :: any).delete = delete_;
+(prototype :: any).getOrInsert = getOrInsert;
+(prototype :: any).getOrInsertComputed = getOrInsertComputed
 
 --[=[
 	@within WeakMap
@@ -388,8 +386,8 @@ const WeakMap = {
 	new = new_,
 	prototype = prototype,
 }
-;(prototype :: any).constructor = WeakMap
-;(prototype :: any)[Symbol.toStringTag] = "WeakMap"
+(prototype :: any).constructor = WeakMap;
+(prototype :: any)[Symbol.toStringTag] = "WeakMap"
 table.freeze(prototype)
 table.freeze(WeakMap)
 

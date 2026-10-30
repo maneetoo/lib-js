@@ -59,12 +59,12 @@
 	:::
 ]=]
 
-const Array = require "../Array"
-const ECMAScript = require "../ECMAScript"
-const Number = require "../Number"
-const Symbol = require "../Symbol"
-const TypeError = require "../Error" .TypeError
-const __raw = require "./__raw"
+const Array = require("../Array")
+const ECMAScript = require("../ECMAScript")
+const Number = require("../Number")
+const Symbol = require("../Symbol")
+const TypeError = require("../Error").TypeError
+const __raw = require("./__raw")
 
 const BUILTIN_TAGS: { [string]: boolean } = {
 	Map = true,
@@ -140,7 +140,9 @@ const function replaceInvalidUtf8(text: string): string
 			local consumed = if size == 0 then 0 else 1
 			while consumed < size and index + consumed <= length do
 				const byte = text:byte(index + consumed) :: number
-				const allowed = if consumed == 1 then (byte >= low and byte <= high) else (byte >= 0x80 and byte <= 0xBF)
+				const allowed = if consumed == 1
+					then (byte >= low and byte <= high)
+					else (byte >= 0x80 and byte <= 0xBF)
 				if not allowed then
 					break
 				end
@@ -175,7 +177,7 @@ const function quote(text: string): string
 	)
 	-- Escape quotes, backslashes, and control characters. Do this before the
 	-- surrogate step below, which inserts backslashes of its own.
-	result = result:gsub("[%c\"\\]", function(character: string): string
+	result = result:gsub('[%c"\\]', function(character: string): string
 		const escape = ESCAPES[character]
 		if escape then
 			return escape

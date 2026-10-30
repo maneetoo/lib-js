@@ -1,0 +1,13 @@
+[package]
+name = "maneetoo/abort"
+description = "AbortController and AbortSignal from the Web platform."
+version = "2.0.0-rc.3"
+license = "MIT"
+authors = ["maneetoo"]
+registry = "https://github.com/UpliftGames/wally-index"
+repository = "https://github.com/maneetoo/lib-js"
+realm = "shared"
+
+[dependencies]
+Error = "maneetoo/error@2.0.0-rc.3"
+Timers = "maneetoo/timers@2.0.0-rc.3"

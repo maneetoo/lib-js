@@ -17,10 +17,10 @@
 	:::
 ]=]
 
-const classes = require "./__class"
-const Symbol = require "../Symbol"
-const esTypes = require "../ES17-Types"
-const toString = require "./prototype/toString"
+const Symbol = require("../Symbol")
+const classes = require("./__class")
+const esTypes = require("../ES17-Types")
+const toString = require("./prototype/toString")
 
 type ErrorInstance = classes.ErrorInstance
 type ErrorConstructor = classes.ErrorConstructor
@@ -58,9 +58,13 @@ end
 classes.markInternal(buildError)
 
 const errorClass = classes.createBaseClass("Error", prototype)
-const ErrorConstructor = classes.makeConstructor(errorClass, function(message: unknown?, options: unknown?): ErrorInstance
-	return buildError(errorClass, message, options)
-end, nil)
+const ErrorConstructor = classes.makeConstructor(
+	errorClass,
+	function(message: unknown?, options: unknown?): ErrorInstance
+		return buildError(errorClass, message, options)
+	end,
+	nil
+)
 
 const function defineSubclass(name: string): ErrorConstructor
 	const subclass = classes.createSubclass(name, prototype)
@@ -78,20 +82,35 @@ const SyntaxErrorConstructor = defineSubclass("SyntaxError")
 const URIErrorConstructor = defineSubclass("URIError")
 
 const aggregateClass = classes.createSubclass("AggregateError", prototype)
-const AggregateErrorConstructor = classes.makeConstructor(aggregateClass, function(errors: unknown, message: unknown?, options: unknown?): ErrorInstance
-	if type(errors) ~= "table" then
-		error(TypeErrorConstructor.new("AggregateError: errors is not iterable"))
-	end
+const AggregateErrorConstructor = classes.makeConstructor(
+	aggregateClass,
+	function(errors: unknown, message: unknown?, options: unknown?): ErrorInstance
+		local list: esTypes.Array<unknown>
+		if type(errors) == "string" then
+			-- Strings are iterable in JavaScript, so their code points become
+			-- the error list instead of being rejected.
+			list = {}
+			local count = 0
+			for _, codePoint in utf8.codes(errors :: string) do
+				count += 1
+				list[count] = utf8.char(codePoint)
+			end
+		elseif type(errors) == "table" and not Symbol.isSymbol(errors) then
+			list = errors :: esTypes.Array<unknown>
+		else
+			error(TypeErrorConstructor.new("AggregateError: errors is not iterable"))
+		end
 
-	const list = errors :: esTypes.Array<unknown>
-	const instance = buildError(aggregateClass, message, options)
-	const copy: esTypes.Array<unknown> = {}
-	for index = 1, #list do
-		copy[index] = list[index]
-	end
-	instance.errors = copy
-	return instance
-end, ErrorConstructor)
+		const instance = buildError(aggregateClass, message, options)
+		const copy: esTypes.Array<unknown> = {}
+		for index = 1, #list do
+			copy[index] = list[index]
+		end
+		instance.errors = copy
+		return instance
+	end,
+	ErrorConstructor
+)
 
 -- Each subclass is also a static field of `Error`, so `Error.TypeError` gives
 -- the same constructor as `require "Error/TypeError"`. Luau does not type the
@@ -110,11 +129,22 @@ for name, constructor in statics do
 end
 
 -- The constructors were left unfrozen by `makeConstructor`, so freeze them now.
-for _, constructor in { ErrorConstructor, AggregateErrorConstructor, EvalErrorConstructor, RangeErrorConstructor, ReferenceErrorConstructor, SyntaxErrorConstructor, TypeErrorConstructor, URIErrorConstructor } do
+for _, constructor in
+	{
+		ErrorConstructor,
+		AggregateErrorConstructor,
+		EvalErrorConstructor,
+		RangeErrorConstructor,
+		ReferenceErrorConstructor,
+		SyntaxErrorConstructor,
+		TypeErrorConstructor,
+		URIErrorConstructor,
+	}
+do
 	table.freeze(constructor)
 end
 
-return table.freeze {
+return table.freeze({
 	prototype = prototype,
 	Error = ErrorConstructor,
 	EvalError = EvalErrorConstructor,
@@ -124,4 +154,4 @@ return table.freeze {
 	TypeError = TypeErrorConstructor,
 	URIError = URIErrorConstructor,
 	AggregateError = AggregateErrorConstructor,
-}
+})

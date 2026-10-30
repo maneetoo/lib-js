@@ -9,7 +9,8 @@
 	properties, the structural counterpart to `keys` and `values`.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within entries
@@ -17,8 +18,9 @@ const esTypes = require "../ES17-Types"
 	@return { { any } } -- an array of two-element `{ key, value }` tables
 
 	Iterates `object` once with `next`, pushing a fresh two-element
-	array for every key/value pair encountered. A custom `__iter`
-	metamethod is ignored, so only genuine own entries are reported.
+	array for every own non-symbol key/value pair. A custom `__iter`
+	metamethod is ignored, and symbol-keyed properties are skipped as in
+	JavaScript.
 
 	:::note
 	Luau has no native `[key, value]` tuple/array literal the way
@@ -46,13 +48,10 @@ const function entries<K, V>(object: esTypes.Table<K, V>): esTypes.Array<esTypes
 	const result: esTypes.Array<esTypes.Array<any>> = {}
 	local count = 0
 	for key, value in next, object do
-		count += 1
-		-- Each pair is its own small array rather than two parallel
-		-- arrays, so a single entry can be passed around, matched on or
-		-- destructured independently, like a JS `[k, v]` tuple. The
-		-- constructor sizes the pair exactly, and the indexed store
-		-- avoids a `table.insert` call per entry.
-		result[count] = { key, value }
+		if not Symbol.isSymbol(key) then
+			count += 1
+			result[count] = { key, value }
+		end
 	end
 	return result
 end

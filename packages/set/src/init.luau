@@ -49,10 +49,10 @@
 	:::
 ]=]
 
-const Symbol = require "./Symbol"
-const TypeError = require "./Error" .TypeError
-const esTypes = require "./ES17-Types"
-const iterate = require "./iterate"
+const Symbol = require("./Symbol")
+const TypeError = require("./Error").TypeError
+const esTypes = require("./ES17-Types")
+const iterate = require("./iterate")
 
 --[=[
 	@within Set
@@ -380,7 +380,7 @@ const function union<T, U>(self: SetState<T>, other: SetLike<U>): Set<T | U>
 	end
 	eachFrom(otherKeys(other, "union"), function(value: U): nil
 		add(result, value)
-        return nil
+		return nil
 	end)
 	return result
 end
@@ -449,7 +449,7 @@ const function symmetricDifference<T, U>(self: SetState<T>, other: SetLike<U>): 
 		else
 			add(result, value)
 		end
-        return nil
+		return nil
 	end)
 	return result
 end
@@ -528,8 +528,8 @@ const prototype: SetPrototype = {
 	isSupersetOf = isSupersetOf,
 	isDisjointFrom = isDisjointFrom,
 } :: any
-;(prototype :: any)[Symbol.iterator] = values
-;(prototype :: any)[Symbol.toStringTag] = "Set"
+(prototype :: any)[Symbol.iterator] = values;
+(prototype :: any)[Symbol.toStringTag] = "Set"
 
 const metatable = {
 	__index = function(self: any, key: any): any
@@ -574,7 +574,7 @@ const Set = {
 	new = new_,
 	prototype = prototype,
 } :: SetStatic
-;(prototype :: any).constructor = Set
+(prototype :: any).constructor = Set
 
 table.freeze(prototype)
 table.freeze(Set)

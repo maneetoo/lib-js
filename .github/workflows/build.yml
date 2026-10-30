@@ -1,0 +1,95 @@
+name: Build
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: "Ref/SHA"
+        required: true
+        type: string
+      version:
+        description: "version"
+        required: true
+        type: string
+      project:
+        description: "path"
+        required: false
+        type: string
+        default: "default.project.json"
+      extension:
+        description: "file type: rbxm (model) or rbxl (place)"
+        required: false
+        type: string
+        default: "rbxm"
+      rojo_version:
+        description: "Version of Rojo (ex 7.4.4). Empty = last"
+        required: false
+        type: string
+        default: ""
+    outputs:
+      artifact-name:
+        description: "artifact"
+        value: ${{ jobs.build.outputs.artifact-name }}
+      file-name:
+        description: "File name in artifact"
+        value: ${{ jobs.build.outputs.file-name }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: ${{ steps.meta.outputs.artifact-name }}
+      file-name: ${{ steps.meta.outputs.file-name }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ inputs.version }}
+      PROJECT: ${{ inputs.project }}
+      EXTENSION: ${{ inputs.extension }}
+      ROJO_VERSION: ${{ inputs.rojo_version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Resolve output names
+        id: meta
+        run: |
+          repo_name="${GITHUB_REPOSITORY#*/}"
+          echo "file-name=${repo_name}-${VERSION}.${EXTENSION}" >> "$GITHUB_OUTPUT"
+          echo "artifact-name=build-${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Rojo
+        run: |
+          dest="$RUNNER_TEMP/rojo"
+          mkdir -p "$dest"
+          if [ -n "$ROJO_VERSION" ]; then
+            gh release download "v$ROJO_VERSION" --repo rojo-rbx/rojo \
+              --pattern "*linux-x86_64*.zip" --dir "$dest"
+          else
+            gh release download --repo rojo-rbx/rojo \
+              --pattern "*linux-x86_64*.zip" --dir "$dest"
+          fi
+          unzip -o "$dest"/*.zip -d "$dest"
+          chmod +x "$dest/rojo"
+          echo "$dest" >> "$GITHUB_PATH"
+
+      - name: Build with Rojo
+        env:
+          OUT_FILE: ${{ steps.meta.outputs.file-name }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/build"
+          rojo --version
+          rojo build "$PROJECT" --output "$RUNNER_TEMP/build/$OUT_FILE"
+          ls -l "$RUNNER_TEMP/build"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.artifact-name }}
+          path: ${{ runner.temp }}/build/${{ steps.meta.outputs.file-name }}
+          if-no-files-found: error
+          retention-days: 1

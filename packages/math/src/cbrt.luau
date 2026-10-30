@@ -9,7 +9,7 @@
 	Luau's `math` library has no `cbrt`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 const TINY: number, HUGE_THRESHOLD: number = 2 ^ -600, 2 ^ 900
 const UP: number, SMALL_STEP: number = 2 ^ 600, 2 ^ 200

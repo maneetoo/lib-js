@@ -95,9 +95,9 @@
 	:::
 ]=]
 
-const esTypes = require "./ES17-Types"
-const Symbol = require "./Symbol"
-const Error = require "./Error"
+const Error = require("./Error")
+const Symbol = require("./Symbol")
+const esTypes = require("./ES17-Types")
 const TypeError, AggregateError = Error.TypeError, Error.AggregateError
 
 --[=[
@@ -204,7 +204,10 @@ export type PromiseWithResolvers<T> = {
 export type PromisePrototype = {
 	read ["then"]: PromiseThen<unknown>,
 	read then_: PromiseThen<unknown>,
-	read catch: <U>(self: Promise<unknown>, onRejected: ((reason: unknown) -> esTypes.Awaitable<U>)?) -> Promise<unknown>,
+	read catch: <U>(
+		self: Promise<unknown>,
+		onRejected: ((reason: unknown) -> esTypes.Awaitable<U>)?
+	) -> Promise<unknown>,
 	read finally: (self: Promise<unknown>, onFinally: (() -> unknown)?) -> Promise<unknown>,
 	constructor: unknown?,
 }
@@ -222,11 +225,15 @@ export type PromisePrototype = {
 
 export type PromiseStatic = {
 	read prototype: PromisePrototype,
-	read new: <T>(executor: (resolve: (value: esTypes.Awaitable<T>) -> (), reject: (reason: unknown) -> ()) -> ()) -> Promise<T>,
+	read new: <T>(
+		executor: (resolve: (value: esTypes.Awaitable<T>) -> (), reject: (reason: unknown) -> ()) -> ()
+	) -> Promise<T>,
 	read resolve: <T>(value: esTypes.Awaitable<T>) -> Promise<T>,
 	read reject: <T>(reason: unknown) -> Promise<T>,
 	read all: <T>(values: esTypes.Array<esTypes.Awaitable<T>>) -> Promise<esTypes.Array<T>>,
-	read allSettled: <T>(values: esTypes.Array<esTypes.Awaitable<T>>) -> Promise<esTypes.Array<PromiseSettledResult<T>>>,
+	read allSettled: <T>(
+		values: esTypes.Array<esTypes.Awaitable<T>>
+	) -> Promise<esTypes.Array<PromiseSettledResult<T>>>,
 	read any: <T>(values: esTypes.Array<esTypes.Awaitable<T>>) -> Promise<T>,
 	read race: <T>(values: esTypes.Array<esTypes.Awaitable<T>>) -> Promise<T>,
 	read withResolvers: <T>() -> PromiseWithResolvers<T>,
@@ -718,7 +725,11 @@ end
 	The derived promise is always a base `Promise`.
 	:::
 ]=]
-const function promiseThen<U, V>(self: Promise<unknown>, onFulfilled: ((unknown) -> esTypes.Awaitable<U>)?, onRejected: ((unknown) -> esTypes.Awaitable<V>)?): Promise<U | V>
+const function promiseThen<U, V>(
+	self: Promise<unknown>,
+	onFulfilled: ((unknown) -> esTypes.Awaitable<U>)?,
+	onRejected: ((unknown) -> esTypes.Awaitable<V>)?
+): Promise<U | V>
 	const slot: Slot? = if isObject(self) then slots[self] else nil
 	if slot == nil then
 		error(TypeError.new("Promise.prototype.then called on a non-Promise receiver"))
@@ -778,7 +789,11 @@ end
 	:::
 ]=]
 const function promiseResolve<T>(value: esTypes.Awaitable<T>): Promise<T>
-	if isObject(value) and slots[value] ~= nil and rawequal((value :: esTypes.Table<unknown, unknown>)["constructor"], promisePrototype.constructor) then
+	if
+		isObject(value)
+		and slots[value] ~= nil
+		and rawequal((value :: esTypes.Table<unknown, unknown>)["constructor"], promisePrototype.constructor)
+	then
 		return value :: Promise<T>
 	end
 	const promise = newPromise<<T>>()
@@ -874,10 +889,10 @@ const prototype = {
 } :: PromisePrototype
 
 promisePrototype = prototype
-instanceMetatable = table.freeze {
+instanceMetatable = table.freeze({
 	__index = prototype,
 	__tostring = promiseToString,
-}
+})
 
 --[=[
 	@within Promise
@@ -985,21 +1000,17 @@ const function allWorker(resolve: ResolveFn, reject: RejectFn, iterable: esTypes
 	for index = 1, count do
 		local called = false
 		remaining += 1
-		invokeThen(
-			promiseResolve(iterable[index]),
-			function(value: unknown)
-				if called then
-					return
-				end
-				called = true
-				values[index] = value
-				remaining -= 1
-				if remaining == 0 then
-					resolve(values)
-				end
-			end,
-			reject
-		)
+		invokeThen(promiseResolve(iterable[index]), function(value: unknown)
+			if called then
+				return
+			end
+			called = true
+			values[index] = value
+			remaining -= 1
+			if remaining == 0 then
+				resolve(values)
+			end
+		end, reject)
 	end
 
 	remaining -= 1
@@ -1017,7 +1028,7 @@ end
 	an element. An empty array fulfils immediately with `{}`.
 ]=]
 
-const function allSettledWorker(resolve: ResolveFn, reject: RejectFn, iterable: esTypes.Array<unknown>)
+const function allSettledWorker(resolve: ResolveFn, _reject: RejectFn, iterable: esTypes.Array<unknown>)
 	const count = #iterable
 	const results: esTypes.Array<PromiseSettledResult<unknown>> = {}
 	local remaining: number = 1
@@ -1038,15 +1049,11 @@ const function allSettledWorker(resolve: ResolveFn, reject: RejectFn, iterable: 
 			end
 		end
 
-		invokeThen(
-			promiseResolve(iterable[index]),
-			function(value: unknown)
-				settle({ status = "fulfilled", value = value })
-			end,
-			function(reason: unknown)
-				settle({ status = "rejected", reason = reason })
-			end
-		)
+		invokeThen(promiseResolve(iterable[index]), function(value: unknown)
+			settle({ status = "fulfilled", value = value })
+		end, function(reason: unknown)
+			settle({ status = "rejected", reason = reason })
+		end)
 	end
 
 	remaining -= 1
@@ -1073,21 +1080,17 @@ const function anyWorker(resolve: ResolveFn, reject: RejectFn, iterable: esTypes
 	for index = 1, count do
 		local called = false
 		remaining += 1
-		invokeThen(
-			promiseResolve(iterable[index]),
-			resolve,
-			function(reason: unknown)
-				if called then
-					return
-				end
-				called = true
-				reasons[index] = reason
-				remaining -= 1
-				if remaining == 0 then
-					reject(AggregateError.new(reasons, "All promises were rejected"))
-				end
+		invokeThen(promiseResolve(iterable[index]), resolve, function(reason: unknown)
+			if called then
+				return
 			end
-		)
+			called = true
+			reasons[index] = reason
+			remaining -= 1
+			if remaining == 0 then
+				reject(AggregateError.new(reasons, "All promises were rejected"))
+			end
+		end)
 	end
 
 	remaining -= 1
@@ -1169,7 +1172,9 @@ end
 	an input.
 ]=]
 
-const function allSettledImpl<T>(values: esTypes.Array<esTypes.Awaitable<T>>): Promise<esTypes.Array<PromiseSettledResult<T>>>
+const function allSettledImpl<T>(
+	values: esTypes.Array<esTypes.Awaitable<T>>
+): Promise<esTypes.Array<PromiseSettledResult<T>>>
 	return runCombinator<<esTypes.Array<PromiseSettledResult<T>>>>(allSettledWorker, values)
 end
 

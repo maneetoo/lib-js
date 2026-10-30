@@ -7,7 +7,7 @@
 	inverse of `entries`.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within fromEntries
@@ -38,7 +38,10 @@ const function fromEntries(entries: esTypes.Array<esTypes.Array<any>>): esTypes.
 		-- comparison pair on the hot path; the message is only built on
 		-- failure. Level 2 reports the error at the caller, not in here.
 		if key == nil or key ~= key then
-			error(`fromEntries: entry #{index} has a {if key == nil then "nil" else "NaN"} key, which cannot be used as a table key`, 2)
+			error(
+				`fromEntries: entry #{index} has a {if key == nil then "nil" else "NaN"} key, which cannot be used as a table key`,
+				2
+			)
 		end
 		result[key] = pair[2]
 	end

@@ -6,11 +6,11 @@
 	A Luau implementation of JavaScript's [`Array.prototype.sort()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const String = require "../../String"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
-const __shared = require "../__shared"
+const ECMAScript = require("../../ECMAScript")
+const String = require("../../String")
+const TypeError = require("../../Error").TypeError
+const __shared = require("../__shared")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within sort
@@ -59,14 +59,17 @@ const function sort<T>(array: esTypes.Array<T>, compareFn: ((a: T, b: T) -> numb
 		for index = 1, count do
 			records[index] = { key = String(defined[index], nil), value = defined[index] }
 		end
-		const sorted = __shared.stableSort(records, function(a: { key: string, value: T }, b: { key: string, value: T }): number
-			if a.key < b.key then
-				return -1
-			elseif a.key > b.key then
-				return 1
+		const sorted = __shared.stableSort(
+			records,
+			function(a: { key: string, value: T }, b: { key: string, value: T }): number
+				if a.key < b.key then
+					return -1
+				elseif a.key > b.key then
+					return 1
+				end
+				return 0
 			end
-			return 0
-		end)
+		)
 		for index = 1, count do
 			defined[index] = sorted[index].value
 		end

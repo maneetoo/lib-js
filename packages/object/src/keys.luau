@@ -8,7 +8,8 @@
 	Returns an array of a table's own keys.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
 
 --[=[
 	@within keys
@@ -17,8 +18,8 @@ const esTypes = require "../ES17-Types"
 
 	Iterates with `next` directly, which reads the table's real
 	contents: a custom `__iter` metamethod is ignored, so only genuine
-	own keys are reported (like JavaScript, which never consults a
-	prototype here).
+	own, non-symbol keys are reported (like JavaScript, which never
+	consults a prototype or includes symbol keys here).
 
 	:::note
 	Luau's iteration order is unspecified for non-array-like tables, so
@@ -40,8 +41,10 @@ const function keys<K, V>(object: esTypes.Table<K, V>): esTypes.Array<K>
 	-- `next, object` is Luau's fastest iteration form, and an indexed
 	-- store avoids a `table.insert` call per key.
 	for key in next, object do
-		count += 1
-		result[count] = key
+		if not Symbol.isSymbol(key) then
+			count += 1
+			result[count] = key
+		end
 	end
 	return result
 end

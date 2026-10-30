@@ -9,7 +9,7 @@
 	Checks whether a value is a finite number.
 ]=]
 
-const __staticProps = require "./__staticProps"
+const __staticProps = require("./__staticProps")
 
 --[=[
 	@within isFinite
@@ -26,7 +26,10 @@ const __staticProps = require "./__staticProps"
 	:::
 ]=]
 const function isFinite(value: any): boolean
-	return type(value) == "number" and value == value and value ~= __staticProps.POSITIVE_INFINITY and value ~= __staticProps.NEGATIVE_INFINITY
+	return type(value) == "number"
+		and value == value
+		and value ~= __staticProps.POSITIVE_INFINITY
+		and value ~= __staticProps.NEGATIVE_INFINITY
 end
 
 return isFinite

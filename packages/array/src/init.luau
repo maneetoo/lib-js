@@ -82,17 +82,17 @@
 	:::
 ]=]
 
-const esTypes = require "./ES17-Types"
-const Symbol = require "./Symbol"
-const prototype = require "@self/prototype"
-const __toArray = require "@self/__toArray"
+const Symbol = require("./Symbol")
+const __toArray = require("@self/__toArray")
+const esTypes = require("./ES17-Types")
+const prototype = require("@self/prototype")
 
 const Array = {
-    __toArray = __toArray,
-    of = require "@self/of",
-    from = require "@self/from",
-    fromAsync = require "@self/fromAsync",
-    isArray = require "@self/isArray",
+	__toArray = __toArray,
+	of = require("@self/of"),
+	from = require("@self/from"),
+	fromAsync = require("@self/fromAsync"),
+	isArray = require("@self/isArray"),
 
 	prototype = prototype,
 }

@@ -8,9 +8,9 @@
 	Returns the character at an index. Negative indices count from the end.
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const __shared = require "../__shared"
-const __utf8 = require "../__utf8"
+const ECMAScript = require("../../ECMAScript")
+const __shared = require("../__shared")
+const __utf8 = require("../__utf8")
 
 --[=[
 	@within at

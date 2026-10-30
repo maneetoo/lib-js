@@ -8,8 +8,8 @@
 	Builds a string from Unicode code points.
 ]=]
 
-const Number = require "../Number"
-const __utf8 = require "./__utf8"
+const Number = require("../Number")
+const __utf8 = require("./__utf8")
 
 --[=[
 	@within fromCodePoint

@@ -1,7 +1,7 @@
 [package]
 name = "maneetoo/weakset"
 description = "Set of weakly held objects that does not prevent garbage collection."
-version = "1.0.3"
+version = "2.0.0-rc.3"
 license = "MIT"
 authors = ["maneetoo"]
 registry = "https://github.com/UpliftGames/wally-index"
@@ -9,6 +9,6 @@ repository = "https://github.com/maneetoo/lib-js"
 realm = "shared"
 
 [dependencies]
-Error = "maneetoo/error@1.0.3"
-Symbol = "maneetoo/symbol@1.0.3"
-iterate = "maneetoo/iterate@1.0.3"
+Error = "maneetoo/error@2.0.0-rc.3"
+Symbol = "maneetoo/symbol@2.0.0-rc.3"
+iterate = "maneetoo/iterate@2.0.0-rc.3"

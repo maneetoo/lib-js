@@ -9,7 +9,6 @@
 "github:Kampfkarren/selene" = "latest"
 "github:UpliftGames/wally" = "latest"
 "github:lune-org/lune" = "latest"
-"github:pesde-pkg/pesde" = "latest"
 "github:rojo-rbx/rojo" = "latest"
 luau = "latest"
 stylua = "latest"
@@ -27,6 +26,10 @@ run = "stylua --check ."
 [tasks.lint]
 description = "Lint .luau files via `Selene`"
 run = "selene ."
+
+[tasks.test]
+description = "Run the `tests/` suite via `Lune`"
+run = "lune run tests/run"
 
 [tasks.build]
 description = "Build .rbxlx file & run `lint`, `fmt-check`"

@@ -1,24 +1,24 @@
 --!strict
 
 --[=[
-	@class clearTimeout
+	@class clearImmediate
 	@within Timers
 
-	Cancels a timer made by `setTimeout`. A JavaScript
-	[`clearTimeout()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/clearTimeout)
+	Cancels an immediate made by `setImmediate` before it runs. A Node.js
+	[`clearImmediate()`](https://nodejs.org/api/timers.html#clearimmediateimmediate)
 	counterpart. An unknown id, or `nil`, does nothing.
 ]=]
 
-const __scheduler = require "./__scheduler"
+const scheduler = require("./__scheduler")
 
 --[=[
-	@within clearTimeout
-	@param id number? -- an id returned by `setTimeout`
+	@within clearImmediate
+	@param id number? -- an id returned by `setImmediate`
 ]=]
-const function clearTimeout(id: number?)
+const function clearImmediate(id: number?)
 	if id ~= nil then
-		__scheduler.cancel(id)
+		scheduler.cancelImmediate(id)
 	end
 end
 
-return clearTimeout
+return clearImmediate

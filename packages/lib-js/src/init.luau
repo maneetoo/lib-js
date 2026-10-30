@@ -1,25 +1,33 @@
 --!strict
 
-const Array = require "./Array"
-const Boolean = require "./Boolean"
-const Error = require "./Error"
-const JSON = require "./JSON"
-const Map = require "./Map"
-const Math = require "./Math"
-const Number = require "./Number"
-const Object = require "./Object"
-const Promise = require "./Promise"
-const Set = require "./Set"
-const String = require "./String"
-const Symbol = require "./Symbol"
-const Timers = require "./Timers"
-const WeakMap = require "./WeakMap"
-const WeakRef = require "./WeakRef"
-const WeakSet = require "./WeakSet"
-const esTypes = require "./ES17-Types"
-const globalThis = require "./globalThis"
-const instanceof = require "./instanceof"
-const iterate = require "./iterate"
+const Array = require("./Array")
+const Boolean = require("./Boolean")
+const Error = require("./Error")
+const JSON = require("./JSON")
+const Map = require("./Map")
+const Math = require("./Math")
+const Number = require("./Number")
+const Object = require("./Object")
+const Promise = require("./Promise")
+const Set = require("./Set")
+const String = require("./String")
+const Symbol = require("./Symbol")
+const Timers = require("./Timers")
+const WeakMap = require("./WeakMap")
+const WeakRef = require("./WeakRef")
+const WeakSet = require("./WeakSet")
+const abort = require("./abort")
+const atob = require("./atob")
+const btoa = require("./btoa")
+const esTypes = require("./ES17-Types")
+const events = require("./events")
+const globalThis = require("./globalThis")
+const instanceof = require("./instanceof")
+const iterate = require("./iterate")
+const queueMicrotask = require("./queueMicrotask")
+const structuredClone = require("./structuredClone")
+const uri = require("./uri")
+const util = require("./util")
 
 export type Array<T> = esTypes.Array<T>
 export type Table<K, V> = esTypes.Table<K, V>
@@ -40,6 +48,8 @@ export type Thenable<T> = esTypes.Thenable<T>
 export type Awaitable<T> = esTypes.Awaitable<T>
 export type IteratorResult<T> = esTypes.IteratorResult<T>
 export type Iterator<T> = esTypes.Iterator<T>
+
+export type PropertyDescriptor = Object.PropertyDescriptor
 
 export type Map<K, V> = Map.Map<K, V>
 export type MapPrototype = Map.MapPrototype
@@ -71,7 +81,7 @@ export type WeakSet<T> = WeakSet.WeakSet<T>
 export type WeakSetPrototype = WeakSet.WeakSetPrototype
 export type WeakSetStatic = WeakSet.WeakSetStatic
 
-const lib = table.freeze {
+const lib = table.freeze({
 	Array = Array,
 	Boolean = Boolean,
 	Error = Error,
@@ -93,8 +103,22 @@ const lib = table.freeze {
 	isFinite = Number.isFinite,
 	instanceof = instanceof,
 	iterate = iterate,
+	queueMicrotask = queueMicrotask,
+	structuredClone = structuredClone,
+	decodeURI = uri.decodeURI,
+	decodeURIComponent = uri.decodeURIComponent,
+	encodeURI = uri.encodeURI,
+	encodeURIComponent = uri.encodeURIComponent,
 	parseInt = Number.parseInt,
 	parseFloat = Number.parseFloat,
-}
+	atob = atob,
+	btoa = btoa,
+	AbortController = abort.AbortController,
+	AbortSignal = abort.AbortSignal,
+	Event = events.Event,
+	EventTarget = events.EventTarget,
+	EventEmitter = events.EventEmitter,
+	util = util,
+})
 
 return lib

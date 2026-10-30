@@ -15,11 +15,10 @@
 	:::
 ]=]
 
-const Symbol = require "../Symbol"
-const String = require "../String"
-const Number = require "../Number"
-const esTypes = require "../ES17-Types"
-const isArray = require "./isArray"
+const String = require("../String")
+const Symbol = require("../Symbol")
+const esTypes = require("../ES17-Types")
+const isArray = require("./isArray")
 
 --[=[
 	@within Array
@@ -144,7 +143,12 @@ end
 	Appends the elements of `source` to `target`, flattening nested arrays up to
 	`depth` levels. `length` is the current length of `target`. Returns the new length.
 ]=]
-const function flattenInto(target: esTypes.Array<unknown>, length: number, source: esTypes.Array<unknown>, depth: number): number
+const function flattenInto(
+	target: esTypes.Array<unknown>,
+	length: number,
+	source: esTypes.Array<unknown>,
+	depth: number
+): number
 	local next = length
 	for index = 1, #source do
 		const element = source[index]

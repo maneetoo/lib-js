@@ -6,8 +6,8 @@
 	A Luau implementation of JavaScript's [`Array.prototype.join()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join).
 ]=]
 
-const esTypes = require "../../ES17-Types"
-const __shared = require "../__shared"
+const __shared = require("../__shared")
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within join

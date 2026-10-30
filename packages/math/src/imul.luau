@@ -9,7 +9,7 @@
 	Luau's `math` library has no `imul`.
 ]=]
 
-const ECMAScript = require "../ECMAScript"
+const ECMAScript = require("../ECMAScript")
 
 const TWO_TO_32 = 4294967296
 

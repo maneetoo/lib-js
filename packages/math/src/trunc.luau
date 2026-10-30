@@ -9,7 +9,7 @@
 	Luau's `math` library has no `trunc`.
 ]=]
 
-const Number = require "../Number"
+const Number = require("../Number")
 
 --[=[
 	@within trunc

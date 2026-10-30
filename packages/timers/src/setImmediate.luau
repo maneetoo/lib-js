@@ -10,8 +10,8 @@
 	counterpart. Returns a positive integer id for `clearImmediate`.
 ]=]
 
-const TypeError = require "../Error" .TypeError
-const __scheduler = require "./__scheduler"
+const TypeError = require("../Error").TypeError
+const __scheduler = require("./__scheduler")
 
 --[=[
 	@within setImmediate
@@ -22,7 +22,7 @@ const __scheduler = require "./__scheduler"
 ]=]
 const function setImmediate(callback: (...any) -> (), ...: any): number
 	if type(callback) ~= "function" then
-		error(TypeError.new("The \"callback\" argument must be of type function"), 2)
+		error(TypeError.new('The "callback" argument must be of type function'), 2)
 	end
 	return __scheduler.immediate(callback, table.pack(...))
 end

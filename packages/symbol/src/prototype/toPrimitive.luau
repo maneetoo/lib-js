@@ -10,12 +10,12 @@
 	symbol already *is* the primitive.
 ]=]
 
-const constructor = require "../constructor"
+const constructor = require("../constructor")
 
 --[=[
 	@within toPrimitive
 	@param self constructor.Symbol -- the symbol to convert
-	@param hint string? -- ignored; accepted only for signature parity with the real `@@toPrimitive` contract
+	@param _hint string? -- ignored; accepted only for signature parity with the real `@@toPrimitive` contract
 	@return constructor.Symbol -- `self`, unchanged
 
 	Real engines call `obj[Symbol.toPrimitive](hint)` internally
@@ -27,7 +27,7 @@ const constructor = require "../constructor"
 	to prefer. `hint` is accepted here purely so the signature matches;
 	it has no effect on the result.
 ]=]
-const function toPrimitive(self: constructor.Symbol, hint: string?): constructor.Symbol
+const function toPrimitive(self: constructor.Symbol, _hint: string?): constructor.Symbol
 	if not constructor.isSymbol(self) then
 		error(`toPrimitive: expected a Symbol, got {typeof(self)}`, 2)
 	end

@@ -6,7 +6,7 @@
 	A Luau implementation of JavaScript's [`Array.prototype.pop()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/pop).
 ]=]
 
-const esTypes = require "../../ES17-Types"
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within pop

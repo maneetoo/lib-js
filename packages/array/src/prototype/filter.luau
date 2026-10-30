@@ -6,9 +6,9 @@
 	A Luau implementation of JavaScript's [`Array.prototype.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
 ]=]
 
-const ECMAScript = require "../../ECMAScript"
-const TypeError = require "../../Error" .TypeError
-const esTypes = require "../../ES17-Types"
+const ECMAScript = require("../../ECMAScript")
+const TypeError = require("../../Error").TypeError
+const esTypes = require("../../ES17-Types")
 
 --[=[
 	@within filter
@@ -19,10 +19,13 @@ const esTypes = require "../../ES17-Types"
 	Returns a new array with the elements for which `predicate` is truthy. The
 	original array is not changed.
 ]=]
-const function filter<T>(array: esTypes.Array<T>, predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean): esTypes.Array<T>
+const function filter<T>(
+	array: esTypes.Array<T>,
+	predicate: (value: T, index: number, array: esTypes.Array<T>) -> boolean
+): esTypes.Array<T>
 	if not ECMAScript.IsCallable(predicate) then
-        error(TypeError.new("Array.prototype.filter: callback is not a function"))
-    end
+		error(TypeError.new("Array.prototype.filter: callback is not a function"))
+	end
 	const result: esTypes.Array<T> = {}
 	local count = 0
 	const length = #array

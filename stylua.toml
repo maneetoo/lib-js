@@ -1,4 +1,4 @@
-syntax = "All"
+syntax = "Luau"
 column_width = 120
 line_endings = "Unix"
 indent_type = "Tabs"
@@ -10,4 +10,4 @@ space_after_function_names = "Never"
 block_newline_gaps = "Never"
 
 [sort_requires]
-enabled = false
+enabled = true

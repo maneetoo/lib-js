@@ -10,7 +10,8 @@
 	JavaScript's prototype chain.
 ]=]
 
-const esTypes = require "../ES17-Types"
+const esTypes = require("../ES17-Types")
+const isExtensible = require("./isExtensible")
 
 -- Luau itself gives up on an `__index` chain after 100 hops, so there is
 -- no point walking further when looking for a cycle.
@@ -38,7 +39,7 @@ const MAX_CHAIN_CHECK: number = 100
 	Errors, like JavaScript's `TypeError`, are raised when:
 	- `prototype` is not a table, a function or `nil`;
 	- `prototype`'s chain already contains `object` (a cyclic chain);
-	- `object` is frozen;
+	- `object` is non-extensible and its prototype would change;
 	- `object`'s metatable is protected by `__metatable`.
 
 	:::caution
@@ -61,8 +62,15 @@ const function setPrototypeOf<T>(object: T & esTypes.Table<any, any>, prototype:
 		error(`setPrototypeOf: prototype must be a table, a function or nil, got {kind}`, 2)
 	end
 
-	if table.isfrozen(object :: any) then
-		error("setPrototypeOf: cannot set the prototype of a frozen object", 2)
+	const metatable = getmetatable(object :: any)
+	if metatable == nil and prototype == nil then
+		return object
+	end
+	if type(metatable) == "table" and rawequal(rawget(metatable :: any, "__index"), prototype) then
+		return object
+	end
+	if not isExtensible(object) then
+		error("setPrototypeOf: cannot set the prototype of a non-extensible object", 2)
 	end
 
 	-- JavaScript rejects cyclic prototype chains; in Luau a cycle would
@@ -85,8 +93,6 @@ const function setPrototypeOf<T>(object: T & esTypes.Table<any, any>, prototype:
 			end
 		end
 	end
-
-	const metatable = getmetatable(object :: any)
 
 	if metatable == nil then
 		-- Nothing to remove, and nothing worth allocating a metatable
