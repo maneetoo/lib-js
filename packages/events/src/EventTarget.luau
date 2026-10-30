@@ -2,7 +2,6 @@
 
 --[=[
 	@class EventTarget
-	@within EventTarget
 
 	Web platform's
 	[`EventTarget`](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)
@@ -91,7 +90,7 @@ const function newEventTarget(): EventTarget
 					end
 				elseif key == "removeEventListener" then
 					return function(_self2: any, eventType: string, listener: EventListener)
-						local list = state._listeners[eventType]
+						const list = state._listeners[eventType]
 						if list == nil then
 							return
 						end
@@ -107,7 +106,7 @@ const function newEventTarget(): EventTarget
 						if type(event) ~= "table" or type((event :: any).type) ~= "string" then
 							error(TypeError.new("EventTarget.dispatchEvent: argument must be an Event"), 2)
 						end
-						local list = state._listeners[(event :: any).type]
+						const list = state._listeners[(event :: any).type]
 						if list == nil or #list == 0 then
 							return true
 						end

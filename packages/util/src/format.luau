@@ -33,10 +33,7 @@
 const JSON = require("../JSON")
 const inspect = require("./inspect")
 
--- Node's conversions for each specifier, as far as this library models
--- them. String coercion goes through the same quick rules `inspect` and
--- the ECMAScript `ToString` use for common values.
-local function stringifySimple(value: any): string
+const function stringifySimple(value: any): string
 	const kind = type(value)
 	if kind == "string" then
 		return value
@@ -83,11 +80,11 @@ end
 	- Extra arguments are appended, separated by spaces
 	- A first argument with no specifiers joins everything with spaces
 ]=]
-local function format(fmt: any, ...: any): string
-	local args = table.pack(...)
+const function format(fmt: any, ...: any): string
+	const args = table.pack(...)
 	local argIndex = 0
 
-	local function nextArg(): any
+	const function nextArg(): any
 		argIndex += 1
 		if argIndex > args.n then
 			return nil
@@ -100,20 +97,17 @@ local function format(fmt: any, ...: any): string
 		text = fmt
 	else
 		-- Not a string: join everything with spaces, Node's rule.
-		local pieces: { string } = {}
+		const pieces: { string } = {}
 		for index = 0, args.n do
 			pieces[index + 1] = if index == 0 then stringifySimple(fmt) else stringifySimple(args[index])
 		end
 		return table.concat(pieces, " ")
 	end
 
-	local out: { string } = {}
-	local count = 0
-	local length = #text
-	local index = 1
-
+	const out: { string }, length = {}, #text
+	local count, index = 0, 1
 	while index <= length do
-		local char = text:sub(index, index)
+		const char = text:sub(index, index)
 		if char ~= "%" then
 			count += 1
 			out[count] = char
@@ -121,7 +115,7 @@ local function format(fmt: any, ...: any): string
 			continue
 		end
 
-		local specifier = text:sub(index + 1, index + 1)
+		const specifier = text:sub(index + 1, index + 1)
 		if specifier == "" then
 			-- Trailing lone `%`: keep it.
 			count += 1
@@ -135,7 +129,7 @@ local function format(fmt: any, ...: any): string
 			continue
 		end
 
-		local value = nextArg()
+		const value = nextArg()
 		if value == nil and argIndex > args.n then
 			-- Missing argument: the specifier stays as-is.
 			count += 1
@@ -161,21 +155,21 @@ local function format(fmt: any, ...: any): string
 				rendered = tostring(math.floor(number :: number))
 			end
 		elseif specifier == "i" then
-			local number = tonumber(tostring(value)) ~= nil and tonumber(tostring(value)) or tonumber(value)
+			const number = tonumber(tostring(value)) ~= nil and tonumber(tostring(value)) or tonumber(value)
 			if number == nil then
 				rendered = "NaN"
 			else
 				rendered = tostring(math.floor(number))
 			end
 		elseif specifier == "f" then
-			local number = tonumber(tostring(value))
+			const number = tonumber(tostring(value))
 			if number == nil then
 				rendered = "NaN"
 			else
 				rendered = tostring(number)
 			end
 		elseif specifier == "j" then
-			local ok, encoded = pcall(function()
+			const ok, encoded = pcall(function()
 				return JSON.stringify(value)
 			end)
 			if ok then
@@ -206,11 +200,11 @@ local function format(fmt: any, ...: any): string
 
 	-- Extra arguments, space-separated.
 	if argIndex < args.n then
-		local extra: { string } = {}
+		const extra: { string } = {}
 		for position = argIndex + 1, args.n do
 			table.insert(extra, stringifySimple(args[position]))
 		end
-		local joined = table.concat(extra, " ")
+		const joined = table.concat(extra, " ")
 		if #joined > 0 then
 			count += 1
 			out[count] = " " .. joined

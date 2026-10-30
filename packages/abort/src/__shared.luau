@@ -3,7 +3,6 @@
 --[=[
 	@class __shared
 	@private
-	@within AbortSignal
 
 	Internal signal machinery shared by the `abort` modules: the exported
 	instance types, the signal state, the abort transition, the
@@ -19,7 +18,7 @@
 const Error = require("../Error")
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type AbortListener = (event: any) -> ()
 
 	A listener for the `"abort"` event. The argument is a minimal event
@@ -28,7 +27,7 @@ const Error = require("../Error")
 export type AbortListener = (event: any) -> ()
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type AbortSignal = { read aborted: boolean, read reason: any, addEventListener: ..., removeEventListener: ..., throwIfAborted: ... }
 
 	A signal: `aborted` and `reason` are readable, and the methods
@@ -45,7 +44,7 @@ export type AbortSignal = {
 }
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type AbortController = { read signal: AbortSignal, abort: (self: AbortController, reason: any?) -> () }
 
 	One controller paired with one signal. `signal` is created eagerly and
@@ -57,7 +56,7 @@ export type AbortController = {
 }
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type AbortSignalStatic = { abort: ..., timeout: ..., any: ... }
 
 	The `AbortSignal` constructor table: the statics `abort`, `timeout`,
@@ -70,7 +69,7 @@ export type AbortSignalStatic = {
 }
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type AbortControllerStatic = { new: () -> AbortController }
 
 	The `AbortController` constructor table.
@@ -80,7 +79,7 @@ export type AbortControllerStatic = {
 }
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@type SignalState = { _aborted: boolean, _reason: any, _listeners: { AbortListener } }
 
 	The mutable state behind one signal. `_aborted` flips once; `_reason`
@@ -93,7 +92,7 @@ export type SignalState = {
 }
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@private
 	@return any
 
@@ -102,14 +101,14 @@ export type SignalState = {
 	there is none here, but `reason.name` — what consumers check — matches.
 ]=]
 const function defaultAbortReason(): any
-	local err = Error.new("signal is aborted without reason")
-	local asError = err :: any
+	const err = Error.new("signal is aborted without reason")
+	const asError = err :: any
 	asError.name = "AbortError"
 	return err
 end
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@private
 	@return any
 
@@ -117,14 +116,14 @@ end
 	platform's message.
 ]=]
 const function defaultTimeoutReason(): any
-	local err = Error.new("signal timed out")
-	local asError = err :: any
+	const err = Error.new("signal timed out")
+	const asError = err :: any
 	asError.name = "TimeoutError"
 	return err
 end
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@private
 	@return SignalState
 
@@ -135,7 +134,7 @@ const function createSignal(): SignalState
 end
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@private
 	@param state SignalState -- the state to settle
 	@param reason any -- the reason to store, or `nil` for the platform default
@@ -159,7 +158,7 @@ const function abortSignal(state: SignalState, reason: any)
 end
 
 --[=[
-	@within AbortSignal
+	@within __shared
 	@private
 	@param state SignalState -- the state to surface
 	@return AbortSignal

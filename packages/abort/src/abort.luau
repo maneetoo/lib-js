@@ -2,7 +2,6 @@
 
 --[=[
 	@class abort
-	@within AbortSignal
 
 	[`AbortSignal.abort()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/abort_static):
 	a signal that is already aborted.
@@ -13,7 +12,7 @@ const shared = require("./__shared")
 type AbortSignal = shared.AbortSignal
 
 --[=[
-	@within AbortSignal
+	@within abort
 	@param reason any? -- the reason to store, or `nil` for the platform default
 	@return AbortSignal -- a signal in the aborted state
 

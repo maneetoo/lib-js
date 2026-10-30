@@ -2,7 +2,6 @@
 
 --[=[
 	@class AbortController
-	@within AbortController
 
 	Web platform's
 	[`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController):

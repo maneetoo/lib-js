@@ -2,7 +2,6 @@
 
 --[=[
 	@class any
-	@within AbortSignal
 
 	[`AbortSignal.any()`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal/any_static):
 	a signal that follows the first of several sources.
@@ -14,7 +13,7 @@ const shared = require("./__shared")
 type AbortSignal = shared.AbortSignal
 
 --[=[
-	@within AbortSignal
+	@within any
 	@param signals { AbortSignal } -- the source signals to combine
 	@return AbortSignal -- a signal that aborts when the first source does
 
@@ -29,7 +28,7 @@ const function newAnySignal(signals: { AbortSignal }): AbortSignal
 		error(Error.new("AbortSignal.any: argument must be an array of signals"), 2)
 	end
 	const state = shared.createSignal()
-	local pending: { AbortSignal } = {}
+	const pending: { AbortSignal } = {}
 	for _, source in signals do
 		if type(source) ~= "table" then
 			error(Error.new("AbortSignal.any: argument must be an array of signals"), 2)
@@ -44,7 +43,7 @@ const function newAnySignal(signals: { AbortSignal }): AbortSignal
 	if not state._aborted then
 		-- The first source to abort decides; the rest of the listeners are
 		-- removed so the combined signal settles once.
-		local wrapped: { AbortListener } = {}
+		const wrapped: { AbortListener } = {}
 		for index, source in pending do
 			wrapped[index] = function()
 				if not state._aborted then

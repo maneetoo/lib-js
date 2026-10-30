@@ -2,7 +2,6 @@
 
 --[=[
 	@class encodeURI
-	@within uri
 
 	JavaScript's
 	[`encodeURI()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI):
@@ -13,7 +12,7 @@ const TypeError = require("../Error").TypeError
 const shared = require("./__shared")
 
 --[=[
-	@within uri
+	@within encodeURI
 	@param uri string -- a complete URI
 	@return string -- the URI with unsafe characters percent-encoded
 

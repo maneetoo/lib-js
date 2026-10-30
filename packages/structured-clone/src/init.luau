@@ -65,7 +65,7 @@ type Seen = { [any]: any }
 	dispatch through a metatable `__index` *function* (for `size`), so a plain
 	prototype-chain walk cannot recognize them; method identity can.
 ]=]
-local function isLibraryInstance(value: any, classTable: any, methodName: string): boolean
+const function isLibraryInstance(value: any, classTable: any, methodName: string): boolean
 	if type(value) ~= "table" then
 		return false
 	end
@@ -84,7 +84,7 @@ local cloneValue: (value: any, seen: Seen) -> any
 	`next`; `nil` values cannot exist, and `NaN` keys (the only other unstoreable
 	key) cannot either, so every stored slot is visited exactly once.
 ]=]
-local function cloneTable(value: any, seen: Seen): any
+const function cloneTable(value: any, seen: Seen): any
 	const clone: any = {}
 	seen[value] = clone
 	for key, item in next, value :: any do
@@ -100,11 +100,11 @@ end
 	are cloned values (`nil` and `NaN` stay legal keys), and insertion order
 	is replayed into the new map.
 ]=]
-local function cloneMap(value: any, seen: Seen): any
+const function cloneMap(value: any, seen: Seen): any
 	const MapLib = Map :: any
 	const clone = MapLib.new()
 	seen[value] = clone
-	local entryIterator = value.entries(value)
+	const entryIterator = value.entries(value)
 	local step = entryIterator.next(entryIterator)
 	while not step.done do
 		const pair = step.value
@@ -121,11 +121,11 @@ end
 	Deep-clones this library's `Set`, preserving member identity semantics
 	and insertion order.
 ]=]
-local function cloneSet(value: any, seen: Seen): any
+const function cloneSet(value: any, seen: Seen): any
 	const SetLib = Set :: any
 	const clone = SetLib.new()
 	seen[value] = clone
-	local valueIterator = value.values(value)
+	const valueIterator = value.values(value)
 	local step = valueIterator.next(valueIterator)
 	while not step.done do
 		clone.add(clone, cloneValue(step.value, seen))
@@ -142,10 +142,10 @@ end
 	cloneable values. The `stack` of the clone is its own, freshly captured —
 	JavaScript's algorithm does not copy stacks either.
 ]=]
-local function cloneError(value: any, seen: Seen): any
+const function cloneError(value: any, seen: Seen): any
 	-- The class is found by name through Error's own static table.
 	const ErrorLib = require("./Error") :: any
-	local class = ErrorLib
+	const class = ErrorLib
 	for _, className in
 		{ "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError", "AggregateError" }
 	do
@@ -155,13 +155,13 @@ local function cloneError(value: any, seen: Seen): any
 		end
 	end
 	seen[value] = (class :: any).new(value.message)
-	local clone = seen[value]
+	const clone = seen[value]
 
-	local cause = value.cause
+	const cause = value.cause
 	if cause ~= nil then
 		clone.cause = cloneValue(cause, seen)
 	end
-	local errors = value.errors
+	const errors = value.errors
 	if type(errors) == "table" then
 		const errorsClone: { any } = {}
 		for index, item in errors :: any do
@@ -178,7 +178,7 @@ end
 	Copies the bytes of a Luau `buffer`, like JavaScript copies an
 	`ArrayBuffer`'s contents.
 ]=]
-local function cloneBuffer(value: buffer): buffer
+const function cloneBuffer(value: buffer): buffer
 	const length = buffer.len(value)
 	const clone = buffer.create(length)
 	buffer.copy(clone, 0, value, 0, length)
@@ -193,7 +193,6 @@ end
 ]=]
 function cloneValue(value: any, seen: Seen): any
 	const kind = typeof(value)
-
 	if kind ~= "table" and kind ~= "buffer" then
 		-- Primitives (and functions, caught below) pass through by value.
 		if kind == "function" or kind == "thread" or kind == "userdata" then

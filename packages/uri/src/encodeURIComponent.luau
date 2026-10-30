@@ -2,7 +2,6 @@
 
 --[=[
 	@class encodeURIComponent
-	@within uri
 
 	JavaScript's
 	[`encodeURIComponent()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent):
@@ -13,7 +12,7 @@ const TypeError = require("../Error").TypeError
 const shared = require("./__shared")
 
 --[=[
-	@within uri
+	@within encodeURIComponent
 	@param component string -- a single URI component
 	@return string -- the component with everything structural escaped
 
