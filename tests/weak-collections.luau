@@ -55,6 +55,17 @@ return function(): (number, number)
 		T:expectError("getOrInsertComputed non-callable", function()
 			wm.getOrInsertComputed(wm, {}, "not a function")
 		end)
+
+		T:expectError("getOrInsertComputed non-callable even when key present", function()
+			wm.getOrInsertComputed(wm, key2, "not a function")
+		end)
+		
+		local re = {}
+		T:check("reentrant insert is overwritten", wm.getOrInsertComputed(wm, re, function(k)
+			wm.set(wm, k, "inserted")
+			return "computed"
+		end) == "computed")
+		T:check("stored value is the callback's result", wm.get(wm, re) == "computed")
 	end
 
 	-- WeakSet basics
