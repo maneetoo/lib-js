@@ -34,7 +34,7 @@
 	:::
 ]=]
 
-const Error = require("../Error")
+const Error = require("./Error")
 
 const BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
