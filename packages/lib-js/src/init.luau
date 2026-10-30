@@ -24,6 +24,7 @@ const events = require("./events")
 const globalThis = require("./globalThis")
 const instanceof = require("./instanceof")
 const iterate = require("./iterate")
+const util = require("./util")
 
 export type Array<T> = esTypes.Array<T>
 export type Table<K, V> = esTypes.Table<K, V>
@@ -108,6 +109,7 @@ const lib = table.freeze({
 	Event = events.Event,
 	EventTarget = events.EventTarget,
 	EventEmitter = events.EventEmitter,
+	util = util,
 })
 
 return lib
