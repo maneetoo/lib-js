@@ -47,6 +47,7 @@ return table.freeze({
 	clearInterval = require("@self/clearInterval"),
 	setImmediate = require("@self/setImmediate"),
 	clearImmediate = require("@self/clearImmediate"),
+	nextTick = require("@self/nextTick"),
 	step = __scheduler.step,
 	run = __scheduler.run,
 	setClock = __scheduler.setClock,

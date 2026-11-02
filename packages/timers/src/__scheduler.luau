@@ -4,10 +4,10 @@
 	@class __scheduler
 	@private
 
-	The shared state behind the timer functions. Each timer and each immediate
-	is a coroutine. The coroutine yields until the scheduler resumes it, and the
-	scheduler resumes it once its due time has come. Luau has no event loop, so
-	the host drives it with `step` (one turn) or `run` (until nothing is left).
+	The shared state behind the timer functions. Each timer, each immediate and
+	each tick is a coroutine. A timer yields until the scheduler resumes it, and
+	the scheduler resumes it once its due time has come. Luau has no event loop,
+	so the host drives it with `step` (one turn) or `run` (until nothing is left).
 
 	Time comes from a clock in milliseconds, and `run` waits with a sleep
 	function in seconds. Both can be replaced, because the standard library has
@@ -30,6 +30,10 @@ export type Sleep = (seconds: number) -> ()
 
 const timers: { [number]: Entry }, immediateThreads: { [number]: thread } = {}, {}
 local immediateQueue: { number }, nextId: number = {}, 1
+-- A tick has no id, because `nextTick` cannot be cancelled. The queue holds the
+-- threads from `tickHead` to `tickTail`, and both indexes start over once it is empty.
+const tickQueue: { [number]: thread } = {}
+local tickHead: number, tickTail: number = 1, 0
 
 --[=[
 	@within __scheduler
@@ -153,29 +157,69 @@ end
 --[=[
 	@within __scheduler
 	@private
-	@return boolean -- `true` if any timer or immediate is still pending
+	Queues `callback` to run in the next tick phase, before any immediate or
+	timer. Has no id, because a tick cannot be cancelled.
 ]=]
-const function pending(): boolean
-	return next(immediateThreads) ~= nil or next(timers) ~= nil
+const function tick(callback: (...any) -> (), args: Args)
+	tickTail += 1
+	tickQueue[tickTail] = coroutine.create(function()
+		callback(table.unpack(args, 1, args.n))
+	end)
 end
 
 --[=[
 	@within __scheduler
 	@private
-	Runs one turn. First the immediates queued before the turn, then each timer
-	whose due time has come, earliest first (ties by id, which is creation order).
-	An error in a callback is raised again. The work that has not run yet stays
-	queued for the next turn.
+	Runs the queued ticks in order, including the ones that the ticks queue while
+	they run, until the queue is empty. An error in a callback is raised again,
+	and the ticks that have not run yet stay queued.
+]=]
+const function drainTicks()
+	while tickHead <= tickTail do
+		const co: thread = tickQueue[tickHead]
+		tickQueue[tickHead] = nil
+		tickHead += 1
+		if tickHead > tickTail then
+			tickHead, tickTail = 1, 0
+		end
+		const ok: boolean, err: any = coroutine.resume(co)
+		if not ok then
+			error(err, 0)
+		end
+	end
+end
+
+--[=[
+	@within __scheduler
+	@private
+	@return boolean -- `true` if any tick, timer or immediate is still pending
+]=]
+const function pending(): boolean
+	return tickHead <= tickTail or next(immediateThreads) ~= nil or next(timers) ~= nil
+end
+
+--[=[
+	@within __scheduler
+	@private
+	Runs one turn. First the ticks, then the immediates queued before the turn,
+	then each timer whose due time has come, earliest first (ties by id, which is
+	creation order). The ticks run again after each immediate and each timer, as
+	Node.js does after each callback. An error in a callback is raised again. The
+	work that has not run yet stays queued for the next turn.
 	@return boolean -- `true` if work is still pending
 ]=]
 const function step(): boolean
+	drainTicks()
 	const queue: { number } = immediateQueue
 	immediateQueue = {}
 	for index, id in queue do
 		const co = immediateThreads[id]
 		if co ~= nil then
 			immediateThreads[id] = nil
-			const ok: boolean, err: string? = coroutine.resume(co)
+			local ok: boolean, err: any = coroutine.resume(co)
+			if ok then
+				ok, err = pcall(drainTicks)
+			end
 			if not ok then
 				-- Keep the ones that have not run yet, ahead of newer immediates.
 				local rest: { number } = table.move(queue, index + 1, #queue, 1, {})
@@ -201,11 +245,14 @@ const function step(): boolean
 	for _, entry in due do
 		-- An earlier callback in this turn may have cleared this timer.
 		if timers[entry.id] == entry then
-			const ok: boolean, err: string? = coroutine.resume(entry.co)
+			local ok: boolean, err: any = coroutine.resume(entry.co)
 			if not ok or coroutine.status(entry.co) == "dead" then
 				if timers[entry.id] == entry then
 					timers[entry.id] = nil
 				end
+			end
+			if ok then
+				ok, err = pcall(drainTicks)
 			end
 			if not ok then
 				error(err, 0)
@@ -218,13 +265,13 @@ end
 --[=[
 	@within __scheduler
 	@private
-	Runs turns until nothing is pending. When no immediate is queued, it waits
-	for the next timer: with the `sleep` function if one was set, otherwise by
-	spinning on the clock.
+	Runs turns until nothing is pending. When no tick or immediate is queued, it
+	waits for the next timer: with the `sleep` function if one was set, otherwise
+	by spinning on the clock.
 ]=]
 const function run()
 	while pending() do
-		if next(immediateThreads) == nil then
+		if tickHead > tickTail and next(immediateThreads) == nil then
 			local earliest: number = Number.POSITIVE_INFINITY
 			for _, entry in timers do
 				if entry.due < earliest then
@@ -250,6 +297,7 @@ return table.freeze({
 	cancel = cancel,
 	immediate = immediate,
 	cancelImmediate = cancelImmediate,
+	tick = tick,
 	normalizeDelay = normalizeDelay,
 	pending = pending,
 	step = step,
